@@ -1,0 +1,5 @@
+week1
+Group formed. We decided readrecommend become our project. 
+I and YangYu Gao and YaoDong Wang are responsible for front-end development. 
+We decide to use js, Vue framework to build the user interface. 
+In the the next week, we plan to complete part of the Proposal, and i plan to find learning materials about Vue.
