@@ -1,1 +1,2 @@
-
+week1
+Group formed. After voting, readrecommend become our project. we talk to each other about our code ability. i and yuwei zhuge response for the backed part. we decide to use python, flask framework to build web server.  In the the next week, i plan to build the basic stucture of the backed part and write some basic python file.
