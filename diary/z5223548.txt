@@ -1,1 +1,17 @@
 /**  Project Diary for Yangyu GAO  **/
+-- Week 1 2020/06/07 Sunday --
+This is the first week of the semester 2, we create a group and named it Orchid Malevolence, an insignificant name but sounds cool for me. 
+
+Our group have 5 members, all of us are from China, which means we do not have problem in communication. 
+
+Before the tutorial, we met together online and try to filter some projects which we really want to avoid. Then we prepared some questions to ask during the tutorial time.
+
+We all choose friday's tutorial, Xin Li made a great tutorial class and told us to make a decision on which topic to choose, and vote a scrum master. By discussing for a while, we finally choose ReadRecommend as our project subject. After that, we voted Yuwei Zhuge as our scrum master.
+
+
+After the tutorial, I create a github repository, and invite all my group members. In addition, I create a Jira project by following the document in webcms3.
+
+On Saturday, I read the requirement very carefully and transfered the document into ordering informations. Then I provided this document to my partners. Then we met online and talked about next weeks's plan. We are going to draw the system flow chart through the requirement.
+
+Finnaly, my job is to do the front end, and we finally decide to use Vue as our front end language. So I have started to learn Vue this week.
+
