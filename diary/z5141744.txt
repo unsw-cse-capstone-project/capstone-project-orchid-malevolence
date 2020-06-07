@@ -1,0 +1,3 @@
+week1
+Group formed.
+We decided to do readrecommend for our comp9900 project. I and Yang Li will do the back end part. in addition, I will be the scrum master and tasks will be updated on Jira.
