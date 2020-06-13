@@ -5,4 +5,6 @@ We decide to use js, Vue framework to build the user interface.
 In the the next week, we plan to complete part of the Proposal, and i plan to find learning materials about Vue.
 
 week2
-I and YangYu Gao and YaoDong Wang discussed the general functionality to be implemented on each page and completed the System Flow section. After discussion, we determined the rest of the Proposal that everyone would write. We will finish the Proposal next week. The front group has also started to write the login screen.
+I and YangYu Gao and YaoDong Wang discussed the general functionality to be implemented on each page and completed the System Flow section. 
+After discussion, we determined the rest of the Proposal that everyone would write. 
+We will finish the Proposal next week. The front group has also started to write the login screen.
