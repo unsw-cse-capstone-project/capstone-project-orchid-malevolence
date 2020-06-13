@@ -5,3 +5,4 @@ week2
 I build the ER map. We split the proposal mission to each. And i spend sometime to compare the Django and the flask, i find that Django is more friendly for fresh people, and the guideline of django is more helpful than flask's. So, i decide to use Django as our web server develop framework.
 The next week mission, finish my proposal part and build the data model with ER map.
 
+
