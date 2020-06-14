@@ -15,3 +15,5 @@ On Saturday, I read the requirement very carefully and transfered the document i
 
 Finnaly, my job is to do the front end, and we finally decide to use Vue as our front end language. So I have started to learn Vue this week.
 
+-- Week2  2020/06/14  Sunday --
+In the second week, all of us join the given github team, so I transfer our origin github repo to the current repo. In addition, we meet together and have a specific tasks about proposal for every one to do in the next week. The proposal is supposed to write in Microsoft Word Document and then alter the format to Latex. Yuwei Zhuge, Changlu Ma and me will write Background, User stories and Sprints part. Finnally, at the end of the week, I am trying to make a small demo about login and sign up page, by using Vue.
