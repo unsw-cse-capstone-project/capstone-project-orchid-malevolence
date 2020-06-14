@@ -1,5 +1,5 @@
 Week 1
-Group formed. I have communicated with team members and choose the ReadRecommend as our project. I also discuss with the team about the programming language that we should use. 
+Group formed. I have communicated with team members and choose the ReadRecommend as our project. I also discuss with the team about the programming language that we should use. The main technical obstacles are some new programming language that we need to learn, for the front we need to learn Javascript, Ajax, and Vue. Non-technical obstacle is cannot face to face due to Conv-19, so talk on zoom. our plan for next week is to learn the programming language that we need to master and talk about the proposal. 
 
 Week2
-we have discuss recommendation booking website project. After design the system flow, I have complete the second version of system flow.
+we need to fast learn some necessary programming language and divided the proposal into several part and responsible for diferent members. For the finished part, we have discussed recommendation booking website project. After design the system flow, I have complete the second version of system flow, we also divided the proposal for members, I will responsible for part of technical depth, scale, report formatting. I still need to learn javascript and vue. For the week, we need to finish the proposal and finish learning js and vue, because we need to coding the website next week.
