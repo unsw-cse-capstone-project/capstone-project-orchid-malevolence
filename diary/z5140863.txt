@@ -11,6 +11,7 @@ We will finish the Proposal next week. The front group has also started to write
 
 week3
 We completed the proposal.
-And I was mainly responsible for the background part and made a small modification of system-flow at the same time. 
+I was mainly responsible for the background part and the part of “out of scope”. 
+And i made a small modification of system-flow at the same time. 
 As the knowledge about Vue is not comprehensive enough, I will mainly learn Vue related things and start coding next week.
 
