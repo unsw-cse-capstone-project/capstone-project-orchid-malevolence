@@ -5,4 +5,8 @@ week2
 I build the ER map. We split the proposal mission to each. And i spend sometime to compare the Django and the flask, i find that Django is more friendly for fresh people, and the guideline of django is more helpful than flask's. So, i decide to use Django as our web server develop framework.
 The next week mission, finish my proposal part and build the data model with ER map.
 
+week3
+In this week, i finish my own job, to draw a System Architecture diagram. It need to descript all part of our project and the detail of each part containers. I also write technical stack and overviews.
+In the next week, we need to implenment our project with different frameworks.
+
 
