@@ -3,3 +3,6 @@ Group formed. I have communicated with team members and choose the ReadRecommend
 
 Week2
 we need to fast learn some necessary programming language and divided the proposal into several part and responsible for diferent members. For the finished part, we have discussed recommendation booking website project. After design the system flow, I have complete the second version of system flow, we also divided the proposal for members, I will responsible for part of technical depth, scale, report formatting. I still need to learn javascript and vue. For the week, we need to finish the proposal and finish learning js and vue, because we need to coding the website next week.
+
+Week3
+We have finished the proposal. For the non-technical obstacles, we have discuss many times by online meeting, and divided the task into many small parts and everyone will charge one of it. I am responsible for the storyboard, project objectives and check the whole proposal format and content. For the next week, we need to coding our function in the front like login function and part of mian page of the website.
