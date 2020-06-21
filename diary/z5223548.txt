@@ -21,3 +21,7 @@ In addition, we meet together and have a specific tasks about proposal for every
 The proposal is supposed to write in Microsoft Word Document and then alter the format to Latex. Yuwei Zhuge, 
 Changlu Ma and me will write Background, User stories and Sprints part. Finnally, at the end of the week, 
 I am trying to make a small demo about login and sign up page, by using Vue.
+
+
+-- Week   2020/06/21  Sunday --
+In this week, I mainly focus on the proposal. Firstly, I am response to finish all the user stories, and create a priority queue of all tasks base on the user stories. In addition, I aggregate all parts from other members into overleaf, cause LaTeX gives a greate format in  this situation. Moreover, all the user stories are added in Jira and the screenshots have been insert in the proplsa following the criteria. Finnally, I start to write frontend code including HTML, CSS and Vue.js.
