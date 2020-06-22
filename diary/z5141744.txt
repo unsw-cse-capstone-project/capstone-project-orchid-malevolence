@@ -1,3 +1,9 @@
 week1
 Group formed.
 We decided to do readrecommend for our comp9900 project. I and Yang Li will do the back end part. in addition, I will be the scrum master and tasks will be updated on Jira.
+
+Week2
+Proposal phrase. Devided into 5 parts. I was resoonsible for the sprints part, and we will be sum up on next week Friday afternoon. Consider the back end functions.
+
+Week3
+After sum up and review, we finished the proposal. I assigned some tasks on jira, front end and back end. Front end functions have been divided inot 3 parts.
