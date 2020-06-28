@@ -11,6 +11,7 @@ White,123456
 Pink,123456
 
 # file structure
+```
 .
 └── readbook
     ├── account
@@ -69,3 +70,4 @@ Pink,123456
         ├── settings.py
         ├── urls.py
         └── wsgi.py
+```
