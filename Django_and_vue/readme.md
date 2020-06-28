@@ -1,9 +1,8 @@
 
 # require
-python 3.7.*(*>=1)<br>
-django<br>
-django-restframework<br>
-sqlite<br>
+```
+pip install -r requirements.txt
+```
 
 # account(username and password)
 Black,123456
