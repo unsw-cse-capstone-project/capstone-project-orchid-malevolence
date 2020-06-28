@@ -1,5 +1,20 @@
 
 # require
+1.install virtual env
+```
+sudo pip3 install virtualenv
+```
+2.create a virtual envirment for your project
+```
+cd your_project_bame
+virtualenv venv
+```
+3. and you can find a dic named venv 
+4, start virtualenv
+```
+source venv/bin/activate
+```
+5.install all requirments
 ```
 pip install -r requirements.txt
 ```
