@@ -15,3 +15,6 @@ I was mainly responsible for the background part and the part of “out of scope
 And i made a small modification of system-flow at the same time. 
 As the knowledge about Vue is not comprehensive enough, I will mainly learn Vue related things and start coding next week.
 
+week4
+I finished the front-end functions of the login and registration interface. 
+And I will continue to improve the page next week.
