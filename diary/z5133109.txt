@@ -9,4 +9,8 @@ week3
 In this week, i finish my own job, to draw a System Architecture diagram. It need to descript all part of our project and the detail of each part containers. I also write technical stack and overviews.
 In the next week, we need to implenment our project with different frameworks.
 
+week4
+This week, i finished a login api and register api and try to build another api and data structures. I also use postman to use these two apis, it works.
+In next week , i will to finish book_add api and collection_add api.
+
 
