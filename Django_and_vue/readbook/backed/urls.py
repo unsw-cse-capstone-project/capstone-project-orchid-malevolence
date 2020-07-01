@@ -10,4 +10,7 @@ urlpatterns=[
     # url('login/', views.obtain_auth_token),
     url('login/', CustomAuthToken.as_view()),
     url('register/', RegisterAPIView.as_view()),
+    url('account/', AccountDetailAPIView.as_view()),
+    url('collection/', CreateCollectionAPIView.as_view()),
+    url('add_book/', AddBookAPIView.as_view()),
 ]
