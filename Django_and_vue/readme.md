@@ -1,5 +1,5 @@
 
-# require
+# Require
 1.install virtual env
 ```
 sudo pip3 install virtualenv
@@ -21,8 +21,47 @@ pip install -r requirements.txt
 
 # account(username and password)
 Black,123456
-White,123456
 Pink,123456
+
+# api-guidelines
+```
+base-url: http://127.0.0.1:8000/
+```
+## login
+```
+url: /api/login/
+```
+1. username and password are correct, data will contain token.
+2. password is incorrect, data will contain error message, named "msg".
+3. user doesn't exist, data will contain error message, named "msg".
+
+## register
+```
+url: /api/register/
+```
+1. success, return token
+2. error, will return error msg!
+
+## account detail
+```
+url: /api/account/
+```
+it will return a json data, which contain the whole info of user except password.
+
+## collection operations
+```
+url: /api/collection/
+```
+1.get:
+you can acquire the collection set of user
+
+2.post:
+you can add a collection with name to user
+
+3.delete:
+you can delete a collection with name
+
+>name changing will coming soon……
 
 # file structure
 ```
