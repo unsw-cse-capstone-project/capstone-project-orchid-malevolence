@@ -20,8 +20,8 @@ pip install -r requirements.txt
 ```
 
 # account(username and password)
-Black,123456\\
-Pink,123456\\
+Black,123456<br>
+Pink,123456<br>
 you can create new account, do not use complex password, if account create success, password will be Encrypted! you can not check it by /admin!
 
 # api-guidelines
