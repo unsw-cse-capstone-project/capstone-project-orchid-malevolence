@@ -28,3 +28,9 @@ In this week, I mainly focus on the proposal. Firstly, I am response to finish a
 In addition, I aggregate all parts from other members into overleaf, cause LaTeX gives a greate format in  this situation. 
 Moreover, all the user stories are added in Jira and the screenshots have been insert in the proplsa following the criteria. 
 Finnally, I start to write frontend code including HTML, CSS and Vue.js.
+
+
+-- Week4 2020/06/28  Sunday --
+In this week, I am going to design a prototype of the main page of the website. Firstly design the prototype by draw diagrams through processon.com.
+The first page is before login, it shows less functions but larger vision. The second page is the main page after login, it shows more functions due to the requirement.
+Moreover, I learnt how to use vue-cli and using route to design a initial version main page before login.
