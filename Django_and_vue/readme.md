@@ -32,7 +32,7 @@ you can use this to know python version:
 python --version
 ```
 
-![image][img.png]
+![avatar][/img.png]
 
 # account(username and password)
 Superuser account: username: admin, password: 123456<br>
