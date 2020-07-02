@@ -38,6 +38,8 @@ And now, you can check all data with admin account, or get data with your vue wi
 
 # account(username and password)
 Superuser account: username: admin, password: 123456<br>
+localhost:8000/admin<br>
+
 Black,123456<br>
 Pink,123456<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
