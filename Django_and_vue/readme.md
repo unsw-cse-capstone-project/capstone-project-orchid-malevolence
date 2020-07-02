@@ -31,8 +31,10 @@ you can use this to know python version:
 ```
 python --version
 ```
-
+if your terminal show this: Congratulations！your server is running!
 ![image](https://github.com/unsw-cse-capstone-project/capstone-project-orchid-malevolence/blob/master/Django_and_vue/img.png)
+
+And now, you can check all data with admin account, or get data with your vue with api.
 
 # account(username and password)
 Superuser account: username: admin, password: 123456<br>
