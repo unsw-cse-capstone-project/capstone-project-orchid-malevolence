@@ -32,7 +32,7 @@ you can use this to know python version:
 python --version
 ```
 
-![avatar][/img.png]
+![avatar][https://github.com/unsw-cse-capstone-project/capstone-project-orchid-malevolence/blob/master/Django_and_vue/img.png]
 
 # account(username and password)
 Superuser account: username: admin, password: 123456<br>
