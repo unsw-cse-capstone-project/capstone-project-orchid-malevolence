@@ -4,6 +4,8 @@
 ```
 sudo pip3 install virtualenv
 ```
+High recommand for python3(pip3), some packet cannot run on python2(pip)! 
+
 2.create a virtual envirment for your project
 ```
 cd your_project_bame
@@ -19,7 +21,19 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+# how to run it
+cd to the root dir which contains manage.py file.<br>
+```
+python manage.py runserver
+```
+if your default python command is python2, you need use python3 to replace python!<br>
+you can use this to know python version:
+```
+python --version
+```
+
 # account(username and password)
+Superuser account: username: admin, password: 123456<br>
 Black,123456<br>
 Pink,123456<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
