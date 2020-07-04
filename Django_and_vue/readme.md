@@ -82,7 +82,48 @@ you can add a collection with name to user
 3.delete:
 you can delete a collection with name
 
->name changing will coming soon……
+4
+
+# book operations
+```
+url: /api/add_book/
+```
+
+1.get:
+only support basic search, string match, if this book not in db, it will return 404.
+
+2.post:
+add book.
+it has two part:
+part 1:
+if this book not in db, it will add it in db and put it in collection.
+part 2:
+if book already in db, it will search it's collection_relation_list to , and update.
+
+3.delete:
+this operation base on this situation: the book already in db and be added in one collection or some collections.
+
+example for post and delete:
+```
+{
+    "collection_id": 3,
+    "book_info": {
+        "id":"h56ansk4SyQC",
+        "title": "java",
+        "authors": "liuminghao",
+        "publisher":  "unsw",
+        "publish_date":"2015-11-09",
+        "page_count": 120,
+        "categories": "science",
+        "ISBN":"9780819602855",
+        "averageRating":4.4,
+        "description":"it is a interesting book, whcih can tecah you how to desgin a java program!",
+        "imageLink":"http://books.google.com/books/content?id=h56ansk4SyQC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api"
+    } 
+}
+```
+you want to add this book to this collection or remove this book from this collection.
+
 
 # file structure
 ```
