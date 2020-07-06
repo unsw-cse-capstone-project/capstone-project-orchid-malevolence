@@ -34,3 +34,7 @@ Finnally, I start to write frontend code including HTML, CSS and Vue.js.
 In this week, I am going to design a prototype of the main page of the website. Firstly design the prototype by draw diagrams through processon.com.
 The first page is before login, it shows less functions but larger vision. The second page is the main page after login, it shows more functions due to the requirement.
 Moreover, I learnt how to use vue-cli and using route to design a initial version main page before login.
+
+
+-- Week5 2020/07/05  Sunday --
+In the 5th week, I created a homepage with some basic functions. I make a script to judge whether the user is login or not, and show with different status in the navigator bar. On the other hand, I try to link the homepage's login & register buttons with the login page and register page. After log into the website with account name and password, the login button will change to logout button, click to logout. In the next week, I decide to create a collection page to seek what does user read.
