@@ -18,3 +18,7 @@ As the knowledge about Vue is not comprehensive enough, I will mainly learn Vue 
 week4
 I finished the front-end functions of the login and registration interface. 
 And I will continue to improve the page next week.
+
+week5
+I have realized the interaction between the login and registration pages and the back-end connection. 
+Next week, I plan to complete the page of my personal homepage.
