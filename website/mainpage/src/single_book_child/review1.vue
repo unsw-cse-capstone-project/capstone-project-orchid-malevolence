@@ -47,7 +47,7 @@
         <li class='list-group-item' style="position: relative" v-for="item in items" :key="item.id">
 
           <span class="badge" style="margin-left: -15px;  font-size: 15px; border: 1px solid" >{{item.username}}:</span>
-          <span class="more" style="display:block;overflow-wrap:break-word;">{{item.title}}</span>
+          <span class="more" style="display:block;overflow-wrap:break-word;">{{item.content}}</span>
           <img @click="changeNumber" style="display:inline-block ; position: absolute; right: 30px; top: 10px; width: 20px;height: 20px; text-align: center" :src="imgUrl" alt="">
           <span class="number" style="display:inline-block; position:absolute; right:10px; top:10px">{{number}}</span>
 
@@ -72,9 +72,15 @@ export default {
       content:'',
       flag:true,
       imgUrl:require('../img/single_book_child/agree.png'),
-      isAble:false
+      isAble:false,
+      title:this.ctitle
 
 
+    }
+  },
+  props:{
+    ctitle:{
+      type:String
     }
   },
   // 获取该书所有的评论
@@ -83,7 +89,7 @@ export default {
     getSingleBook_multdata().then(result =>{
       this.items.push({
 
-        // title:result.xxxx,//从后端获取该书的所有评论
+        // content:result.xxxx,//从后端获取该书的所有评论
         username:result.xxx,//从后端获取该书每条评论对应的用户名
       })
 
@@ -110,7 +116,7 @@ export default {
     add(){
       var temp=window.sessionStorage.token
       this.items.push({
-        title:this.content,
+        content:this.content,
         username:temp,//need to change to the username
 
       })
@@ -126,7 +132,8 @@ export default {
           data:{
             'username':this.username,
             'content':this.content,
-            'number':1
+            'number':1,
+            'title':this.title
 
           }
 
@@ -146,7 +153,8 @@ export default {
           data:{
             'username':this.username,
             'content':this.content,
-            'number':0
+            'number':0,
+            'title':this.title
 
           }
 

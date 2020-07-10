@@ -32,7 +32,9 @@
               text-color="#ff9900"
               score-template="{value}">
       </el-rate>
+
     </div>
+    <p>{{info.title}}</p>
 
 
   </div>
@@ -48,10 +50,19 @@ export default {
     return {
       info:{
         value: Number(""),
-        exist:true
+        exist:true,
+        // title:this.props.ctitle
+        title:this.ctitle
       }
 
     }
+  },
+  props:{
+    ctitle:{
+      type:String,
+      // require:true
+    }
+
   },
 
 
@@ -60,11 +71,16 @@ export default {
       var temp=window.sessionStorage.token
 
       this.info.exist=false
-      this.$axios({ //评分 把username和评分value传递到后端
+      this.$axios({ //评分 把username,评分value,书名title传递到后端
         method:'post',
         url:'http://127.0.0.1:8000/api/rating/',
-        data:this.info.value,
-        username:temp
+        data:{
+          'value':this.info.value,
+          'username':temp,
+          'title':this.info.title
+
+        }
+
       }).then(res=>
         console.log(res))
       .catch(error=>console.log(error))

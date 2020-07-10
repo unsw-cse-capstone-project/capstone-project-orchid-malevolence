@@ -141,7 +141,7 @@
 <!--      Book_detail-->
       <div id="detail">
         <h1>
-          <span> Harry Potter</span>
+          <span>{{result.title}}</span>
         </h1>
         <div id="book_image"><img src="../img/single_book_child/ImageHandler.jpeg" alt="">
         </div>
@@ -152,7 +152,7 @@
             <span>publisher:{{result.publisher}}</span><br>
             <span>publication date:{{result.publication_date}}</span><br>
             <span>category:{{result.category}}</span><br>
-            <span>summary:{{result.category}}</span><br>
+            <span>summary:{{result.summary}}</span><br>
 
           </div>
         <div class="read_rating">
@@ -167,12 +167,12 @@
 
     </div>
       <div class="rating">
-        <rating class="rating1"></rating>
+        <rating :ctitle="result.title" class="rating1"></rating>
       </div>
 
 
     <div class="review1">
-      <review1></review1>
+      <review1 :ctitle="result.title"></review1>
     </div>
       <div>
         <p>{{this.$route.params.id}}</p>
@@ -200,6 +200,7 @@
     data(){
       return{
         result:{
+          title:'Harry Potter',
           author:'xx',
           publisher:'xx',
           publication_date:'xx',
