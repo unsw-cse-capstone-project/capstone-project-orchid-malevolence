@@ -17,7 +17,7 @@ npm install vue-cli -g
 ```bash
 cd my-project
 ```
-## 4、 Go to the project form
+## 4、 Install jquery bootstrap popper.js
 
 ```bash
 npm install jquery bootstrap popper.js --save -dev
