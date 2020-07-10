@@ -113,7 +113,8 @@
     height: 100px;
 
     position: absolute;
-    margin: 10px 0 0 600px;
+    margin: 10px 0 0 700px;
+
     border-left: 1px solid gray;
 
   }

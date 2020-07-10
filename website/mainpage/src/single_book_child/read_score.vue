@@ -3,12 +3,18 @@
   .read_score span{
     /*float: right;*/
     margin-left: 10px;
-    font-size: 16px;
+
   }
 
   .read_score{
     position: absolute;
     float: right;
+
+  }
+  span{
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
   }
 </style>
 <template>
