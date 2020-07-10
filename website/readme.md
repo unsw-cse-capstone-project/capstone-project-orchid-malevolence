@@ -17,10 +17,15 @@ npm install vue-cli -g
 ```bash
 cd my-project
 ```
-
-## 4、 Run dev
+## 4、 Go to the project form
 
 ```bash
-npm run dev
+npm install jquery bootstrap popper.js --save -dev
+```
+
+## 5、 Run serve
+
+```bash
+npm run serve
 ```
 
