@@ -20,6 +20,7 @@
       text-color="#ff9900"
       score-template="{value}">
     </el-rate>
+    <span>Total {{number}}  read this book</span>
   </div>
 
 </template>
@@ -31,7 +32,9 @@
         name: "read_score",
       data() {
         return {
-          value: 3.7
+          value: 3.7,
+          number:Number(0)
+
         }
       },
       // request method page initial and get average score of this book
@@ -40,6 +43,7 @@
         getSingleBook_multdata().then(result =>{
           //右侧输入获取的average_score
           this.value=result.data.xxx
+          this.number=result.data.xxx
         })
       },
     }

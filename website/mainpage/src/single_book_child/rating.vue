@@ -57,11 +57,14 @@ export default {
 
   methods:{
     disable(){
+      var temp=window.sessionStorage.token
+
       this.info.exist=false
-      this.$axios({
+      this.$axios({ //评分 把username和评分value传递到后端
         method:'post',
         url:'http://127.0.0.1:8000/api/rating/',
-        data:this.info.value
+        data:this.info.value,
+        username:temp
       }).then(res=>
         console.log(res))
       .catch(error=>console.log(error))
