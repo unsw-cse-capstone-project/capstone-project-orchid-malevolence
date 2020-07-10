@@ -23,7 +23,7 @@
     </el-menu>
 </template>
 
-<script>
+<script >
     export default {
 
         data() {

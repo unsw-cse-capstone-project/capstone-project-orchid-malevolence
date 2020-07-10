@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from './pages/login.vue'
 import register from './pages/register.vue'
 import homepage from './pages/homepage.vue'
+import single_book from './pages/single_book'
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ const router = new Router({
             path: '/login',
             name: 'login',
             component: login
+        },
+        {
+            path: '/single_book',
+            name: 'single_book',
+            component: single_book
         }
     ]
 })
@@ -38,7 +44,7 @@ router.beforeEach((to, from, next) => {
     // next 是一个函数，表示放行
     // next() 放行， next('/login') 强制跳转
     const tokenStr = window.sessionStorage.getItem('token')
-    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register') { return next() }
+    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/single_book') { return next() }
     else if (tokenStr == null) {
         return next('/homepage')
     }

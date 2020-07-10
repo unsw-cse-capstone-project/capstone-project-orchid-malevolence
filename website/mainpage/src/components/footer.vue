@@ -11,7 +11,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
     .footer {
         flex: 0;
         background: #99a9bf;

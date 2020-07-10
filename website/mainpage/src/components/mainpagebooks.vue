@@ -8,7 +8,10 @@
                     <span>Harry Porter</span>
                     <div class="bottom clearfix">
 <!--                        <time class="time">{{ currentDate }}</time>-->
+                      <router-link :to="{name:'single_book',query:{id:'23'}}">
                         <el-button type="text" class="button">More Details</el-button>
+
+                      </router-link>
                     </div>
                 </div>
             </el-card>
@@ -23,11 +26,16 @@
             return {
                 currentDate: new Date()
             };
-        }
+        },
+      methods:{
+
+
+
+      }
     }
 </script>
 
-<style scoped>
+<style  lang="less" scoped>
     .book_cards {
         margin: 40px 20px 40px 20px;
     }

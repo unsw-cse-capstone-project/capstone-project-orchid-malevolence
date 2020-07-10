@@ -30,7 +30,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     html, body {
         height: 100%;
     }
@@ -53,6 +53,7 @@
     .el-row:last-child {
         margin-bottom:  0;
     }
+
 
     .el-col {
         border-radius: 4px;
