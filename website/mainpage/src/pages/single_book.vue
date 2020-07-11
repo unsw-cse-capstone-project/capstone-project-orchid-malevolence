@@ -188,10 +188,10 @@
 </template>
 
 <script>
-  import Header from '../components/header'
-  import rating from '../single_book_child/rating'
-  import review1 from '../single_book_child/review1'
-  import read_score from '../single_book_child/read_score'
+  import Header from '../components/homepage_components/header'
+  import rating from '../components/single_book_components/rating'
+  import review1 from '../components/single_book_components/review1'
+  import read_score from '../components/single_book_components/read_score'
   import {getSingleBook_multdata} from '../network/single_book'
 
   export default {

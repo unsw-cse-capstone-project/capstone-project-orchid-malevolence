@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import {getSingleBook_multdata} from '../network/single_book'
+    import {getSingleBook_multdata} from '../../network/single_book'
 
     export default {
         name: "read_score",

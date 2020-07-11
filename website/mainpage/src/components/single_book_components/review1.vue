@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import {getSingleBook_multdata} from '../network/single_book'
+import {getSingleBook_multdata} from '../../network/single_book'
 
 export default {
   name:"review1",
@@ -71,7 +71,7 @@ export default {
       number:Number(""),
       content:'',
       flag:true,
-      imgUrl:require('../img/single_book_child/agree.png'),
+      imgUrl:require('../../img/single_book_child/agree.png'),
       isAble:false,
       title:this.ctitle
 
@@ -103,12 +103,12 @@ export default {
       if(this.flag===true){
         this.number++
         this.flag=false
-        this.imgUrl=require('../img/single_book_child/agree_true.png')
+        this.imgUrl=require('../../img/single_book_child/agree_true.png')
 
       }else{
         this.number--
         this.flag=true
-        this.imgUrl=require('../img/single_book_child/agree.png')
+        this.imgUrl=require('../../img/single_book_child/agree.png')
       }
 
     },

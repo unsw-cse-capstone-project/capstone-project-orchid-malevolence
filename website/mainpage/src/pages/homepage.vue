@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+<!--        <el-row>-->
         <el-row>
             <el-col :span="24">
                 <div class="grid-content bg-purple-light">
@@ -16,11 +17,13 @@
 </template>
 
 <script>
-    import Header from '../components/header.vue'
-    import Carousel from '../components/carousel.vue'
-    import Search from '../components/search.vue'
-    import CardBook from '../components/mainpagebooks.vue'
-    import Footer from '../components/footer.vue'
+    import Header from '../components/homepage_components/header.vue'
+    import Carousel from '../components/homepage_components/carousel.vue'
+    import Search from '../components/homepage_components/search.vue'
+    import CardBook from '../components/homepage_components/mainpagebooks.vue'
+    import Footer from '../components/homepage_components/footer.vue'
+
+
 
     export default {
         components:{
