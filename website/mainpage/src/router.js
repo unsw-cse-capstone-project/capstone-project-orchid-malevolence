@@ -11,34 +11,51 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/homepage'
+            redirect: '/homepage',
+            meta:{
+                title:'homepage'
+            }
         },
         {
             path: '/homepage',
             name: 'homepage',
-            component: homepage
+            component: homepage,
+            meta:{
+                title:'homepage'
+            }
         },
         {
             path: '/register',
             name: 'register',
-            component: register
+            component: register,
+            meta:{
+                title:'register'
+            }
         },
         {
             path: '/login',
             name: 'login',
-            component: login
+            component: login,
+            meta:{
+                title:'login'
+            }
         },
         {
             path: '/single_book',
             name: 'single_book',
-            component: single_book
+            component: single_book,
+            meta:{
+                title:'single_book'
+            }
         }
-    ]
+    ],
+
 })
 
 
 // 路由导航守卫
 router.beforeEach((to, from, next) => {
+    document.title=to.matched[0].meta.title
     // to 将要访问的路径
     // from 代表从那个路径跳转过来的
     // next 是一个函数，表示放行
