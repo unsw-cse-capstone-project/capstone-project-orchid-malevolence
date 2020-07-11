@@ -1,14 +1,13 @@
 <template>
     <div id="app">
-<!--        <el-row>-->
         <el-row>
             <el-col :span="24">
                 <div class="grid-content bg-purple-light">
 <!--                    <router-view/>-->
                     <Header></Header>
-                    <Carousel></Carousel>
-                    <Search></Search>
-                    <CardBook></CardBook>
+                    <Carousel v-show="token_log == null"></Carousel>
+<!--                    <Search></Search>-->
+                    <CardBook v-show="token_log == null"></CardBook>
                     <Footer></Footer>
                 </div>
             </el-col>
@@ -19,15 +18,24 @@
 <script>
     import Header from '../components/homepage_components/header.vue'
     import Carousel from '../components/homepage_components/carousel.vue'
-    import Search from '../components/homepage_components/search.vue'
+    // import Search from '../components/homepage_components/search.vue'
     import CardBook from '../components/homepage_components/mainpagebooks.vue'
     import Footer from '../components/homepage_components/footer.vue'
 
 
 
     export default {
+        data() {
+          return {
+              token_log: sessionStorage.getItem('token')
+          }
+        },
         components:{
-            Header, Carousel, Search, CardBook, Footer
+            Header,
+            Carousel,
+            // Search,
+            CardBook,
+            Footer
         },
         name: 'App'
     }
