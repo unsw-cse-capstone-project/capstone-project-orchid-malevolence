@@ -7,23 +7,85 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-class Collections(models.Model):
+class Collection(models.Model):
     name = models.CharField(max_length=128)
     user = models.ForeignKey(Account,related_name='collections',on_delete=models.CASCADE)
+    create_time=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering=('create_time',)
 
     def __str__(self):
         return '%d: %s' % (self.id,self.name)
 
-class Books(models.Model):
+class Book(models.Model):
+    id = models.CharField(max_length=128, primary_key=True)
     title = models.CharField(max_length=128)
     authors = models.CharField(max_length=256)
     publisher = models.CharField(max_length=128)
-    # publish_date = models.DateField()
+    publish_date = models.CharField(max_length=128, null=True)
+    page_count = models.IntegerField()
     categories = models.CharField(max_length=128)
-    collection = models.ForeignKey(Collections,related_name='books',on_delete=models.CASCADE)
+    ISBN = models.IntegerField(unique=True)
+    averageRating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
+    description = models.TextField(null=True)
+    imageLink = models.URLField(max_length = 256)
+    collection = models.ManyToManyField(Collection,related_name='books',through='Collection_Book')
 
     def __str__(self):
-      return self.title
+      return '%s: %s' % (self.id,self.title)
+
+# intermediate model
+class Collection_Book(models.Model):
+    collection = models.ForeignKey(Collection,on_delete=models.CASCADE)
+    book = models.ForeignKey(Book,on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True)
+    # belongto :userId
+    belongto = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together=('collection','book')
+        ordering=['create_time']
+# set a goal
+class Goal(models.Model):
+    user = models.ForeignKey(Account,related_name='user_goal',on_delete=models.CASCADE)
+    month = models.PositiveIntegerField(default=0)
+    target = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together=('user','month')
+
+# 
+class Review(models.Model):
+    content = models.TextField(null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Account,related_name='review_user',on_delete=models.CASCADE)
+    book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
+    like_count_num = models.PositiveIntegerField(default=0)
+
+# class LikeCount(models.Model):
+#     review = models.ForeignKey(Review,related_name='like_count',on_delete=models.CASCADE)
+#     total_num=models.PositiveIntegerField(default=0)
+
+class LikeIt(models.Model):
+    review = models.ForeignKey(Review,related_name='likeit_review',on_delete=models.CASCADE)
+    user = models.ForeignKey(Account,related_name='likeit_user',on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    # 记录一下bookid，方便查询，并不需要外键关联
+    belongto_book = models.CharField(max_length=128)
+
+    class Meta:
+        unique_together=('user','review')
+
+class Rating(models.Model):
+    user = models.ForeignKey(Account,related_name='rating_user',on_delete=models.CASCADE)
+    book = models.ForeignKey(Book,related_name='rating_book',on_delete=models.CASCADE)
+    rating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
+    create_time=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user','book')
+
 
 
 # 

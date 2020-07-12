@@ -39,6 +39,7 @@ class Account(AbstractBaseUser):
     gender        = models.CharField(choices= GENDER_CHOICES ,max_length = 30)
     phone         = models.CharField(verbose_name='Phone', max_length = 20)
     email         = models.EmailField(max_length = 60, verbose_name = 'email', unique = True)
+    uimg           = models.CharField(max_length=256,null=True)
     date_of_birth = models.CharField(verbose_name='birth_date',max_length=40)
     join_date     = models.DateTimeField(verbose_name='join_date', auto_now_add=True)
     last_login    = models.DateTimeField(verbose_name='last_login', auto_now=True)
