@@ -17,4 +17,9 @@ week5
 This week, i finished book api and collection api, which can add , edit and delete. I also re-design the review data model, because we need to implement user like function, it is a little bit difficult function.
 In next week, i need to complete all api and test user_base recommand system algorithm.
 
+week 6
+this week is to hard, i re-design majority of database model, and finishd almost request. 
+Some function is very difficult, maybe it look like easy and tiny. "like" function spend majority of time.
+Next week, i need to finish recommand system and optimize rating part.
+And another heavy mission is that we need to insert enough data to support our project running.
 
