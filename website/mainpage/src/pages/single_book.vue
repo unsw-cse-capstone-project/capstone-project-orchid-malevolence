@@ -99,7 +99,8 @@
   }
    .rating1{
     position: absolute;
-     margin-left: 50px;
+     margin-left:  100px;
+     /*display: inline-block;*/
 
     width: 350px;
 
@@ -117,6 +118,23 @@
 
     border-left: 1px solid gray;
 
+  }
+  .add_collection{
+    position: absolute;
+
+
+    /*display: inline-block;*/
+
+
+  }
+  div.popContainer{
+    position: fixed;
+    z-index: 33;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
   }
 
 
@@ -156,27 +174,35 @@
 
           </div>
         <div class="read_rating">
-
           <read_score class="read_score"></read_score>
-
         </div>
-        <div>
-
-        </div>
-
-
     </div>
+
       <div class="rating">
         <rating :ctitle="result.title" class="rating1"></rating>
+        <add_collection @clickshow="child_add_click" @closeshow="child_close_click" class="add_collection"></add_collection>
+
+      </div>
+      <div class='popContainer' v-show="isShow"></div>
+<!--      <div class="add_collection">-->
+<!--      </div>-->
+
+
+
+      <div class="review1">
+        <review1 :ctitle="result.title"></review1>
       </div>
 
 
-    <div class="review1">
-      <review1 :ctitle="result.title"></review1>
-    </div>
+
+
+
+
       <div>
         <p>{{this.$route.params.id}}</p>
       </div>
+
+
 
     </div>
     <div class="right_side"></div>
@@ -192,6 +218,7 @@
   import rating from '../components/single_book_components/rating'
   import review1 from '../components/single_book_components/review1'
   import read_score from '../components/single_book_components/read_score'
+  import add_collection from '../components/single_book_components/add_collection'
   import {getSingleBook_multdata} from '../network/single_book'
 
   export default {
@@ -199,6 +226,7 @@
     name: "single_book",
     data(){
       return{
+        isShow:false,
         result:{
           title:'Harry Potter',
           author:'xx',
@@ -215,7 +243,8 @@
       rating,
       review1,
       read_score,
-      Header
+      Header,
+      add_collection
 
     },
     created(){
@@ -229,5 +258,15 @@
 
       })
     },
+    methods:{
+      child_add_click(){
+        this.isShow=true
+
+      },
+      child_close_click(){
+        this.isShow=false
+      }
+
+    }
   }
 </script>
