@@ -40,4 +40,12 @@ Moreover, I learnt how to use vue-cli and using route to design a initial versio
 In the 5th week, I created a homepage with some basic functions. I make a script to judge whether the user is login or not, and show with different status in the navigator bar. 
 On the other hand, I try to link the homepage's login & register buttons with the login page and register page. 
 After log into the website with account name and password, the login button will change to logout button, click to logout.
-In the next week, I decide to create a collection page to seek what does user read.
+In the next week, I decide to finish the homepage include the before login and after login status.
+
+-- Week6 2020/07/12  Sunday --
+In this week, I am writting the homepage after login. The layout are changed, and the footer of the homapage is changed that it will always locate in the bottom of the page.
+
+In addition, I create a goal part and a collection part in the homepage.
+
+In the next week, I decide to finish the homepage and start to write collection page to seek what does user read.
+
