@@ -182,9 +182,9 @@ you can delete a collection with name
 
 # book operations
 
-this part have two main functions:
 1.add book to db
 2.add book which is already in db to collection
+3.search book with title or authors
 
 
 ## add book to db
@@ -238,6 +238,21 @@ this operation base on this situation: the book already in db and be added in on
 }
 ```
 you want to add this book to this collection or remove this book from this collection.
+
+## search book
+```
+url: /api/searchbook/
+```
+
+```
+{
+    "search_type": "Title"/"Authors",
+    "key_word": "python"
+}
+```
+
+return all book objects related to "key_word"
+if no result, it will return error msg and status 400.
 
 # set monthly goal
 ```
