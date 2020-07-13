@@ -19,4 +19,5 @@ urlpatterns=[
     url('likeit/', LikeItAPIView.as_view()),
     url('set_goal/', MonthlyGoalAPIView.as_view()),
     url('bookdetail/', BookDetailPageAPIView.as_view()),
+    url('searchbook/', SearchBookAPIView.as_view()),
 ]

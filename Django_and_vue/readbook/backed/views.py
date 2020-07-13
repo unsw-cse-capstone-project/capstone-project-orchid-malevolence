@@ -145,24 +145,22 @@ class AddBookAPIView(APIView):
             print(serializer.errors)
             return Response(data={"mag":"error"},status=HTTP_400_BAD_REQUEST)
 
-# 把书放进collection里面，有待更新
-class AddBookToCollectionAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request, format=None):
+# 搜做书籍
+class SearchBookAPIView(APIView):
+    def post(self, request, format=None):
+        print(request.data)
         search_type = request.data['search_type']
-        #
-        if search_type == "title":
-            search_key = request.data['title']
-            search_set = Book.objects.filter(title = search_key)
+        if search_type == "Title":
+            search_key = request.data['key_word']
+            search_set = Book.objects.filter(title__contains = search_key)
             if search_set.exists():
                 serializer = BookSerializer(instance=search_set,many=True)
                 return Response(serializer.data,status=HTTP_200_OK)
             else:
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
-        elif search_type == 'authors':
-            search_key = request.data['authors']
-            search_set = Book.objects.filter(authors = search_key)
+        elif search_type == 'Authors':
+            search_key = request.data['key_word']
+            search_set = Book.objects.filter(authors__contains = search_key)
             if search_set.exists():
                 serializer = BookSerializer(instance=search_set,many=True)
                 return Response(serializer.data,status=HTTP_200_OK)
@@ -170,6 +168,11 @@ class AddBookToCollectionAPIView(APIView):
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
         else:
             return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
+
+
+# 把书放进collection里面，有待更新
+class AddBookToCollectionAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     # 基本测试无问题，跟collection建立会有路由冲突，有待解决
     def post(self,request,format=None):
