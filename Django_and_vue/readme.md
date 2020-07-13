@@ -188,6 +188,7 @@ you can delete a collection with name
 
 
 ## add book to db
+post:
 ```
 url: /api/add_book_to_db/
 ```
@@ -240,6 +241,7 @@ this operation base on this situation: the book already in db and be added in on
 you want to add this book to this collection or remove this book from this collection.
 
 ## search book
+post:
 ```
 url: /api/searchbook/
 ```
@@ -348,7 +350,7 @@ request data:
 
 status: 
 1 == like
--1 == un like
+-1 == un-like
 
 # book detail page
 ```
