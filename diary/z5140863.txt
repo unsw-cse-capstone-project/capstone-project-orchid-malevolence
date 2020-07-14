@@ -22,3 +22,7 @@ And I will continue to improve the page next week.
 week5
 I have realized the interaction between the login and registration pages and the back-end connection. 
 Next week, I plan to complete the page of my personal homepage.
+
+week6
+This week, I wrote the layout interface of some personal information. 
+Next week, I will continue to complete the interface and try to realize the connection with the back end and get data from the back end.
