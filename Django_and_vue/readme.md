@@ -1,13 +1,13 @@
 
 # Require
 1.install virtual env.
-```
+```bash
 sudo pip3 install virtualenv
 ```
 High recommand for python3(pip3), some packet cannot run on python2(pip)! 
 
 2.create a virtual envirment for your project.
-```
+```bash
 cd your_project_bame
 virtualenv venv
 ```
