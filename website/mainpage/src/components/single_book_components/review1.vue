@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import {getSingleBook_multdata} from '../../network/single_book'
+import {getSingleBookmultdata} from '../../network/single_book'
 
 export default {
   name:"review1",
@@ -86,7 +86,7 @@ export default {
   // 获取该书所有的评论
   created(){
 
-    getSingleBook_multdata().then(result =>{
+    getSingleBookmultdata().then(result =>{
       this.items.push({
 
         // content:result.xxxx,//从后端获取该书的所有评论

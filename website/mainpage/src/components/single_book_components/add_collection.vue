@@ -68,6 +68,9 @@
 </template>
 
 <script>
+
+import  {getCollectionmultdata} from '../../network/single_book'
+
 export default {
 	name: 'add_collection',
 	data () {
@@ -77,9 +80,32 @@ export default {
 		}
 	},
 	methods: {
+
 		clickshow () {
 			this.isShow = true
 			this.$emit('clickshow')
+			// console.log(sessionStorage.getItem('token'))
+			var temp=sessionStorage.getItem('token')
+			// let headers = {
+			// 	'Authorization': `token` $sessionStorage.getItem('token')
+			// }
+
+			this.$axios({
+				method: 'get',
+				url: 'http://127.0.0.1:8000/api/collection/',
+
+				headers:{
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+
+					'token': {temp}
+				}
+			}).then(res=>{
+				console.log(res)
+			}).catch(res=>{
+				console.log(res)
+			})
+			// console.log(headers)
 
 
 		},
@@ -87,21 +113,13 @@ export default {
 			this.isShow = false
 			this.$emit('closeshow')
 		}
+	},
+	created () {
+		getCollectionmultdata().then(res=>{
+			console.log(res)
+		})
 	}
 
-	// methods: {
-	// 	open() {
-	// 		this.$alert('这是一段内容', 'add to a collection', {
-	// 			confirmButtonText: 'confirm',
-	// 			callback: action => {
-	// 				this.$message({
-	// 					type: 'info',
-	// 					message: `action: ${ action }`
-	// 				});
-	// 			}
-	// 		});
-	// 	}
-	// }
 
 }
 </script>

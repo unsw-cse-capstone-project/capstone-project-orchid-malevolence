@@ -63,19 +63,17 @@ export default {
               // alert('账号或密码有误');
               this.$message.error('登陆失败')
             }else if(res.status === 200){
-              console.log(res.data.username);
-              // window.sessionStorage.setItem('token', res.data.token)
-              window.sessionStorage.setItem('token',res.data.username)
+              console.log(res.data.token);
+              window.sessionStorage.setItem('token', res.data.token)
+              // window.sessionStorage.setItem('token',res.data.username)
 
-              console.log(window.sessionStorage.key(0));
-
-
+              // console.log(window.sessionStorage.getItem('token'));
 
               // _this.userToken = 'Bearer ' + res.data.data.body.token;
               // // 将用户token保存到vuex中
               // _this.changeLogin({ Authorization: _this.userToken });
               this.$message.success('登陆成功')
-              this.$router.push('/')
+              this.$router.push('/single_book')
             }
           })
         }
