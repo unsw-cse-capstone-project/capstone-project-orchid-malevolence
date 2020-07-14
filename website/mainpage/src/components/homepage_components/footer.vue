@@ -13,13 +13,13 @@
 
 <style lang="less" scoped>
     .footer {
-        flex: 0;
+        /*flex: 0;*/
         background: #99a9bf;
     }
 
     .footer_msg {
         margin: 0;
-        padding: 70px;
+        /*padding: 30px 0 30px 0;*/
         font-size: 22px;
     }
 </style>

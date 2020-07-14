@@ -18,3 +18,8 @@
 <!-- 引入stylus -->
 <style lang="stylus" rel="stylesheet/stylus">
 </style>
+
+
+<!-- TODO: layout after login -->
+<!-- TODO: token save style session->local -->
+<!-- TODO: strict login after registered -->

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="05cc1cf0-151b-40e5-b3e1-0b6181e11810" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/websitev2/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/assets/background_login.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/assets/background_register.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/assets/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/components/carousel.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/components/footer.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/components/header.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/components/mainpagebooks.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/components/search.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/carousel_imgs/pic0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/carousel_imgs/pic1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/carousel_imgs/pic2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/carousel_imgs/pic3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/single_book_child/ImageHandler.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/img/single_book_child/agree.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/pages/homepage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/pages/homepage_1.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/pages/login.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/pages/register.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/pages/single_book.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/router.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/single_book_child/rating.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/single_book_child/read_score.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/mainpage/src/single_book_child/review1.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/websitev2/website(add_review)/readme.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1eZgIS5fEs8EV2WVphR9y2QgBEm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="05cc1cf0-151b-40e5-b3e1-0b6181e11810" name="Default Changelist" comment="" />
+      <created>1594534448762</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594534448762</updated>
+      <workItem from="1594534451921" duration="25000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+</project>

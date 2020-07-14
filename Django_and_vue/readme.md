@@ -1,27 +1,27 @@
 
 # Require
-1.install virtual env
+1.install virtual env.
 ```
 sudo pip3 install virtualenv
 ```
 High recommand for python3(pip3), some packet cannot run on python2(pip)! 
 
-2.create a virtual envirment for your project
+2.create a virtual envirment for your project.
 ```
 cd your_project_bame
 virtualenv venv
 ```
-3. and you can find a dic named venv 
-4, start virtualenv
+3. and you can find a dic named venv.
+4. start virtualenv.
 ```
 source venv/bin/activate
 ```
-5.install all requirments
+5.install all requirments.
 ```
 pip install -r requirements.txt
 ```
 
-# how to run it
+# How to run it
 cd to the root dir which contains manage.py file.<br>
 ```
 python manage.py runserver
@@ -36,7 +36,7 @@ if your terminal show this: Congratulations！your server is running!
 
 And now, you can check all data with admin account, or get data with your vue with api.
 
-# account(username and password)
+# Account(username and password)
 please use normal account priority:
 Black,123456<br>
 Pink,123456<br>
@@ -45,14 +45,16 @@ Superuser account: username: admin, password: 123456<br>
 localhost:8000/admin<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
 
-# api-guidelines
+# Api-guidelines
 ```
 base-url: http://127.0.0.1:8000/
 ```
-## login
+## Login
 ```
 url: /api/login/
 ```
+>POST
+
 1. username and password are correct, data will contain token.
 2. password is incorrect, data will contain error message, named "msg".
 3. user doesn't exist, data will contain error message, named "msg".
@@ -65,10 +67,12 @@ your data should look like this:
 }
 ```
 
-## register
+## Register
 ```
 url: /api/register/
 ```
+
+>POST
 
 1. success, return token
 2. error, will return error msg!
@@ -83,19 +87,24 @@ your data is a form, it should like this
 }
 ```
 
-## account detail
+## Account detail
 ```
 url: /api/account/
 ```
+
+>GET
+
 this request does not need any extra info, i can get account token by header. Or you can sens ti with json data.
 
 it will return a json data, which contain the whole info of user except password.
 
-## collection operations
+## Collection operations
 ```
 url: /api/collection/
 ```
-1.get:
+
+>GET
+
 you can acquire the collection set of user
 this operation does not need any extra info
 
@@ -152,7 +161,8 @@ the data like this:
 ]
 ```
 
-2.post:
+>POST
+
 you can add a collection with name to user
 
 your data shoud be:
@@ -169,7 +179,8 @@ if re-name:
 }
 ```
 
-3.delete:
+>DELETE
+
 you can delete a collection with name
 
 ```
@@ -178,19 +189,19 @@ you can delete a collection with name
 }
 ```
 
-4
+# Book operations
 
-# book operations
-
-this part have two main functions:
 1.add book to db
 2.add book which is already in db to collection
+3.search book with title or authors
 
 
-## add book to db
+## Add book to db
 ```
 url: /api/add_book_to_db/
 ```
+
+>POST
 
 only one opeartion post
 your data structure should like this:
@@ -212,12 +223,12 @@ your data structure should like this:
 
 !!!!! id is unique and ISBN is unique !!!!!!!!
 
-## add book to collection
+## Add book to collection
 ```
 url: /api/add_to_collection
 ```
 
-1.post:
+>POST
 
 ```
 {
@@ -228,7 +239,8 @@ url: /api/add_to_collection
 hits:
 if you can do this, you have already acquire collection_id and book infomation which contain book id.!!!
 
-3.delete:
+>DELETE
+
 this operation base on this situation: the book already in db and be added in one collection or some collections.
 
 ```
@@ -239,11 +251,30 @@ this operation base on this situation: the book already in db and be added in on
 ```
 you want to add this book to this collection or remove this book from this collection.
 
-# set monthly goal
+## Search book
+
+```
+url: /api/searchbook/
+```
+
+>POST
+
+```
+{
+    "search_type": "Title"/"Authors",
+    "key_word": "python"
+}
+```
+
+return all book objects related to "key_word"
+if no result, it will return error msg and status 400.
+
+# Set monthly goal
 ```
 url: /api/set_goal/
 ```
-1.get:
+>GET
+
 you can acquire goal data, which contain target and already done count num
 you can send data:
 ```
@@ -258,7 +289,8 @@ the response:
     "already_done": 2
 }
 ```
-2.post:
+>POST
+
 create new goal or edit goal.
 request data:
 ```
@@ -277,11 +309,12 @@ response:
 }
 ```
 
-# rating
+# Rating
 ```
 url: /api/rating/
 ```
-post:
+>POST
+
 request data:
 ```
 {
@@ -294,14 +327,14 @@ request data:
 
 you can check the respnse status.
 
-# review
+# Review
 ```
 url: /api/review/
 ```
 
-can not support edit and delet!
+>POST
 
-post:
+can not support edit and delet!
 request data:
 ```
 {
@@ -314,11 +347,12 @@ request data:
 
 no key data in response, check the status.
 
-# like it
+# Like it
 ```
 url: /api/likeit/
 ```
-post:
+
+>POST
 
 request data:
 ```
@@ -333,13 +367,13 @@ request data:
 
 status: 
 1 == like
--1 == un like
+-1 == un-like
 
-# book detail page
+# Book detail page
 ```
 url: /api/bookdetail/
 ```
-get:
+>GET
 
 your request data:
 ```
@@ -395,7 +429,6 @@ response data contain these:
                                     
 
 
-
 # to be continue
 
 ## recommand system
@@ -403,7 +436,7 @@ response data contain these:
 ## more data
 
 
-# file structure
+# File structure
 ```
 .
 ├── account
