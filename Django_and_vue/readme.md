@@ -283,7 +283,10 @@ if no result, it will return error msg and status 400.
 ```
 url: /api/set_goal/
 ```
->GET
+
+
+
+>GET acquire the goal value
 
 you can acquire goal data, which contain target and already done count num
 you can send data:
@@ -299,7 +302,7 @@ the response:
     "already_done": 2
 }
 ```
->POST
+>POST set the goal value and edit goal value
 
 create new goal or edit goal.
 request data:
@@ -323,7 +326,10 @@ response:
 ```
 url: /api/rating/
 ```
->POST
+
+
+
+>POST user give book a rating
 
 request data:
 ```
@@ -342,7 +348,9 @@ you can check the respnse status.
 url: /api/review/
 ```
 
->POST
+
+
+>POST user post a review to one book
 
 can not support edit and delet!
 request data:
@@ -362,7 +370,7 @@ no key data in response, check the status.
 url: /api/likeit/
 ```
 
->POST
+>POST user like one review
 
 request data:
 ```
