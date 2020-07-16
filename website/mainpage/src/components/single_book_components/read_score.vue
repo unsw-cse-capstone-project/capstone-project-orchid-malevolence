@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import {getSingleBook_multdata} from '../../network/single_book'
+    import {getSingleBookmultdata} from '../../network/single_book'
 
     export default {
         name: "read_score",
@@ -46,7 +46,7 @@
       // request method page initial and get average score of this book
 
       created(){
-        getSingleBook_multdata().then(result =>{
+        getSingleBookmultdata().then(result =>{
           //右侧输入获取的average_score
           this.value=result.data.xxx
           this.number=result.data.xxx
