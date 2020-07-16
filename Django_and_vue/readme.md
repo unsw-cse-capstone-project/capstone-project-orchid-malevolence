@@ -238,7 +238,7 @@ your data structure should like this:
 url: /api/add_to_collection
 ```
 
->POST
+>POST add the book to the collection
 
 ```
 {
@@ -267,7 +267,7 @@ you want to add this book to this collection or remove this book from this colle
 url: /api/searchbook/
 ```
 
->POST
+>POST search some book with title or authors.
 
 ```
 {
@@ -283,7 +283,6 @@ if no result, it will return error msg and status 400.
 ```
 url: /api/set_goal/
 ```
-
 
 
 >GET acquire the goal value
