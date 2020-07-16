@@ -107,11 +107,19 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         user_id = self.context['user_id']
         book_id = obj.id
         rating_set = Rating.objects.filter(user=user_id,book=book_id)
+        rating_count_set = Rating.objects.filter(book=book_id)
+        avg_rating=0
+        count_num = rating_count_set.count()
+        if(rating_count_set.exists()):
+            for i in rating_count_set:
+                avg_rating+=i.rating
+            avg_rating=avg_rating/count_num
+
         if(rating_set.exists()):
             rating_temp=rating_set[0]
-            return rating_temp.rating
+            return {"rating":rating_temp.rating,"how_many_user_scored":count_num,'average_rating':avg_rating}
         else:
-            return 0
+            return {"rating":0,"how_many_user_scored":count_num,'average_rating':avg_rating}
 
 
     def review_edit(self,obj):

@@ -27,9 +27,8 @@ class Book(models.Model):
     page_count = models.IntegerField()
     categories = models.CharField(max_length=128)
     ISBN = models.IntegerField(unique=True)
-    averageRating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
-    description = models.TextField(null=True)
     imageLink = models.URLField(max_length = 256)
+    description = models.TextField(null=True)
     collection = models.ManyToManyField(Collection,related_name='books',through='Collection_Book')
 
     def __str__(self):
@@ -80,7 +79,7 @@ class LikeIt(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(Account,related_name='rating_user',on_delete=models.CASCADE)
     book = models.ForeignKey(Book,related_name='rating_book',on_delete=models.CASCADE)
-    rating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
+    rating = models.DecimalField(max_digits = 5,decimal_places=1,null=True)
     create_time=models.DateTimeField(auto_now_add=True)
 
     class Meta:

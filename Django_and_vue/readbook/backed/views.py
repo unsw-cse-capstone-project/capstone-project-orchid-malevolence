@@ -150,7 +150,7 @@ class SearchBookAPIView(APIView):
     def post(self, request, format=None):
         print(request.data)
         search_type = request.data['search_type']
-        if search_type == "Title":
+        if search_type.lower() == "title":
             search_key = request.data['key_word']
             search_set = Book.objects.filter(title__contains = search_key)
             if search_set.exists():
@@ -158,7 +158,7 @@ class SearchBookAPIView(APIView):
                 return Response(serializer.data,status=HTTP_200_OK)
             else:
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
-        elif search_type == 'Authors':
+        elif search_type.lower() == 'authors':
             search_key = request.data['key_word']
             search_set = Book.objects.filter(authors__contains = search_key)
             if search_set.exists():
