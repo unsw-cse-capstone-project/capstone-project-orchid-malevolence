@@ -73,7 +73,7 @@ export default {
               // // 将用户token保存到vuex中
               // _this.changeLogin({ Authorization: _this.userToken });
               this.$message.success('登陆成功')
-              this.$router.push('/homepage')
+              this.$router.push('/')
             }
           })
         }

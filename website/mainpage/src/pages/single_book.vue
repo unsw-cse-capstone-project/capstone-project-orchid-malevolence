@@ -254,7 +254,7 @@
         // this.result.author=result.data.xxx
         // this.result.publisher=result.data.xxx
         // this.result.publication_date=result.data.xxx
-        // this.result.category=result.data.xxx
+        // this.result.cate gory=result.data.xxx
 
       })
     },

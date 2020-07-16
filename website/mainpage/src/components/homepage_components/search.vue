@@ -7,7 +7,7 @@
                 <el-option label="Other Users' Book" value="2"></el-option>
                 <el-option label="My Book" value="3"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" ></el-button>
         </el-input>
     </div>
 </template>
