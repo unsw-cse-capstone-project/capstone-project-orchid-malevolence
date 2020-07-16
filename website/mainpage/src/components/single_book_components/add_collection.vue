@@ -85,27 +85,27 @@ export default {
 			this.isShow = true
 			this.$emit('clickshow')
 			// console.log(sessionStorage.getItem('token'))
-			var temp=sessionStorage.getItem('token')
-			// let headers = {
-			// 	'Authorization': `token` $sessionStorage.getItem('token')
-			// }
-
-			this.$axios({
-				method: 'get',
-				url: 'http://127.0.0.1:8000/api/collection/',
-
-				headers:{
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-
-					'token': {temp}
-				}
-			}).then(res=>{
-				console.log(res)
-			}).catch(res=>{
-				console.log(res)
-			})
-			// console.log(headers)
+			// var temp=sessionStorage.getItem('token')
+			// // let headers = {
+			// // 	'Authorization': `token` $sessionStorage.getItem('token')
+			// // }
+			//
+			// this.$axios({
+			// 	method: 'get',
+			// 	url: 'http://127.0.0.1:8000/api/collection/',
+			//
+			// 	headers:{
+			// 		Accept: 'application/json',
+			// 		'Content-Type': 'application/json',
+			//
+			// 		'token': {temp}
+			// 	}
+			// }).then(res=>{
+			// 	console.log(res)
+			// }).catch(res=>{
+			// 	console.log(res)
+			// })
+			// // console.log(headers)
 
 
 		},
