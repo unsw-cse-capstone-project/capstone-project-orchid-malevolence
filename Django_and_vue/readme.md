@@ -45,6 +45,16 @@ Superuser account: username: admin, password: 123456<br>
 localhost:8000/admin<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
 
+# Book Datbase
+database have 300 books information.
+
+these book related to
+```python
+['python','java','linux','harryporter','Holmes','Django','Twilight','cook',
+    # 'Shakespeare','hugo','Algorithm','Vampire','Verne','Ocean','Food','Fruit','Maya','Egypt','Roma',
+    # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking']
+```
+
 # Api-guidelines
 ```
 base-url: http://127.0.0.1:8000/
