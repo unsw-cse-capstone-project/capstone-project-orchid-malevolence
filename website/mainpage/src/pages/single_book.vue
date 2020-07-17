@@ -219,7 +219,7 @@
   import review1 from '../components/single_book_components/review1'
   import read_score from '../components/single_book_components/read_score'
   import add_collection from '../components/single_book_components/add_collection'
-  import {getSingleBook_multdata} from '../network/single_book'
+  import {getSingleBookmultdata} from '../network/single_book'
 
   export default {
 
@@ -248,13 +248,13 @@
 
     },
     created(){
-      getSingleBook_multdata().then(result =>{
+      getSingleBookmultdata().then(result =>{
         console.log(result)
         //右侧请输入你对应的的参数
         // this.result.author=result.data.xxx
         // this.result.publisher=result.data.xxx
         // this.result.publication_date=result.data.xxx
-        // this.result.category=result.data.xxx
+        // this.result.cate gory=result.data.xxx
 
       })
     },

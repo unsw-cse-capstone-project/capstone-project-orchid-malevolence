@@ -16,12 +16,17 @@
                         <div class="grid-content bg-purple">
                             <!-- left hand side: current goal -->
                             <Goal></Goal>
+
+
+
+                            <Rec></Rec>
                         </div>
                     </el-col>
 
                     <el-col :span="18" v-show="token_log != null">
                         <div class="grid-content bg-purple">
                             <!-- right hand side: collections -->
+                            <BriefCollections></BriefCollections>
                         </div>
                     </el-col>
                 </el-row>
@@ -40,7 +45,8 @@
     import CardBook from '../components/homepage_components/mainpagebooks.vue'
     import Footer from '../components/homepage_components/footer.vue'
     import Goal from '../components/homepage_components/homepage_goal.vue'
-
+    import Rec from '../components/homepage_components/homepage_rec.vue'
+    import BriefCollections from '../components/homepage_components/homepage_collections.vue'
 
     export default {
         data() {
@@ -49,11 +55,7 @@
           }
         },
         components:{
-            Header,
-            Carousel,
-            CardBook,
-            Footer,
-            Goal
+            Header, Carousel, CardBook, Footer, Goal, Rec, BriefCollections,
         },
         name: 'App'
     }

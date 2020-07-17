@@ -10,7 +10,7 @@ export function request (config) {
 
 	//axios  interceptor request
 	instance.interceptors.request.use(config=>{
-		console.log(config)
+		// console.log(config)
 		config.headers.Authorization   ='Token '+window.sessionStorage.getItem('token')
 
 		return config

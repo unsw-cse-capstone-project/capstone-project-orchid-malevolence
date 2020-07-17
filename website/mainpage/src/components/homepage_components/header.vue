@@ -10,11 +10,11 @@
         <div class="search">
             <el-input placeholder="input contents" v-model="input3" class="input-with-select">
                 <el-select v-model="select" slot="prepend" placeholder="please select">
-                    <el-option label="New Book" value="1"></el-option>
-                    <el-option label="Other Users' Book" value="2"></el-option>
-                    <el-option label="My Book" value="3"></el-option>
+                    <el-option  label="Title" value="Title" ></el-option>
+                    <el-option label="Authors" value="Authors" ></el-option>
+<!--                    <el-option label="My Book" value="3"></el-option>-->
                 </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="jump_search_result"></el-button>
             </el-input>
         </div>
 
@@ -32,13 +32,16 @@
             Logout
         </el-menu-item>
 
+        <!-- TODO: complete jump to the profile page ||@click="jump_profile"|| -->
+        <el-menu-item index="5" style="float:right" v-if="token_log != null">
+            My Profile
+        </el-menu-item>
+
         <!--    TODO: LOGO Search    -->
     </el-menu>
 </template>
 
 <script>
-    // import Search from '/search.vue'
-
     export default {
         data() {
             return {
@@ -48,13 +51,13 @@
                 input1: '',
                 input2: '',
                 input3: '',
-                select: ''
+                select: '',
+
+
+
+
             };
         },
-
-        // components: {
-        //     Search
-        // },
 
         methods: {
             handleSelect(key, keyPath) {
@@ -76,6 +79,12 @@
             jump_logout() {
                 window.sessionStorage.clear()
                 this.$router.go(0)
+            },
+            jump_search_result(){
+                this.$router.push('search_result')
+                this.$emit('childfromheader',this.input3,this.select)
+
+
             }
         }
     }
