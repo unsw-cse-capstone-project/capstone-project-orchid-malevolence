@@ -68,6 +68,14 @@ class AccountDetailAPIView(APIView):
         print(type(user_obj))
         serializer = AccountDetailSerializer(instance=user_obj)
         return Response(serializer.data, status=HTTP_200_OK)
+    
+    def post(self,request,format=None):
+        user_id=request.data['id']
+        user_obj=Account.objects.get(id=user_id)
+        user_obj.date_of_birth=request.data['date_of_birth']
+        user_obj.gender = request.data['gender']
+        user_obj.save()
+        return Response(data={"msg":"edit success!"},status=HTTP_200_OK)
 
 # colloection操作，添加，删除，修改名称
 class CreateCollectionAPIView(APIView):
