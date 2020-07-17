@@ -31,6 +31,7 @@ class MyAccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser):
+    # 输入数据为m，记录为male。
     GENDER_CHOICES = (
           ('M', 'Male'),
           ('F', 'Female')

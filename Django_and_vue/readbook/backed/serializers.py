@@ -56,7 +56,7 @@ class AccountDetailSerializer(serializers.ModelSerializer):
     collections = CollectionSerializer(many=True, required = False)
     class Meta:
         model = Account
-        fields = ['username','email','gender','uimg','date_of_birth','join_date','collections']
+        fields = ['id','username','email','gender','uimg','date_of_birth','join_date','collections']
         # fields = "__all__"
         # exclude = ('password',)
 

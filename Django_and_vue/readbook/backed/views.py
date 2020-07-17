@@ -58,8 +58,6 @@ class AccountDetailAPIView(APIView):
     # 还有用户的collection
     # 已经每个collection里面包含的书籍信息
     def get(self, request, format=None):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
-        # print(request.data)
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
         print(token)
@@ -168,6 +166,28 @@ class SearchBookAPIView(APIView):
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
         elif search_type.lower() == 'authors':
             search_key = request.data['key_word']
+            search_set = Book.objects.filter(authors__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                return Response(serializer.data,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
+        
+    def get(self,request,format=None):
+        data=request.query_params
+        print(data)
+        search_key=data['key_word']
+        search_type=data['search_type']
+        if search_type.lower() == "title":
+            search_set = Book.objects.filter(title__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                return Response(serializer.data,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        elif search_type.lower() == 'authors':
             search_set = Book.objects.filter(authors__contains = search_key)
             if search_set.exists():
                 serializer = BookSerializer(instance=search_set,many=True)
