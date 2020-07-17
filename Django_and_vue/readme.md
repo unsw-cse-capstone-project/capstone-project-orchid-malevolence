@@ -110,6 +110,21 @@ this request does not need any extra info, i can get account token by header. Or
 
 it will return a json data, which contain the whole info of user except password.
 
+>POST
+
+目前支持修改用户的性别和生日，都以“字符串”类型发送过来！！
+发送的json中必须都要包含性别和生日，不修改也要放进去：
+```json
+{
+    "id":3,
+    "gender":"male"/"female",
+    "date_of_birth":"2020-06-06"
+}
+```
+
+性别这里我后端没有做任何的字符串筛选！
+生日日期最好为字符串！
+
 ## Collection operations
 ```
 url: /api/collection/
