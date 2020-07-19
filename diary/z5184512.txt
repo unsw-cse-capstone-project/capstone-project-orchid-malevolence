@@ -17,4 +17,4 @@ week6
 In this week, I will continous do my individual part that will send post or get request to the back end, and need to communicate with back-end about the JSON format of the request data.
 
 Week7
-In this week, we have finished the retrospective A and talk it in lab. And I will do the search page in this week, the non-technical obstacle is that communication from back-end is a litter difficult due to the few knowldge about back-end.
+In this week, we have finished the retrospective A and talk it in lab. And I also finish search page in this week, the non-technical obstacle is that communication from back-end is a litter difficult due to the few knowldge about back-end.
