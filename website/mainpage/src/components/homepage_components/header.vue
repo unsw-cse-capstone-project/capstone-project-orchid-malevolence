@@ -75,7 +75,9 @@
             jump_login() {
                 this.$router.push('login')
             },
-
+			jump_Profile() {
+				this.$router.push('person')
+			},
             jump_logout() {
                 window.sessionStorage.clear()
                 this.$router.go(0)
