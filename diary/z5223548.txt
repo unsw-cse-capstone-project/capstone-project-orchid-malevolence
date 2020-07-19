@@ -49,3 +49,11 @@ In addition, I create a goal part and a collection part in the homepage.
 
 In the next week, I decide to finish the homepage and start to write collection page to seek what does user read.
 
+-- Week7 2020/07/19  Sunday --
+This week, the homepage's functions are almost finished, including set goal, view books in a specific
+collection, and header's button. The most difficult part is the view book part, which cost me a lot of 
+time.
+
+In the next week, I will create a recommand page to show the recommand result of the user. In addition, 
+the CSS should be changed as the homepage only complete the functions but not the outlook.
+
