@@ -33,7 +33,7 @@
         </el-menu-item>
 
         <!-- TODO: complete jump to the profile page ||@click="jump_profile"|| -->
-        <el-menu-item index="5" style="float:right" v-if="token_log != null">
+        <el-menu-item index="5" style="float:right" @click="jump_Profile" v-if="token_log != null">
             My Profile
         </el-menu-item>
 

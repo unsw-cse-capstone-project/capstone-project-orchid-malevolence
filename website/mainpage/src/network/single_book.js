@@ -17,11 +17,27 @@ export function getCollectionmultdata () {
 
 }
 
+export function getperinfodata () {
+	return request({
+		url: '/api/account/'
+	})
+
+}
+
 export function getSearchResult (query) {
 	return request({
 		url: '/api/searchbook/',
 		method:'post',
 		params:query
+	})
+
+}
+
+export function postperinfo (data) {
+	return request({
+		url: '/api/account/',
+		method:'post',
+		data:data
 	})
 
 }

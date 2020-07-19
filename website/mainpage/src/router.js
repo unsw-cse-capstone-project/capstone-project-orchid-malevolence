@@ -5,6 +5,7 @@ import register from './pages/register.vue'
 import homepage from './pages/homepage.vue'
 import single_book from './pages/single_book'
 import search_result from './pages/search_result'
+import person from './pages/person.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ const router = new Router({
                 title:'login'
             }
         },
+		{
+			path: '/person',
+			name: 'person',
+			component: person
+		},
         {
             path: '/single_book',
             name: 'single_book',
