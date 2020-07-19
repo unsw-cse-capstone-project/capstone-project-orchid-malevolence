@@ -23,8 +23,8 @@
       </el-form-item>
       <!-- 按钮 -->
       <el-form-item class="btns">
-          <el-button type="primary" @click="register('RegisterForm')">注册</el-button>
-          <el-button type="info" @click="formreset">重置</el-button>
+          <el-button type="primary" @click="register('RegisterForm')">Register</el-button>
+          <el-button type="info" @click="formreset">Reset</el-button>
       </el-form-item>
       <div class="other">
         An existing account? <router-link to='/login'>login</router-link>

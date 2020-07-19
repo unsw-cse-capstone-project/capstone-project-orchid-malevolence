@@ -1,78 +1,114 @@
 <template>
     <div class="collection">
         <div class="collection-head">
-            <el-select v-model="name" placeholder="please select a collection" @change="currentSel">
+            <el-select v-model="value" placeholder="please select a collection"
+                       @change="currentSel(value)">
                 <el-option
                         v-for="item in options"
                         :key="item.label"
-                        :label="item.label"
                         :value="item.value"
                 >
                 </el-option>
             </el-select>
         </div>
 
+        <!-- get collections base on selection -->
         <div class="collection-body">
-            <el-divider content-position="center" class="divider">{{cur_collection}}</el-divider>
+            <!-- 分割线，显示当前collection名字 -->
+            <el-divider content-position="center" class="divider">{{value}}</el-divider>
 
+            <!-- collection主体，显示 图 & 书名 -->
             <div class="wrap">
-                <div class="content" v-for="item in img_list" :key="item.img_name">
-                    <img :src="item.img_name" class="img" alt/>
+                <div class="content" v-for="item in books" :key="item.imageLink">
+                    <img :src="item.imageLink" class="img" alt/>
                     <a href="item.url">{{item.title}}</a>
                 </div>
             </div>
+
+            <!-- TODO: 更多书籍button，跳转到 my profile -->
         </div>
     </div>
 </template>
 
 <script>
+    import {getCollectionmultdata} from '../../network/single_book'
+
     export default {
         data() {
             return {
-                // TODO: connect with backend, get all collections
-                options: [{
-                   value: 'Collection 1',
-                   label: 'collection1'
-                }, {
-                   value: 'Collection 2',
-                   label: 'collection2'
-                }],
-                value: '',
-                cur_collection: '',
+                books: [],       // current collection's books
+                options: [],     // collections' content
+                value: '',       // collection name
+                // cur_key: 0,      // collection id
+                collections: [], // result from api package
 
                 // TODO: connect with backend, get all book images in this collections
                 img_list: [
                     {
-                        img_name: require("../../img/test book image/harry.jpg"),
+                        imageLink: require("../../img/test book image/harry.jpg"),
                         title: 'Harry Porter',
                         url: ''  // TODO: fill the url
                     },
-                    {
-                        img_name: require("../../img/test book image/harry.jpg"),
-                        title: 'Harry Porter',
-                        url: ''  // TODO: fill the url
-                    },
-                    {
-                        img_name: require("../../img/test book image/harry.jpg"),
-                        title: 'Harry Porter',
-                        url: ''  // TODO: fill the url
-                    },
-                    {
-                        img_name: require("../../img/test book image/harry.jpg"),
-                        title: 'Harry Porter',
-                        url: ''  // TODO: fill the url
-                    },
-                ]
+                ],
             }
         },
 
         methods: {
+            // check which collection is now selecting
             currentSel(selVal) {
-                this.cur_collection = selVal;
-                // this.dialogVisible = true;
-                console.log(selVal);
-                // console.log(this.options[0].label);
+                this.value = selVal;
+                let obj = {}
+                obj = this.options.find((item)=>{
+                    return item.value === selVal;
+                });
+                this.getCollectionBooks(obj.key)
+            },
+
+            getCollectionNames(res) {
+                const len = res.length
+                let option
+                for(let i = 0; i < len; i++) {
+                    // 提取collections' name
+                    option = {}
+                    option["key"] = res[i].id
+                    option["value"] = res[i].name
+                    this.options.push(option)
+                }
+            },
+
+            // get books from specific collection through collection id
+            getCollectionBooks(col_id) {
+                this.books = []  // refresh books' list
+                console.log("now select: " + col_id)
+
+                let obj = {}
+                obj = this.collections.find((item) => {
+                    return item.id === col_id;
+                });
+
+                let book
+                let len = obj.books.length
+                for(let i = 0; i < len; i++) {
+                    book = {}
+                    book["id"] = obj.books[i].id
+                    book["title"] = obj.books[i].title
+                    book["imageLink"] = obj.books[i].imageLink
+                    book["url"] = ''   // TODO: 跳转url
+                    this.books.push(book)
+                }
             }
+        },
+
+        mounted() {
+            getCollectionmultdata().then(res=>{
+                this.collections = res
+                this.value = this.collections[0].name
+                this.getCollectionNames(res)   // 把api返回的collection名字整理出来
+                this.getCollectionBooks(this.collections[0].id) // default select first collection
+            })
+            .catch(error => {
+                console.log(error)
+            });
         }
     }
 
