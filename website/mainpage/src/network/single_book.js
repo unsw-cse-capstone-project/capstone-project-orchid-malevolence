@@ -28,7 +28,7 @@ export function getSearchResult (query) {
 	return request({
 		url: '/api/searchbook/',
 		method:'post',
-		params:query
+		data:query
 	})
 
 }

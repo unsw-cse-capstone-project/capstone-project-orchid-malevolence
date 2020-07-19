@@ -3,9 +3,10 @@ import Router from 'vue-router'
 import login from './pages/login.vue'
 import register from './pages/register.vue'
 import homepage from './pages/homepage.vue'
-import single_book from './pages/single_book'
 import search_result from './pages/search_result'
 import person from './pages/person.vue'
+import one_book from './pages/one_book'
+
 
 Vue.use(Router)
 
@@ -48,11 +49,11 @@ const router = new Router({
 			component: person
 		},
         {
-            path: '/single_book',
-            name: 'single_book',
-            component: single_book,
+            path: '/one_book',
+            name: 'one_book',
+            component: one_book,
             meta:{
-                title:'single_book'
+                title:'one_book'
             }
         },
         {
@@ -76,7 +77,7 @@ router.beforeEach((to, from, next) => {
     // next 是一个函数，表示放行
     // next() 放行， next('/login') 强制跳转
     const tokenStr = window.sessionStorage.getItem('token')
-    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/single_book' | to.path==='/search_result') { return next() }
+    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/one_book' | to.path==='/search_result') { return next() }
     else if (tokenStr == null) {
         return next('/homepage')
     }

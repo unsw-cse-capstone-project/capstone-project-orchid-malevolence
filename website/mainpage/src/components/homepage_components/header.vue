@@ -83,11 +83,19 @@
                 this.$router.go(0)
             },
             jump_search_result(){
-                this.$router.push('search_result')
-                this.$emit('childfromheader',this.input3,this.select)
-
-
-            }
+                this.$router.push({
+                            name:'search_result',
+                            params: {
+                                key_word:this.input3,
+                                search_type:this.select
+                            }
+                            // query:{
+                            //     key_word:this.input3,
+                            //     search_type:this.select
+                            // }
+                        }
+                )
+            },
         }
     }
 </script>
