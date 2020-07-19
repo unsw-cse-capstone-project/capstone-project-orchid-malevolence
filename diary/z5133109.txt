@@ -23,3 +23,8 @@ Some function is very difficult, maybe it look like easy and tiny. "like" functi
 Next week, i need to finish recommand system and optimize rating part.
 And another heavy mission is that we need to insert enough data to support our project running.
 
+week 7
+I insert some data into our database to test some api fucntion. Base on the order of fronted developer, i edit some api.
+In next week, i will finish recommand system code. For some get request, i use post to replace that, so i need to turn t back.
+Do more test!
+
