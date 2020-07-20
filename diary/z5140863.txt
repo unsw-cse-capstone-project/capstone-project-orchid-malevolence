@@ -26,3 +26,7 @@ Next week, I plan to complete the page of my personal homepage.
 week6
 This week, I wrote the layout interface of some personal information. 
 Next week, I will continue to complete the interface and try to realize the connection with the back end and get data from the back end.
+
+week7
+The front end layout of the personal center page has been completed, and the interaction with the back end has also been completed. 
+The collection part will be completed next week.
