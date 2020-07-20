@@ -216,6 +216,11 @@ if re-name:
 
 删除colleciton，发送colelction的id就行了
 
+你的axios数据参数：
+```js
+axios(url, {data:{collection_id:1}})
+```
+
 you can delete a collection with name
 
 ```
@@ -284,6 +289,11 @@ if you can do this, you have already acquire collection_id and book infomation w
 
 把某本书从collection中删掉。
 目前不支持批量删除。
+
+你的axios数据参数应当如下：
+```js
+axios(url, {data: {collection_id:1, book_id:h56ansk4Sabc}})
+```
 
 this operation base on this situation: the book already in db and be added in one collection or some collections.
 
