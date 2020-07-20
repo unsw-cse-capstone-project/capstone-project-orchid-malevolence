@@ -361,6 +361,8 @@ class BookDetailPageAPIView(APIView):
             book_obj = book_set[0]
             serializer = BookDetailPageSerializer(instance=book_obj,context={'user_id': user_obj.id})
             return Response(serializer.data,status=HTTP_200_OK)
+        else:
+            return Response(data={"msg":"No Book!"},status=HTTP_400_BAD_REQUEST)
 
 
 #  
