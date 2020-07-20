@@ -376,7 +376,8 @@ class MonthlyGoalAPIView(APIView):
         token=token.split()
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
-        goal_info= request.data['month']
+        data=request.query_params
+        goal_info= data['month']
         print(request.data)
         goal_set = Goal.objects.filter(user=user_obj.id,month=goal_info)
         if(goal_set.exists()):
