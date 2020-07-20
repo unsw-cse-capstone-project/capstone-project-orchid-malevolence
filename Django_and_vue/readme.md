@@ -301,6 +301,8 @@ you want to add this book to this collection or remove this book from this colle
 url: /api/searchbook/
 ```
 
+！！！！！ 我get和post都做了接口，爱用哪个用哪个，get用params参数，post用body参数 ！！！！！
+
 >POST search some book with title or authors.
 
 搜索书籍，通过post方法。
@@ -324,7 +326,7 @@ url: /api/set_goal/
 ```
 
 
->GET acquire the goal value
+>GET params参数传递
 这个就是简单的获取目标的值。
 
 you can acquire goal data, which contain target and already done count num
@@ -460,7 +462,7 @@ status:
 ```
 url: /api/bookdetail/
 ```
->GET
+>GET params参数传递
 
 用get，向地址发送
 request信息需要有book_id
