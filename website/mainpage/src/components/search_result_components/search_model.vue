@@ -33,7 +33,7 @@
 		</el-menu-item>
 
 		<!-- TODO: complete jump to the profile page ||@click="jump_profile"|| -->
-		<el-menu-item index="5" style="float:right" v-if="token_log != null">
+		<el-menu-item index="5" style="float:right" @click="jump_Profile" v-if="token_log != null">
 			My Profile
 		</el-menu-item>
 
@@ -46,7 +46,7 @@ export default {
 	name: 'search_model',
 	data() {
 		return {
-			token_log: sessionStorage.getItem('token'),
+			token_log: localStorage.getItem('token'),
 			activeIndex: '1',
 			activeIndex2: '1',
 			input1: '',
@@ -73,9 +73,12 @@ export default {
 		jump_login() {
 			this.$router.push('login')
 		},
-
+		jump_Profile() {
+			this.$router.push('person')
+		},
+		
 		jump_logout() {
-			window.sessionStorage.clear()
+			window.localStorage.clear()
 			this.$router.go(0)
 		},
 

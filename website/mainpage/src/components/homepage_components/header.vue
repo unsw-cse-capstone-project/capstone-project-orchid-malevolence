@@ -45,7 +45,7 @@
     export default {
         data() {
             return {
-                token_log: sessionStorage.getItem('token'),
+                token_log: localStorage.getItem('token'),
                 activeIndex: '1',
                 activeIndex2: '1',
                 input1: '',
@@ -79,7 +79,7 @@
 				this.$router.push('person')
 			},
             jump_logout() {
-                window.sessionStorage.clear()
+                window.localStorage.clear()
                 this.$router.go(0)
             },
             jump_search_result(){

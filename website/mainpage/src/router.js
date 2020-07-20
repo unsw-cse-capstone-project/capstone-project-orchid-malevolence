@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
     // from 代表从那个路径跳转过来的
     // next 是一个函数，表示放行
     // next() 放行， next('/login') 强制跳转
-    const tokenStr = window.sessionStorage.getItem('token')
+    const tokenStr = window.localStorage.getItem('token')
     if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/one_book' | to.path==='/search_result') { return next() }
     else if (tokenStr == null) {
         return next('/homepage')

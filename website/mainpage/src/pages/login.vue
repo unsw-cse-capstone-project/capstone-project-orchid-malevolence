@@ -42,43 +42,32 @@ export default {
   methods: {
     // ...mapMutations(['changeLogin']),
     login () {
-      this.$refs.loginFormRef.validate(async valid => {
-        if(!valid){
-          return
-        }
+		this.$refs.loginFormRef.validate(async valid => {
+			if(!valid){
+				return
+			}
         // let _this = this;
-        if (this.loginForm.username === '' || this.loginForm.password === '') {
-          this.$message.warning('The account or password cannot be empty')
-        } else {
-          this.$axios({
-            method: 'post',
-            url: 'http://127.0.0.1:8000/api/login/',
-            data: this.loginForm
-          }).then(res => {
+		if (this.loginForm.username === '' || this.loginForm.password === '') {
+			this.$message.warning('The account or password cannot be empty')
+		} else {
+			this.$axios({
+				method: 'post',
+				url: 'http://127.0.0.1:8000/api/login/',
+				data: this.loginForm
+			}).then(res => {
             // console.log(res.data.msg);
-            if(res.status === 400){
-
-
-              // alert(res.data.msg);
-              // alert('账号或密码有误');
-              this.$message.error('登陆失败')
-            }else if(res.status === 200){
-              console.log(res.data.token);
-              window.sessionStorage.setItem('token', res.data.token)
-              // window.sessionStorage.setItem('token',res.data.username)
-
-              // console.log(window.sessionStorage.getItem('token'));
-
-              // _this.userToken = 'Bearer ' + res.data.data.body.token;
-              // // 将用户token保存到vuex中
-              // _this.changeLogin({ Authorization: _this.userToken });
-              this.$message.success('登陆成功')
-              this.$router.push('/')
-            }
-          })
-        }
-      })
-    }
+				if(res.status === 400){
+					this.$message.error('登陆失败')
+				}else if(res.status === 200){
+					console.log(res.data.token);
+					window.localStorage.setItem('token', res.data.token)
+					this.$message.success('登陆成功')
+					this.$router.push('/')
+				}
+			})
+		}
+		})
+	}
   }
 }
 </script>
