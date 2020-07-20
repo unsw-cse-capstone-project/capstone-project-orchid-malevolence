@@ -29,4 +29,5 @@ Next week, I will continue to complete the interface and try to realize the conn
 
 week7
 The front end layout of the personal center page has been completed, and the interaction with the back end has also been completed. 
+Changed the way the data is stored so that users do not have to log in again after closing the page and reopening it.
 The collection part will be completed next week.
