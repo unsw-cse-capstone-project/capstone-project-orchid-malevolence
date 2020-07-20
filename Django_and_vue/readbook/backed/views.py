@@ -44,6 +44,12 @@ class RegisterAPIView(APIView):
         if res.is_valid():
             res.save()
             user = Account.objects.get(username=username)
+            collection_temp={}
+            collection_temp["name"]=user.username+"'s collection"
+            collection_temp["user"]=user.id
+            default_collection = CollectionSerializer(data=collection_temp)
+            if(default_collection.is_valid()):
+                default_collection.save()
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
         print(res.errors)
@@ -94,33 +100,23 @@ class CreateCollectionAPIView(APIView):
             return Response(data={"msg":"No Colletions!"},status=HTTP_400_BAD_REQUEST)
         
 
-    # 建立新的collection和collection改名，都测试过了
+    # 建立新的collection，都测试过了
     # 就是跟书籍添加进入collection，会有路由冲突，目前经过调整，阶段性解决。
     def post(self, request, format=None):
-        try:
-            print(request.data)
-            collect_id = request.data['collection_id']
-        except:
-            print(request.data)
-            token=request.META.get('HTTP_AUTHORIZATION')
-            token=token.split()
-            token_obj=Token.objects.get(key=token[1])
-            user_obj = token_obj.user
-            temp=request.data
-            temp['user']=user_obj.id
-            collect = CollectionSerializer(data=temp)
-            if collect.is_valid():
-                collect.save()
-                print("i'm in!")
-                return Response(data={"msg":'collection create success!'},status=HTTP_200_OK)
-            print(collect.errors)
-            return Response(status=HTTP_400_BAD_REQUEST)
-        
-        new_name = request.data['name']
-        collection_temp = Collection.objects.get(id=collect_id)
-        collection_temp.name=new_name
-        collection_temp.save()
-        return Response(data={"msg":'name change success'},status=HTTP_200_OK)
+        print(request.data)
+        token=request.META.get('HTTP_AUTHORIZATION')
+        token=token.split()
+        token_obj=Token.objects.get(key=token[1])
+        user_obj = token_obj.user
+        temp=request.data
+        temp['user']=user_obj.id
+        collect = CollectionSerializer(data=temp)
+        if collect.is_valid():
+            collect.save()
+            return Response(data={"msg":'collection create success!'},status=HTTP_200_OK)
+        print(collect.errors)
+        return Response(status=HTTP_400_BAD_REQUEST)
+
     
     # 已测试
     def delete(self, request, format=None):
@@ -133,6 +129,21 @@ class CreateCollectionAPIView(APIView):
         collection_id = request.data["collection_id"]
         Collection.objects.filter(id=collection_id,user=user_obj.id).delete()
         return Response(data={'msg':'already delete!'},status=HTTP_200_OK)
+    
+    # collection 改名
+    def put(self,request,format=None):
+        print(request.data)
+        collect_id = request.data['collection_id']
+        new_name = request.data['new_name']
+        collection_set = Collection.objects.filter(id=collect_id)
+        if(collection_set.exists()):
+            collection_temp=collection_set[0]
+            collection_temp.name=new_name
+            collection_temp.save()
+            return Response(data={"msg":'name change success'},status=HTTP_200_OK)
+        else:
+            return Response(data={"msg":"no collection id!"},status=HTTP_400_BAD_REQUEST)
+
         
 # 添加书籍进入数据库
 class AddBookAPIView(APIView):
