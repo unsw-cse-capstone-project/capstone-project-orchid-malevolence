@@ -86,6 +86,7 @@ url: /api/register/
 
 1. success, return token
 2. error, will return error msg!
+3. it will create a default collection named  "username's collection"
 
 your data is a form, it should like this
 ```
@@ -193,7 +194,6 @@ the response data contain all collections and books be stored in collections.
 >POST
 
 就是建立新的collection，包含colelction的名字，原则上最好别重复，但是也可以，最好前端判断一下，如果有重名就需要修改。
-给colection改名，需要发送collection的id以及新名字。
 
 you can add a collection with name to user
 
@@ -204,11 +204,6 @@ create new :
     "name":"collection_1"
 }
 
-if re-name:
-{
-    "collection_id":1,
-    "name":"Pink's collection"
-}
 ```
 
 
@@ -218,7 +213,7 @@ if re-name:
 
 你的axios数据参数：
 ```js
-axios(url, {data:{collection_id:1}})
+axios.delete(url, {data:{collection_id:1}})
 ```
 
 you can delete a collection with name
@@ -228,6 +223,16 @@ you can delete a collection with name
     "collection_id":1
 }
 ```
+
+>PUT 
+
+修改collection名字
+
+```js
+axios.put(url, {collection_id:1, new_name: #####})
+```
+
+
 
 # Book operations
 
@@ -292,7 +297,7 @@ if you can do this, you have already acquire collection_id and book infomation w
 
 你的axios数据参数应当如下：
 ```js
-axios(url, {data: {collection_id:1, book_id:h56ansk4Sabc}})
+axios.delete(url, {data: {collection_id:1, book_id:h56ansk4Sabc}})
 ```
 
 this operation base on this situation: the book already in db and be added in one collection or some collections.
