@@ -51,7 +51,7 @@
     export default {
         data() {
           return {
-              token_log: sessionStorage.getItem('token')
+              token_log: localStorage.getItem('token')
           }
         },
         components:{

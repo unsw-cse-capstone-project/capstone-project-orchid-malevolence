@@ -11,7 +11,7 @@ export function request (config) {
 	//axios  interceptor request
 	instance.interceptors.request.use(config=>{
 		// console.log(config)
-		config.headers.Authorization   ='Token '+window.sessionStorage.getItem('token')
+		config.headers.Authorization   ='Token '+window.localStorage.getItem('token')
 
 		return config
 	},err => {

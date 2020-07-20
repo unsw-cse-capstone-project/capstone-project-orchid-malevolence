@@ -22,8 +22,8 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 axios.interceptors.request.use(config => {
   // 在发送请求前做些什么
   // console.log(config)
-  if (window.sessionStorage.getItem('token')) {
-    config.headers.Authorization = window.sessionStorage.getItem('token')
+  if (window.localStorage.getItem('token')) {
+    config.headers.Authorization = window.localStorage.getItem('token')
   }
   return config
 },
