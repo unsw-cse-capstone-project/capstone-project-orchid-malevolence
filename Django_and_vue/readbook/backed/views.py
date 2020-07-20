@@ -355,7 +355,8 @@ class BookDetailPageAPIView(APIView):
         token=token.split()
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
-        book_id = request.data['book_id']
+        data=request.query_params
+        book_id = data['book_id']
         book_set = Book.objects.filter(id=book_id)
         if(book_set.exists()):
             book_obj = book_set[0]
