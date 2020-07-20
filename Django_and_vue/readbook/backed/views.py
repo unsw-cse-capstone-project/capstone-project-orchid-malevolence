@@ -356,9 +356,11 @@ class BookDetailPageAPIView(APIView):
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
         book_id = request.data['book_id']
-        book_obj = Book.objects.get(id=book_id)
-        serializer = BookDetailPageSerializer(instance=book_obj,context={'user_id': user_obj.id})
-        return Response(serializer.data,status=HTTP_200_OK)
+        book_set = Book.objects.filter(id=book_id)
+        if(book_set.exists()):
+            book_obj = book_set[0]
+            serializer = BookDetailPageSerializer(instance=book_obj,context={'user_id': user_obj.id})
+            return Response(serializer.data,status=HTTP_200_OK)
 
 
 #  
