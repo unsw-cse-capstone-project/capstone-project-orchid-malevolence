@@ -47,3 +47,11 @@ export function postrating (query) {
 	})
 
 }
+
+export function postnewcollection (data) {
+	return request({
+		url: '/api/collection/',
+		method:'post',
+		data:data
+	})
+}
