@@ -37,6 +37,7 @@ export default {
 	data(){
 
 		return{
+			token_log: localStorage.getItem('token'),
 			search_type:'',
 			key_word:'',
 			result_list:[],

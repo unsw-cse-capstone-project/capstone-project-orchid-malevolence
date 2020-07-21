@@ -30,3 +30,35 @@ export function request (config) {
 	return instance(config)
 
 }
+
+
+
+export function request_normal (config) {
+	//create instance of axios
+	const instance = axios.create({
+		baseURL: 'http://127.0.0.1:8000',
+		timeout: 5000
+
+	})
+
+	//axios  interceptor request
+	instance.interceptors.request.use(config => {
+		// console.log(config)
+		return config
+	}, err => {
+		console.log(err)
+
+	})
+	//axios  interceptor response
+	instance.interceptors.response.use(res => {
+		return res.data
+	}, err => {
+		return Promise.resolve(err.response)
+		// console.log(err)
+
+	})
+	// real request
+	return instance(config)
+}
+
+

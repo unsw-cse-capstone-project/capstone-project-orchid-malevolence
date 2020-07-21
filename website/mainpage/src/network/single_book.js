@@ -1,11 +1,9 @@
 import {request} from './request_singleBook'
 
-export function getSingleBookmultdata () {
+export function getSingleBookmultdata (query) {
 	return request({
 		url: '/api/bookdetail/',
-		params:{
-			book_id:"carqdIdfVlYC"
-		}
+		params:query
 	})
 
 }
@@ -38,6 +36,14 @@ export function postperinfo (data) {
 		url: '/api/account/',
 		method:'post',
 		data:data
+	})
+
+}
+export function postrating (query) {
+	return request({
+		url: '/api/rating/',
+		method:'post',
+		data:query
 	})
 
 }

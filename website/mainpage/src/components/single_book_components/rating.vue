@@ -1,32 +1,26 @@
-
-<style lang="less" scoped>
-  .block span{
+<style scoped>
+  span{
     margin-left: 10px;
     font-size: 16px;
   }
 
-  .score{
-    position: absolute;
-    float: right;
-  }
-
-
 </style>
 
-
 <template>
-  <div  class="block">
-    <span class="demonstration"> my rating: {{info.value}}</span>
-    <div v-if="info.exist===true" @click="disable()" style="width: 120px;">
+  <div class="block" >
+    <span class="demonstration">My rating:</span>
+    <div v-if="exist===true" @click="disable()">
       <el-rate
-              v-model="info.value"
-              text-color="#ff9900"
-              score-template="{info.value}">
+              v-model="value"
+              show-score
+              score-template="{value}"
+              :colors="colors">
       </el-rate>
+
     </div>
     <div v-else>
       <el-rate
-              v-model="info.value"
+              v-model="value"
               disabled
               show-score
               text-color="#ff9900"
@@ -34,61 +28,57 @@
       </el-rate>
 
     </div>
-    <p>{{info.title}}</p>
 
-
+    <!--    {{bookID}}-->
   </div>
-
 </template>
 
 <script>
-// import axios from 'axios'
-
+import {postrating} from "../../network/single_book"
 export default {
-  name: "rating",
+  name: 'rate',
   data() {
     return {
-      info:{
-        value: Number(""),
-        exist:true,
-        // title:this.props.ctitle
-        title:this.ctitle
-      }
-
-    }
+      exist: true,
+      token_log: localStorage.getItem('token'),
+      value: 0,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900']  }
   },
-  props:{
-    ctitle:{
-      type:String,
-      // require:true
-    }
+  props: {
+    bookID:String
+  },
+  created () {
 
   },
-
-
   methods:{
     disable(){
-      var temp=window.sessionStorage.token
-
-      this.info.exist=false
-      this.$axios({ //评分 把username,评分value,书名title传递到后端
-        method:'post',
-        url:'http://127.0.0.1:8000/api/rating/',
-        data:{
-          'value':this.info.value,
-          'username':temp,
-          'title':this.info.title
-
+      console.log(this.bookID)
+      let postvalue={
+        "rating_info":{
+          "book":this.bookID,
+          "rating":this.value
         }
+      }
 
-      }).then(res=>
-        console.log(res))
-      .catch(error=>console.log(error))
+      postrating(postvalue).then(res=>{
+        console.log(res)
+      })
+      console.log(this.bookID)
+      this.$nextTick(()=>{
+        this.$emit('updateData',this.bookID)
+      })
+      this.exist=false
+
+
     },
 
 
-  }
+
+
+
+
+  },
+
 }
 </script>
-
 

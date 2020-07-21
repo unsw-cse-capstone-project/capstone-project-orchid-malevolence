@@ -34,24 +34,24 @@
 		<div class="info" disabled="disabled">Page:{{books[real_page-1].page+1}}   Totally related books: {{books[real_page-1].total_book}}</div>
 
 
-			<div class="all_book" v-for="item in books[real_page-1].book_li" :key="item.ISBN">
+		<div class="all_book" v-for="item in books[real_page-1].book_li" :key="item.ISBN">
 
-				<div class="item_box">
-					<div class="book_item img-box" >
-						<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book">
-					</div>
-
-					<div class="book_item text-block">
-						<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
-						<div><p>Author: {{item.authors}}</p></div>
-						<div><p>Publisher: {{item.publisher}}</p></div>
-						<div><p>publish_date: {{item.publish_date}}</p></div>
-
-					</div>
+			<div class="item_box">
+				<div class="book_item img-box" >
+					<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)">
 				</div>
 
+				<div class="book_item text-block">
+					<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
+					<div><p>Author: {{item.authors}}</p></div>
+					<div><p>Publisher: {{item.publisher}}</p></div>
+					<div><p>publish_date: {{item.publish_date}}</p></div>
 
+				</div>
 			</div>
+
+
+		</div>
 		<div style="display:flex; justify-content: center">
 
 			<el-pagination
@@ -96,15 +96,21 @@ export default {
 	methods:{
 		getpage(value){
 			this.real_page=value
-			console.log(value)
+			// console.log(value)
 			this.isShow=true
 
 		},
-		jump_one_book(){
-			this.$router.push('one_book')
-			// this.$emit('childfromheader',this.input3,this.select)
+		jump_one_book (value) {
+			// console.log(value)
+			this.$router.push({
+				name: 'one_book',
+				params: {
+					item: value,
 
-		}
+				}
+
+			})
+		},
 
 
 
