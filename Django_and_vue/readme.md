@@ -199,7 +199,6 @@ you can add a collection with name to user
 
 your data shoud be:
 ```
-create new :
 {
     "name":"collection_1"
 }
