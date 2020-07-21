@@ -70,7 +70,7 @@ export default {
 				// console.log(res)
 				if (res.status===400){
 					// console.log('ss')
-					this.$message.info('No related book: '+this.key_word)
+					this.$message({message:'No related book: '+this.key_word, showClose:true,} )
 					this.$nextTick(()=>{
 						this.isShow=false
 						let temp=this.key_word
@@ -139,7 +139,7 @@ export default {
 			// console.log(res)
 			if (res.status===400){
 				// console.log('ss')
-				this.$message.info('No related book: '+this.key_word)
+				this.$message({message:'No related book: '+this.key_word, showClose:true,} )
 				this.$nextTick(()=>{
 					this.isShow=false
 					let temp=this.key_word
