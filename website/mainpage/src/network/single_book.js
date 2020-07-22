@@ -22,6 +22,13 @@ export function getperinfodata () {
 
 }
 
+export function getCurGoal(query) {
+	return request({
+		url: '/api/set_goal/',
+		params:query
+	})
+}
+
 export function getSearchResult (query) {
 	return request({
 		url: '/api/searchbook/',
@@ -29,6 +36,14 @@ export function getSearchResult (query) {
 		data:query
 	})
 
+}
+
+export function postCurGoal(data) {
+	return request({
+		url: '/api/set_goal/',
+		method: 'post',
+		data:data
+	})
 }
 
 export function postperinfo (data) {

@@ -57,11 +57,11 @@ export default {
 			}).then(res => {
             // console.log(res.data.msg);
 				if(res.status === 400){
-					this.$message.error('登陆失败')
+					this.$message.error('fail to login')
 				}else if(res.status === 200){
 					console.log(res.data.token);
 					window.localStorage.setItem('token', res.data.token)
-					this.$message.success('登陆成功')
+					this.$message.success('login successfully')
 					this.$router.push('/')
 				}
 			})

@@ -45,7 +45,7 @@ Superuser account: username: admin, password: 123456<br>
 localhost:8000/admin<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
 
-# Book Datbase
+# Book Database
 database have 300 books information.
 
 these book related to
@@ -345,6 +345,7 @@ url: /api/set_goal/
 
 you can acquire goal data, which contain target and already done count num
 you can send data:
+
 ```
 {
     "month":7
@@ -432,6 +433,7 @@ request需要包含：书的id以及规定格式的评论内容。
 
 can not support edit and delet!
 request data:
+
 ```
 {
     "book_id":"h56ansk4Sabc",
