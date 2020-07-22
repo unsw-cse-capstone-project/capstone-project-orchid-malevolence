@@ -162,6 +162,39 @@ class AddBookAPIView(APIView):
             print(serializer.errors)
             return Response(data={"mag":"error"},status=HTTP_400_BAD_REQUEST)
 
+class FilterSearchBookAPIView(APIView):
+    def get(self,request,format=None):
+        data=request.query_params
+        print(data)
+        search_key=data['key_word']
+        search_type=data['search_type']
+        filter_rating = data['filter_rating']
+        if search_type.lower() == "title":
+            search_set = Book.objects.filter(title__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                res=[]
+                for i in serializer.data:
+                    if(i['avg_rating']>=filter_rating):
+                        res.append(i)
+                return Response(data=res,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        elif search_type.lower() == 'authors':
+            search_set = Book.objects.filter(authors__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                res=[]
+                for i in serializer.data:
+                    if(i['avg_rating']>=filter_rating):
+                        res.append(i)
+                return Response(data=res,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
+
+
 # 搜做书籍
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
@@ -388,18 +421,19 @@ class MonthlyGoalAPIView(APIView):
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
         data=request.query_params
-        goal_info= data['month']
+        month_data= data['month']
+        year_data=data['year']
         print(request.data)
-        goal_set = Goal.objects.filter(user=user_obj.id,month=goal_info)
+        goal_set = Goal.objects.filter(user=user_obj.id,year=year_data,month=month_data)
         if(goal_set.exists()):
             goal_data=goal_set[0]
-            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info)
+            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=year_data,create_time__month=month_data)
             num=0
             if(ans.exists()):
                 num=ans.count()
             return Response(data={"target":goal_data.target,"already_done":num},status=HTTP_200_OK)
         else:
-            return Response(data={"msg":"goal have not set yet!"},status=HTTP_400_BAD_REQUEST)   
+            return Response(data={"target":0,"already_done":0},status=HTTP_400_BAD_REQUEST)   
 
     # 设定每月目标，在第一次设定时会检查并返回当月已经添加的书籍
     # 修改目标，每次也会重新检查并返回数据
@@ -410,12 +444,12 @@ class MonthlyGoalAPIView(APIView):
         user_obj = token_obj.user
         goal_info = request.data['month_goal']
         goal_info['user']=user_obj.id
-        goal_set = Goal.objects.filter(user=user_obj.id,month=goal_info['month'])
+        goal_set = Goal.objects.filter(user=user_obj.id,year=goal_info['year'],month=goal_info['month'])
         if(goal_set.exists()):
             goal_temp = goal_set[0]
             goal_temp.target = goal_info['target']
             goal_temp.save()
-            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info['month'])
+            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=goal_info['year'],create_time__month=goal_info['month'])
             num=0
             if(ans.exists()):
                 num=ans.count()
@@ -425,7 +459,7 @@ class MonthlyGoalAPIView(APIView):
             if(serializer.is_valid()):
                 serializer.save()
                 # res = MonthlyGoalAPIView(isinstance=goal_info)
-                ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info['month'])
+                ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=goal_info['year'],create_time__month=goal_info['month'])
                 num=0
                 if(ans.exists()):
                     num=ans.count()

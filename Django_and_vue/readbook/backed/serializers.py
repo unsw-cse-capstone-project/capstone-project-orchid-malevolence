@@ -28,10 +28,24 @@ class UserSerializer(serializers.ModelSerializer):
 # book全部信息
 class BookSerializer(serializers.ModelSerializer):
     # collections = CollectionSerializer(many=True,require = False)
+    avg_rating = serializers.SerializerMethodField('avg_rating_edit',required=False)
     class Meta:
         model = Book
         fields = ('__all__')
         extra_kwargs = {'collection':{'required':False}}
+    
+    def avg_rating_edit(self,obj):
+        book_id=obj.id
+        rating_count_set = Rating.objects.filter(book=book_id)
+        avg_rating=0
+        count_num = rating_count_set.count()
+        if(rating_count_set.exists()):
+            for i in rating_count_set:
+                avg_rating+=i.rating
+            avg_rating=avg_rating/count_num
+            return avg_rating
+        return avg_rating
+
 
 # collection全部信息，包括有哪些书
 class CollectionSerializer(serializers.ModelSerializer):
@@ -127,6 +141,16 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
             rev_ser = ReviewSerializer(instance=review_set,many=True)
+            res=[]
+            for i in rev_ser.data:
+                rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
+                if(rating_temp_set.exists()):
+                    rating_temp=rating_temp_set[0]
+                    i['rating']=rating_temp.rating
+                    res.append(i)
+                else:
+                    i['rating']=0
+                    res.append(i)
             return rev_ser.data
         else:
             return [] 
@@ -140,21 +164,6 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
             return like_ser.data
         else:
             return []
-
-
-
-# class ReviewEditSerializer(serializers.Serializer):
-#     content = models.TextField(null=True)
-#     create_time = models.DateTimeField(auto_now_add=True)
-#     user = models.ForeignKey(Account,related_name='review_user',on_delete=models.CASCADE)
-#     book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
-#     like_count_num = models.PositiveIntegerField(default=0)
-#     user_liked_or_not = models.BooleanField(default=False)
-
-# class BookDetailSerializer(serializers.Serializer):
-#     book_id = models.CharField()
-#     rating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
-#     reviews = ReviewEditSerializer(many=True,required=False)
 
 
 
