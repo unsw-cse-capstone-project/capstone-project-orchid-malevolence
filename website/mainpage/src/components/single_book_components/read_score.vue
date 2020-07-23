@@ -52,17 +52,34 @@ export default {
   props: {
     res: Object
   },
+  watch:{
+    average(newV,oldV) {
+      this.average=newV
+      console.log(oldV)
+
+
+    }
+  },
   // request method page initial and get average score of this book
   updated () {
     if(this.res.averageScore!==undefined){
-      this.average = this.res.averageScore
-      this.book_id = this.res.book_id
+      let average=this.res.averageScore
+      let book_id=this.res.book_id
+      this.average = average
+      this.book_id = book_id
+      // this.$forceUpdate()
+
+
+        // this.$forceUpdate()
+
       // this.TotalCount=this.res.TotalCount
       console.log(this.book_id + " aaaa")
     }
     else{
       this.isShow=false
     }
+
+
 
 
 

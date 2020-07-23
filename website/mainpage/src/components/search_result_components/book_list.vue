@@ -96,6 +96,7 @@ export default {
 		}
 	},
 
+
 	methods:{
 		getpage(value){
 			this.real_page=value

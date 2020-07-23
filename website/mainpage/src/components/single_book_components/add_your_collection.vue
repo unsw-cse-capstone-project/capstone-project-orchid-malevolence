@@ -47,7 +47,7 @@
 				<span>Name:</span>
 				<el-input   style="width: 40%; margin: 0 15px"  v-model="input" placeholder="please add a shelf"></el-input>
 
-				<el-button type="primary" @click="add_new_shelf" >Add</el-button>
+				<el-button type="primary" :plain="true" @click="add_new_shelf" >Add</el-button>
 
 
 			</div>
@@ -102,11 +102,11 @@ export default {
 		})
 
 	},
+
 	methods: {
 		Close_drawer(){
 			this.drawer=false
 		},
-
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
@@ -122,18 +122,37 @@ export default {
 					console.log(res)
 				})
 				getCollectionmultdata().then(res => {
-					this.options=[]
+					this.list=[]
 					for (let i=0;i<res.length;i++){
 						let j=res[i].id
 						let k=res[i].name
-						this.options.push({id:j,name:k})
-					}
-					console.log(this.options)
+						// let val1={id:j}
+						// let val2={name:k}
+						// this.list.push({id:j,name:k})
+						this.list.push(Object.assign([{}],this.options,{
+							id:j,
+							name:k
+						}))
+						this.$nextTick().then(() => {
+							this.options = this.list;
+						});
+						console.log(this.options)
 
+					}
 
 				})
+				// this.$set(this.options,val1,val2)
+
 
 			}
+			console.log(this.options)
+
+			this.$message({
+				message: 'Congratulations, You have added a shelf',
+				type: 'success'
+			});
+
+
 		},
 
 		choose_collection(value){

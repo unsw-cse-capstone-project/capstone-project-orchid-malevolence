@@ -100,13 +100,15 @@
                     book["ISBN"] = obj.books[i].ISBN
                     book["publisher"] = obj.books[i].publisher
                     book["publish_date"] = obj.books[i].publish_date
+                    book["categories"] = obj.books[i].categories
                     // book["url"] = ''   // TODO: 跳转url
                     this.books.push(book)
                 }
+                console.log(book)
             },
 
             jump_one_book(value) {
-                // console.log(value)
+                console.log(value)
                 this.$router.push({
                     name: 'one_book',
                     query: {
@@ -116,8 +118,9 @@
                         title: value.title,
                         ISBN: value.ISBN,
                         publisher: value.publisher,
-                        publish_date: value.publish_date,
-                        imageLink: value.imageLink
+                        imageLink: value.imageLink,
+                        publisher_data:value.publish_date,
+                        category:value.categories
                     }
 
                 })

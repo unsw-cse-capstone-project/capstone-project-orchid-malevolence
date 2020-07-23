@@ -96,7 +96,7 @@
 				<div><p>Publisher: {{book.publisher}}</p></div>
 				<div><p>publish_date: {{book.publisher_data}}</p></div>
 				<div><p>ISBN: {{book.ISBN}}</p></div>
-				<div><p>categories: {{book.category}}</p></div>
+				<div><p>categorie: {{book.category}}</p></div>
 
 			</div>
 
