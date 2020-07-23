@@ -50,7 +50,8 @@
 			
 			<!-- Collection -->
 			<el-tab-pane label="collection">
-				<div class="collection">
+				<div class="collection" >
+					<div class="clearfix">
 					<!-- select -->
 					<div class="collection_head">
 						<el-select v-model="value" placeholder="please select a collection"
@@ -59,13 +60,14 @@
 									v-for="item in options"
 									:key="item.label"
 									:value="item.value"
+									
 							>
 							</el-option>
 						</el-select>
 					</div>
 					<!-- create an new collection -->
 					<div class="collection_add">
-						<el-button type="text" @click="dialogFormVisible = true">create an new collection</el-button>
+						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
 						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
 							<el-form ref="collectionformRef" :model="collectionform">
 								<el-form-item label="collection name" :label-width="formLabelWidth">
@@ -73,12 +75,33 @@
 								</el-form-item>
 							</el-form>
 							<div slot="footer" class="dialog-footer">
-								<el-button @click="dialogFormVisible = false">取 消</el-button>
-								<el-button type="primary" @click="submit">确 定</el-button>
+								<el-button @click="dialogFormVisible = false">cancel</el-button>
+								<el-button type="primary" @click="submit">confirm</el-button>
 							</div>
 						</el-dialog>
 					</div>
 					
+					<!-- reset collection name -->
+					<div class="collection_reset">
+						<el-button type="text" @click="dialogFormVisible2 = true" class="collection_change_button">reset collection</el-button>
+						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
+							<el-form ref="recollectionFormRef" :model="recollectionForm">
+								<el-form-item label="reset collection" :label-width="formLabelWidth">
+									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
+								</el-form-item>
+							</el-form>
+							<div slot="footer" class="dialog-footer">
+								<el-button @click="dialogFormVisible2 = false">cancel</el-button>
+								<el-button type="primary" @click="change">confirm</el-button>
+							</div>
+						</el-dialog>
+					</div>
+					
+					<!-- delete collection -->
+					<div class="collection_dele">
+						<el-button type="text" @click="open" class="collection_dele_button">delete collection</el-button>
+					</div>
+					</div>
 					<!-- 分割线，显示当前collection名字 -->
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 					
@@ -88,31 +111,6 @@
 							<img :src="item.imageLink" class="img" alt/>
 							<a href="item.url">{{item.title}}</a>
 						</div>
-					</div>
-				</div>
-			</el-tab-pane>
-			
-			<!-- goal -->
-			<el-tab-pane label="set goal">
-				<div class="Per_info_title">
-					set goal
-				</div>
-				<el-divider content-position="left">How many books do I want to read this year</el-divider>
-				<div class="year">
-					<div class="left">
-					
-					</div>
-					<div class="right">
-					
-					</div>
-				</div>
-				<el-divider content-position="left">How many books have I read this year</el-divider>
-				<div class="month">
-					<div class="left">
-					
-					</div>
-					<div class="right">
-					
 					</div>
 				</div>
 			</el-tab-pane>
@@ -127,6 +125,8 @@ import {getperinfodata} from '../network/single_book'
 import {postperinfo} from '../network/single_book'
 import {getCollectionmultdata} from '../network/single_book'
 import {postnewcollection} from '../network/single_book'
+import {changecollectioname} from '../network/single_book'
+import {delecollection} from '../network/single_book'
 // import axios from 'axios'
 export default {
 	components:{
@@ -150,16 +150,27 @@ export default {
 				date_of_birth:'',
 				gender: ''
 			},
+			recollectionForm: {
+				new_name: '',
+				collection_id: ''
+			},
+			//collection_id: '',
 			// collection
 			books: [],       // current collection's books
 			options: [],     // collections' content
 			value: '',       // collection name
 			collections: [], // result from api package\
 			// create an new collection
-			dialogFormVisible: false,
 			collectionform: {
 				name: ''
 			},
+			
+			delecollectionform: {
+				collection_id: ''
+			},
+			dialogFormVisible: false,
+			dialogFormVisible2: false,
+			
 			formLabelWidth: '120px',
 			// TODO: connect with backend, get all book images in this collections
 			img_list: [
@@ -184,6 +195,7 @@ export default {
 				})
 			})
 		},
+		
 		// check which collection is now selecting
 		currentSel(selVal) {
 			this.value = selVal;
@@ -192,6 +204,9 @@ export default {
 				return item.value === selVal;
 			});
 			this.getCollectionBooks(obj.key)
+			this.delecollectionform.collection_id = obj.key
+			this.recollectionForm.new_name = obj.value
+			this.recollectionForm.collection_id = obj.key
 		},
 		getCollectionNames(res) {
 			const len = res.length
@@ -239,6 +254,33 @@ export default {
 					this.$message.error('Create failure');
 				})
 			})
+		},
+		// reset collection name
+		change() {
+			this.$refs.recollectionFormRef.validate(async valid => {
+				if (!valid) { return }
+				changecollectioname(this.recollectionForm).then(res=>{
+					console.log(res);
+					this.$message.success('Modify successfully');
+					this.dialogFormVisible2 = false;
+					this.reload();
+				}).catch(err=>{
+					console.log(err)
+					this.$message.error('Modify failure');
+				})
+			})
+		},
+		
+		//delete collection
+		open() {
+			delecollection(this.delecollectionform).then(res=>{
+				console.log(res);
+				this.$message.success('delete successfully');
+				this.reload();
+			}).catch(err=>{
+				console.log(err)
+				this.$message.error('delete failure');
+			})
 		}
 	},
 	mounted: function () {
@@ -257,14 +299,18 @@ export default {
 			})
 		}),
 		getCollectionmultdata().then(res=>{
+			//console.log(res)
 			this.collections = res
 			this.value = this.collections[0].name
 			this.getCollectionNames(res)   // 把api返回的collection名字整理出来
 			this.getCollectionBooks(this.collections[0].id) // default select first collection
+			this.recollectionForm.new_name = this.collections[0].name
+			this.recollectionForm.collection_id = this.collections[0].id
+			this.delecollectionform.collection_id = this.collections[0].id
 		})
 		.catch(error => {
 			console.log(error)
-		});	
+		})
 	}
 }
 </script>
@@ -290,9 +336,9 @@ export default {
 	.content{
 		// height: 10000px;
 		width: 90%;		
-		border: 1px solid;
+		//border: 1px solid;
 		margin: auto;
-		overflow: scroll;
+		// overflow: scroll;
 	}
 	// 个人资料
 	.person_information{
@@ -308,31 +354,17 @@ export default {
 	.Per_info{
 		margin-top: 50px;
 	}
-	
-	// 目标
-	.year, .month{
-		height: 250px;
-		border: 1px solid;
-		width: 70%;
-		margin: auto;
-		margin-top: 15px;
-	}
-	.left{
-		float: left;
-		width: 20%;
-		height: 230px;
-		border: 1px solid;
-		background-color: deeppink;
-	}
-	.right{
-		// float: left;
-		border: 1px solid;
-		width: 100%;
-		height: 230px;
-		background-color: skyblue;
-	}
+
 	// collection	
-	.collection_head {
+	.clearfix{
+		*zoom: 1;    /* 开启haslayout *只有在ie6,7下认识这个hack*/
+	}
+	.clearfix:after{
+		content: "";
+		display: block;
+		clear: both;
+	}
+	.collection_head, .collection_add,.collection_reset, .collection_dele {
 		margin-top: 10px;
 		float: left;
 	}
@@ -345,11 +377,25 @@ export default {
 		grid-template-columns: repeat(5, 1fr);
 	}
 	.coll_content {
-		margin: 10px 10px 10px 10px;
+		margin: 10px 30px 30px 15px;
 	}
 	
 	.img {
 		width: 180px;
 		height: 300px;
+	}
+	// add
+	.collection_add_button{
+		margin-top: 10px;
+		margin-left: 80px;
+	}
+	// reset
+	.collection_change_button{
+		margin-top: 10px;
+		margin-left: 90px;
+	}
+	.collection_dele_button{
+		margin-top: 10px;
+		margin-left: 100px;
 	}
 </style>
