@@ -536,9 +536,9 @@ rating_analyse：
     剩下的是每个分数占总评分人数的比例小数，前端需要乘100%并显示。
 
 review_book：
-    主要优化目标！
-    这是一个list，每一条评论的信息就是一个object。
-    对于每个评论的object：
+    1.主要优化目标！
+    2.这是一个list，每一条评论的信息就是一个object。
+    3. 对于每个评论的object：
         id:评论的id
         content:评论内容
         user:username
