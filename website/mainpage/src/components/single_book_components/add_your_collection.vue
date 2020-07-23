@@ -33,7 +33,6 @@
 
 
 			</el-select>
-			{{value}}
 
 			<el-button  type="primary" @click="choose_collection(value)" >Confirm</el-button>
 

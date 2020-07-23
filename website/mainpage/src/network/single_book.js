@@ -95,9 +95,10 @@ export function GetReview (query) {
 export function postReview (query) {
 	return request({
 		url: '/api/review/',
-		method:'post',
-		data:query
+		method: 'post',
+		data: query
 	})
+}
 
 
 export function postnewcollection (data) {
