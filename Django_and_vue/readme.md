@@ -409,7 +409,7 @@ request data:
     {   
         "year":2020,
         "month":7,
-        "target"2
+        "target":2
     }
 }
 ```
