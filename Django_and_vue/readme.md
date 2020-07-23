@@ -539,14 +539,14 @@ review_book：
     1.主要优化目标！
     2.这是一个list，每一条评论的信息就是一个object。
     3. 对于每个评论的object：
-        id:评论的id
-        content:评论内容
-        user:username
-        book:book id与当前book一致
-        like_count_num：点赞总数
-        create_time：创建时间
-        rating:当前评论所属于的用户对于当前图书的评分
-        like_status：！！！！ 当前浏览网页的登录用户（不是当前这条评论所属于的用户）对于这条评论是否点过赞！如果是这里就是1，不是或者取消了赞，那么就是0！！！ ！！！！！
+        id:评论的id.
+        content:评论内容.
+        user:username.
+        book:book id与当前book一致.
+        like_count_num：点赞总数.
+        create_time：创建时间.
+        rating:当前评论所属于的用户对于当前图书的评分.
+        like_status：！！！！ 当前浏览网页的登录用户（不是当前这条评论所属于的用户）对于这条评论是否点过赞！如果是这里就是1，不是或者取消了赞，那么就是0！！！ ！！！！！.
 
 your request data:
 ```
