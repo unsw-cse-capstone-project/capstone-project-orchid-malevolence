@@ -98,9 +98,9 @@
 					</div>
 					
 					<!-- delete collection -->
-					<!-- <div class="collection_dele">
+					<div class="collection_dele">
 						<el-button type="text" @click="open" class="collection_dele_button">delete collection</el-button>
-					</div> -->
+					</div>
 					</div>
 					<!-- 分割线，显示当前collection名字 -->
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
@@ -126,7 +126,7 @@ import {postperinfo} from '../network/single_book'
 import {getCollectionmultdata} from '../network/single_book'
 import {postnewcollection} from '../network/single_book'
 import {changecollectioname} from '../network/single_book'
-//import {delecollection} from '../network/single_book'
+import {delecollection} from '../network/single_book'
 // import axios from 'axios'
 export default {
 	components:{
@@ -154,7 +154,7 @@ export default {
 				new_name: '',
 				collection_id: ''
 			},
-			collection_id: '',
+			//collection_id: '',
 			// collection
 			books: [],       // current collection's books
 			options: [],     // collections' content
@@ -165,9 +165,9 @@ export default {
 				name: ''
 			},
 			
-			// delecollectionform: {
-			// 	collection_id: ''
-			// },
+			delecollectionform: {
+				collection_id: ''
+			},
 			dialogFormVisible: false,
 			dialogFormVisible2: false,
 			
@@ -204,7 +204,7 @@ export default {
 				return item.value === selVal;
 			});
 			this.getCollectionBooks(obj.key)
-			this.collection_id = obj.key
+			this.delecollectionform.collection_id = obj.key
 			this.recollectionForm.new_name = obj.value
 			this.recollectionForm.collection_id = obj.key
 		},
@@ -272,16 +272,16 @@ export default {
 		},
 		
 		//delete collection
-		// open() {
-		// 	delecollection(this.collection_id).then(res=>{
-		// 		console.log(res);
-		// 		this.$message.success('delete successfully');
-		// 		//this.reload();
-		// 	}).catch(err=>{
-		// 		console.log(err)
-		// 		this.$message.error('delete failure');
-		// 	})
-		// }
+		open() {
+			delecollection(this.delecollectionform).then(res=>{
+				console.log(res);
+				this.$message.success('delete successfully');
+				this.reload();
+			}).catch(err=>{
+				console.log(err)
+				this.$message.error('delete failure');
+			})
+		}
 	},
 	mounted: function () {
 		this.$refs.PerinfoFormRef.validate(async valid => {
@@ -306,7 +306,7 @@ export default {
 			this.getCollectionBooks(this.collections[0].id) // default select first collection
 			this.recollectionForm.new_name = this.collections[0].name
 			this.recollectionForm.collection_id = this.collections[0].id
-			this.collection_id = this.collections[0].id
+			this.delecollectionform.collection_id = this.collections[0].id
 		})
 		.catch(error => {
 			console.log(error)
