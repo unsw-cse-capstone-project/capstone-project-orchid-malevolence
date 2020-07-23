@@ -6,6 +6,7 @@ Django_and_vue/readbook/backed/__pycache__/
 Django_and_vue/readbook/backed/migrations/__pycache__/
 Django_and_vue/readbook/readbook/__pycache__/
 Django_and_vue/readbook/account/__pycache__/
+user_based_collaborative_filtering/user_based_CF/__pycache__/
 
 # misc
 .DS_Store
