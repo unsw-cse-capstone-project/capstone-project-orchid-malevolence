@@ -46,13 +46,16 @@ localhost:8000/admin<br>
 you can create an new account, do not use complex password, if account be created, password will be Encrypted! you can not check it by /admin!
 
 # Book Database
-database have 300 books information.
+database have 550+ books information.
 
 these book related to
 ```python
-['python','java','linux','harryporter','Holmes','Django','Twilight','cook',
+    # ['python','java','linux','harryporter','Holmes','Django','Twilight','cook',
     # 'Shakespeare','hugo','Algorithm','Vampire','Verne','Ocean','Food','Fruit','Maya','Egypt','Roma',
-    # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking']
+    # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking',
+    # 'alcohol','Alexandre Dumas','Goethe','Dante','Tagore','Leo Tolstoy','Maxim Gorky','Hemingway','Balzac','Pushkin',
+    #'cat','dog','chocolate','pie','database','IBM','piano','violin','elves','tank','cake','tea',
+    #'coffee','pizza','milk','rose','spring','shark','lion','cache','cpu','gpu','intel','newspaper','law','sun','moon','basketball','football']
 ```
 
 # Api-guidelines
