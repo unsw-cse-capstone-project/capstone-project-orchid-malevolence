@@ -174,6 +174,11 @@
         margin: 5px 2px 0 2px;
         height: 100%;
     }
+
+    .el-progress {
+        width: 230px;
+        margin: 0 auto;
+    }
 </style>
 
 

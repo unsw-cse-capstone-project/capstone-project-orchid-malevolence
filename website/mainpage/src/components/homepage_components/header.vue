@@ -65,7 +65,7 @@
             },
 
             jump_homepage() {
-                this.$router.push('home')
+                this.$router.push('/')
             },
 
             jump_reg() {
