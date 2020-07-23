@@ -98,6 +98,7 @@ export function postReview (query) {
 		method:'post',
 		data:query
 	})
+}
 
 
 export function postnewcollection (data) {
@@ -106,5 +107,5 @@ export function postnewcollection (data) {
 		method:'post',
 		data:data
 	})
-
 }
+
