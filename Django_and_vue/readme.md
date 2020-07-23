@@ -315,6 +315,8 @@ you want to add this book to this collection or remove this book from this colle
 url: /api/searchbook/
 ```
 
+这个接口没有任何验证要求！！
+
 ！！！！！ 我get和post都做了接口，爱用哪个用哪个，get用params参数，post用body参数 ！！！！！
 
 >POST search some book with title or authors.
@@ -334,11 +336,37 @@ url: /api/searchbook/
 return all book objects related to "key_word"
 if no result, it will return error msg and status 400.
 
+## search filter
+```
+url: /api/filtersearchbook/
+```
+
+>GET
+
+同上没有任何验证要求！！
+
+get请求，参数在params里面
+{
+    "search_type": "Title"/"Authors",
+    "key_word": "python"，
+    "filter_rating": 3
+}
+
+前面两个跟搜索一样，再额外添加一个筛选分数条件。
+最好是整数！！！
+会返回大于等于当前筛选分数的结果！！
+
+
+
 # Set monthly goal
 ```
 url: /api/set_goal/
 ```
+!!!!!做了修改了！！！！！！
 
+！！！！！post和get都改了 ！！！！！！！！
+!!!!添加年份限定！！！
+！！！！ 如果之前没设定过目标，除了返回400.也会返回 0，0！！！！！！
 
 >GET params参数传递
 这个就是简单的获取目标的值。
@@ -347,7 +375,8 @@ you can acquire goal data, which contain target and already done count num
 you can send data:
 
 ```
-{
+{   
+    "year":2020,
     "month":7
 }
 ```
@@ -364,6 +393,7 @@ the response:
 进行设置目标，或者修改目标。
 发送规定格式的数据：
     month是当前月份，最好通过vue函数获取。
+    year,当前年份
     target就是目标数字。
     不能为负数！
     
@@ -376,7 +406,8 @@ request data:
 ```
 {
     "month_goal":
-    {
+    {   
+        "year":2020,
         "month":7,
         "target"2
     }
@@ -400,7 +431,7 @@ url: /api/rating/
 
 用户对当前书进行打分
 发送规定样式的请求数据，request数据包含：
-    书籍id，以及分数，最多小数点后一位！！
+    书籍id，以及分数，分数为【1，5】的整数，两边闭包！
 
 返回数据为返回状态。
 
@@ -409,7 +440,7 @@ request data:
 {
     "rating_info":{
         "book":"h56ansk4Sabc",
-        "rating":3.5
+        "rating":3
     }
 }
 ```
@@ -429,16 +460,28 @@ request需要包含：书的id以及规定格式的评论内容。
 
 返回数据无所谓，判断status就行。
 
-目前不支持评论的修改和删除。
+目前支持评论的修改.
+
+目前每个用户对于一本图书只能有一条评论！
+
+修改评论类似，重新发一遍就行。review->contetn 可以为空，发送空字符串就行 !""!.
 
 can not support edit and delet!
 request data:
 
-```
+```json
+发送评论：
 {
     "book_id":"h56ansk4Sabc",
     "review":{
         "content":"2 years later, this still tech me so much! I recommand this book significantly!"
+    }
+}
+空评论也可以：必须要加上空字符串的双引号！！！
+{
+    "book_id":"h56ansk4Sabc",
+    "review":{
+        "content":""
     }
 }
 ```
@@ -485,17 +528,25 @@ request信息需要有book_id
 返回数据为这个书的基本信息：
 包括书的id，书名，评分（包括分数和评分人数）
 
-user_like_which:
-    是指当前用户给哪些评论点过赞，这里面的id不是需要的数据。
-    这里面每一条数据的review是对应的评论的id
+user_rating_review:
+    当前这个用户，也就是登录用户对于当前浏览的书的评分，以及评论内容。
+
+rating_analyse：
+    当前浏览的这本书的评分信息。包括平均分，多少人打过分。
+    剩下的是每个分数占总评分人数的比例小数，前端需要乘100%并显示。
 
 review_book：
-    这本书有的所有评论，这下面的每条数据中的id是就是评论自己的id
-    content是评论内容
-    like_count_num是多少人点过赞。
-
-如果想知道当前用户对哪些评论点过赞，就通过user_like_which中的每一条数据的 "review"来对应查找评论，
-如果user_like_which为空，则用户目前未对当前图书下面的评论点过赞。
+    主要优化目标！
+    这是一个list，每一条评论的信息就是一个object。
+    对于每个评论的object：
+        id:评论的id
+        content:评论内容
+        user:username
+        book:book id与当前book一致
+        like_count_num：点赞总数
+        create_time：创建时间
+        rating:当前评论所属于的用户对于当前图书的评分
+        like_status：！！！！ 当前浏览网页的登录用户（不是当前这条评论所属于的用户）对于这条评论是否点过赞！如果是这里就是1，不是或者取消了赞，那么就是0！！！ ！！！！！
 
 your request data:
 ```
@@ -505,51 +556,39 @@ your request data:
 ```
 
 response:
-```
+```json
 {
-    "id": "h56ansk4Sabc",
-    "title": "java: Web develop",
-    "rating": 3.5,
-    "user_like_which": [
-        {
-            "id": 1,
-            "status": true,
-            "belongto_book": "h56ansk4Sabc",
-            "review": 1,
-            "user": 3
-        }
-    ],
+    "id": "zz1ahsqUgXwC",
+    "title": "In America",
+    "user_rating_review": {
+        "user_rating": 3,
+        "user_review": "2 years later, this still tech me so much! I recommand this book significantly!"
+    },
+    "rating_analyse": {
+        "how_many_user_scored": 2,
+        "average_rating": 4.0,
+        "five": 0.5,
+        "four": 0.0,
+        "three": 0.5,
+        "two": 0.0,
+        "one": 0.0
+    },
     "review_book": [
         {
-            "id": 1,
-            "content": "This book is very userful, and the author is a good coder!",
-            "user": 3,
-            "book": "h56ansk4Sabc",
-            "like_count_num": 1
-        },
-        {
             "id": 2,
-            "content": "2 years later, this still tech me so much! I recommand this book significantly!",
-            "user": 3,
-            "book": "h56ansk4Sabc",
-            "like_count_num": 0
+            "content": "gooooooooooooooooooooooooooooood! Interesting!!!!!!",
+            "user": "Black",
+            "book": "zz1ahsqUgXwC",
+            "like_count_num": 0,
+            "create_time": "2020-07-23",
+            "rating": 5,
+            "like_status": 0
         }
     ]
 }
 ```
 
-response data contain these:
-1.book id : "id"
-2.book titel: "title
-3.rating by user: "rating" (this is not the avg rating)
-4.user like which review, you can check the "user_like_which"-> "review", this is the review id
-5. all review relate to this book:
-    for each review, contain:
-        review centene:"content"
-        who write this review:  "review_book" -> "user"
-        how many peoplw like this review: "review_book" -> "like_count_num"
-                                    
-
+                                   
 
 # to be continue
 
