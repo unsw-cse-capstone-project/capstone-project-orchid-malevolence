@@ -593,7 +593,6 @@ response:
 # to be continue
 
 ## recommand system
-## rating optimiza
 ## more data
 
 
