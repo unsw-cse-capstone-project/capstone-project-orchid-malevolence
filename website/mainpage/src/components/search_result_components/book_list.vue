@@ -103,17 +103,20 @@ export default {
 
 		},
 		jump_one_book (value) {
+			console.log(value)
 
 			this.$router.push({
 				name: 'one_book',
+
 				query: {
+
 					// item:value
 					book_id: value.id,
 					authors:value.authors,
 					title:value.title,
 					ISBN:value.ISBN,
 					publisher:value.publisher,
-					publisher_data:value.publisher_data,
+					publisher_data:value.publish_date,
 					imageLink:value.imageLink,
 					category:value.categories
 

@@ -168,8 +168,7 @@ export default {
 				TotalCount:Number,
 				averageScore:Number,
 				book_id:"",
-				publish_date: '',
-				categories:'',
+
 				review_book:[]
 
 			},
@@ -212,6 +211,7 @@ export default {
 
 			getSingleBookmultdata(post_value).then(result => {
 				console.log(result)
+
 				this.result.rate=result.rating_analyse.rating
 				this.result.TotalCount=result.rating_analyse.how_many_user_scored
 				this.result.averageScore=result.rating_analyse.average_rating
