@@ -336,7 +336,7 @@ export default {
 	.content{
 		// height: 10000px;
 		width: 90%;		
-		border: 1px solid;
+		//border: 1px solid;
 		margin: auto;
 		// overflow: scroll;
 	}
