@@ -109,3 +109,18 @@ export function postnewcollection (data) {
 	})
 }
 
+export function changecollectioname (data) {
+	return request({
+		url: '/api/collection/',
+		method:'put',
+		data:data
+	})
+}
+
+export function delecollection (data) {
+	return request({
+		url: '/api/collection/',
+		method:'delete',
+		data:data
+	})
+}
