@@ -1,6 +1,6 @@
 <style scoped>
   span{
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     font-size: 16px;
   }
   .margin_class{
@@ -23,7 +23,7 @@
 
 <template>
   <div>
-    <span class="demonstration">My rating:</span>
+    <span class="demonstration">Rating and commit</span>
     <div @click="drawer = true">
       <div v-if="exist===true" @click="disable() ">
         <el-rate
@@ -48,12 +48,13 @@
 
 
     <el-drawer
-            @closeDrawer="closeDrawer"
+
             title="I am title"
             @close="afterclose"
+
             :visible.sync="drawer"
             :with-header="false">
-      <h3 class="margin_class" style="display: block">My rating</h3>
+      <h3 class="margin_class" style="display: block">Rating and commit</h3>
       <div class="margin_class" v-if="exist===true"  @click="disable()">
         <el-rate
                 v-model="value"
@@ -82,81 +83,93 @@
               v-model="textarea2">
       </el-input>
       <el-button @click="submite_review" class="margin_class" style="float: right" type="primary" round>submit</el-button>
+      <el-button @click="Close_drawer" class="margin_class" style="float: right" type="primary" round>cancle</el-button>
 
     </el-drawer>
+
   </div>
 
 </template>
 
 <script>
-import {postrating,postReview} from "../../network/single_book"
+import {getSingleBookmultdata,postrating,postReview} from "../../network/single_book"
 export default {
   name: 'rate',
-  data() {
+  data () {
     return {
       // wrapperClosable:true,
-      drawer:false,
+      drawer: false,
       exist: true,
       textarea1: '',
       textarea2: '',
       token_log: localStorage.getItem('token'),
       value: 0,
-      colors: ['#99A9BF', '#F7BA2A', '#FF9900']  }
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900']
+    }
   },
   props: {
-    bookID:String
+    bookID: String
   },
   created () {
 
   },
-  methods:{
-    submite_review(){
-      let post_review={
-        "book_id":this.bookID,
-        "review":{
-          "content":this.textarea2
+  methods: {
+    submite_review () {
+      let post_review = {
+        "book_id": this.bookID,
+        "review": {
+          "content": this.textarea2
         }
       }
       console.log(post_review)
-      postReview(post_review).then(res=>{
+      postReview(post_review).then(res => {
         console.log(res)
-      }).catch(res=>{
+      }).catch(res => {
         console.log(res)
       })
+      let get_book_value = {
+        "book_id": this.bookID,
+
+      }
+      getSingleBookmultdata(get_book_value).then(res => {
+        console.log(res)
+
+      }).catch(res => {
+        console.log(res)
+      })
+      this.drawer=false
+
 
     },
-    closeDrawer(){
-
+    Close_drawer(){
+      this.drawer=false
     },
+
+
     afterclose () {
       this.drawer = false
     },
-    disable(){
+    disable () {
       console.log(this.bookID)
-      let postvalue={
-        "rating_info":{
-          "book":this.bookID,
-          "rating":this.value
+      let postvalue = {
+        "rating_info": {
+          "book": this.bookID,
+          "rating": this.value
         }
       }
 
-      postrating(postvalue).then(res=>{
+      postrating(postvalue).then(res => {
         console.log(res)
       })
       console.log(this.bookID)
 
-      this.exist=false
+      this.exist = false
 
 
     },
 
 
-
-
-
-
-  },
-
+  }
 }
 </script>
 

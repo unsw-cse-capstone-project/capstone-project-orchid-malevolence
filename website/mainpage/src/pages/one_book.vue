@@ -26,25 +26,56 @@
 		display: inline-block;
 		vertical-align: top;
 		border-left: solid 1px gray;
+
 	}
 	.rating{
 		margin: 20px;
+		display: inline-block;
+		vertical-align: top;
+
 		/*font-size: 18px;*/
 	}
 	.btn_add{
+
+		width: 25%;
 		display: inline-block;
-		vertical-align: top;
-		position: absolute;
-		left:18%;
-		top:70%;
+		/*vertical-align: top;*/
+
 
 	}
 	.get_review_box{
-		position: absolute;
+
 		width: 95%;
 		border-top: 2px solid gray;
+		height: 10%;
 
 	}
+
+	.username{
+		color: #3377aa;
+		margin-right: 20px;
+		display: inline-block;
+	}
+	.inner_socre{
+		margin-right: 10px;
+
+		display: inline-block;
+
+	}
+	.inner_data{
+		color: #666666;
+
+		margin-right: 10px;
+
+		display: inline-block;
+
+	}
+	.inner_content{
+		display: block;
+		margin: 10px 0;
+
+	}
+
 
 
 </style>
@@ -63,31 +94,39 @@
 			<div class="book_item text-block">
 				<div><p>Author: {{book.authors}}</p></div>
 				<div><p>Publisher: {{book.publisher}}</p></div>
+				<div><p>publish_date: {{book.publisher_data}}</p></div>
 				<div><p>ISBN: {{book.ISBN}}</p></div>
+				<div><p>categories: {{book.category}}</p></div>
+
 			</div>
 
 			<div class="read_score">
 				<read_score :res="result"></read_score>
 			</div>
-			<div>
-				<add_your_collection class="btn_add" style="display: inline-block" :bookID="result.book_id" ></add_your_collection>
+			<div class="btn_add">
+				<add_your_collection :bookID="result.book_id" ></add_your_collection>
 			</div>
 			<div class="rating">
 				<rating :bookID="result.book_id"></rating>
 			</div>
-			<div>
-				<div class="get_review_box">
-					<h3 style="margin:10px 0">Reviews:</h3>
-					<div>
 
-					</div>
-
+			<h3 style="margin:10px 0">Reviews:</h3>
+			<div v-for="item in this.result.review_book" class="get_review_box" v-bind:key="item.id">
+				<span class="username">{{item.user}}</span>
+					<el-rate class="inner_socre"
+							v-model="item.rating"
+							disabled
+							text-color="#ff9900"
+							score-template="{value}">
+			</el-rate>
+				<span class="inner_data">{{item.create_time}}</span>
+				<div class="inner_content">
+					<span style="overflow-wrap:break-word;">{{item.content  }}</span>
 				</div>
-<!--				<get_reviews></get_reviews>-->
+
+
+
 			</div>
-
-
-
 
 
 
@@ -107,6 +146,7 @@ import {getSingleBookmultdata} from '../network/single_book'
 import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'
 import add_your_collection from '../components/single_book_components/add_your_collection'
+
 // import get_reviews from '../components/single_book_components/get_reviews'
 
 
@@ -116,15 +156,21 @@ export default {
 		return {
 			token_log: localStorage.getItem('token'),
 			id: null,
+			count: 0,
 			review:[],
-			book:{},
+			value:'',
+			book:{
+
+			},
 			book_id:null,
 			result:{
 				rate:Number,
 				TotalCount:Number,
 				averageScore:Number,
 				book_id:"",
-				publisher_data: ''
+				publish_date: '',
+				categories:'',
+				review_book:[]
 
 			},
 			update_cont:0
@@ -143,17 +189,23 @@ export default {
 
 	created () {
 		this.getData();
-		this.getreview()
+
 	},
 
+
 	methods: {
+
 
 		getData () {
 			this.book=this.$route.query
 
+
 			// let that=this.book.id
 			console.log(this.book)
+
+
 			// let post_value=(this.$route.params.item)
+
 
 			let post_value={book_id:this.book.book_id}
 			console.log(post_value)
@@ -164,15 +216,15 @@ export default {
 				this.result.TotalCount=result.rating_analyse.how_many_user_scored
 				this.result.averageScore=result.rating_analyse.average_rating
 				this.result.book_id=result.id
-				this.result.publication_date=result.pub
+				this.result.review_book=result.review_book
+				console.log(this.result)
+
 
 			}).catch(res=>{
-				console.log(res)
+				console.log(res.review_book)
 			})
 		},
-		getreview(){
 
-		}
 	},
 
 }

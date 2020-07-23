@@ -23,14 +23,13 @@
             text-color="#ff9900"
             score-template="{value}">
     </el-rate>
-    <span>{{res.TotalCount}} people have read this book</span>
-    <!--    <span>{{res}}{{value}}</span>-->
+    <span> {{res.TotalCount }} people have read this book</span>
+
   </div>
 
 </template>
 
 <script>
-import brothers_talk from '../../network/brothers_talk'
 
 // import {getSingleBookmultdata} from '../../network/single_book'
 
@@ -43,7 +42,9 @@ export default {
       number: Number(0),
       book_id: String,
       value: 0,
-      TotalCount:''
+      TotalCount:'',
+      isShow:true
+
 
 
     }
@@ -53,14 +54,16 @@ export default {
   },
   // request method page initial and get average score of this book
   updated () {
+    if(this.res.averageScore!==undefined){
+      this.average = this.res.averageScore
+      this.book_id = this.res.book_id
+      // this.TotalCount=this.res.TotalCount
+      console.log(this.book_id + " aaaa")
+    }
+    else{
+      this.isShow=false
+    }
 
-    this.average = this.res.averageScore
-    this.book_id = this.res.book_id
-    console.log(this.book_id + " aaaa")
-    brothers_talk.$on('score',function (val) {
-      this.value=val
-
-    })
 
 
   },

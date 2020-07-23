@@ -17,7 +17,6 @@
 	<div>
 		<div>
 			<Header></Header>
-<!--			<search_model @childfromheader="childfromheader(arguments)"></search_model>-->
 		</div>
 
 		<div class="body">
@@ -60,51 +59,10 @@ export default {
 
 	},
 	methods:{
-		//在监听到子组件搜索点击的时候触发，向后台请求数据，并分页
 
-		childfromheader(value){
-			this.key_word=value[0]
-				this.search_type=value[1]
-				if(this.search_type===""){
-					this.search_type='Title'
-
-				}
-				// post的参数（后端要求传输的内容）
-				let that=this
-				let post_value={search_type:that.search_type,key_word:that.key_word }
-
-			// console.log(post_value)
-			getSearchResult(post_value).then(res=>{
-				// console.log(res)
-				if (res.status===400){
-					// console.log('ss')
-					this.$message({message:'No related book: '+this.key_word, showClose:true,} )
-
-						this.isShow=false
-						let temp=this.key_word
-						this.key_word=temp+ '. There is no related book'
-
-
-
-				}else{
-
-						this.isShow=true
-					this.result_list=this.slite_pages(res)
-					// this.result_list.push(this.slite_pages(res))
-
-				}
-				console.log('fromchild')
-				// console.log(this.result_list)
-			}).catch(err=>{
-
-				console.log(err)
-			})
-
-
-
-		},
 		//将请求的数据按每页10个显示，包含当前页，总数
 		slite_pages:function(value){
+			console.log(value)
 
 			let list=[]
 			let start=0
@@ -112,16 +70,14 @@ export default {
 			let i
 			for (i=0;i<=num;i++ ){
 				list.push({total_book:value.length,page:i,book_li:value.slice(start,(i+1)*10)})
+
 				start=(i+1)*10
 			}
 			let result=value.slice(start,i*10)
 			if (result.length){
 				list.push({total_book:value.length,page:i,book_li:value.slice(start,(i+1)*10)})
 			}
-			// console.log(list)
-
-
-
+			console.log(list)
 			return list
 
 		},
@@ -130,6 +86,8 @@ export default {
 
 
 	},
+	//在监听到搜索点击的时候触发，向后台请求数据，并分页
+
 	watch: {
 		'$route' (to, from) {
 			console.log(to)
@@ -146,11 +104,11 @@ export default {
 			console.log(post_value)
 			getSearchResult(post_value).then(res=>{
 				if (res.status===400){
-					this.$message({message:'No related book: '+this.key_word, showClose:true,} )
+					this.$message({message:'No book about: '+this.key_word, showClose:true,} )
 
 					this.isShow=false
 					let temp=this.key_word
-					this.key_word=temp+ '. There is no related book'
+					this.key_word=this.search_type+temp+ '. There is no related book'
 
 				}else{
 
@@ -173,10 +131,6 @@ export default {
 
 	created () {
 
-		console.log(this.$route.query.path)
-		// this.$router.go(0)
-
-
 		//路由传参获取title/author 和keyword
 		this.key_word=this.$route.query.key_word
 		this.search_type=this.$route.query.search_type
@@ -188,7 +142,7 @@ export default {
 		console.log(post_value)
 		getSearchResult(post_value).then(res=>{
 			if (res.status===400){
-				this.$message({message:'No related book: '+this.key_word, showClose:true,} )
+				this.$message({message:'No book about: '+this.key_word, showClose:true,} )
 
 					this.isShow=false
 					let temp=this.key_word
@@ -202,7 +156,6 @@ export default {
 				this.result_list=this.slite_pages(res)
 			}
 			console.log(this.result_list)
-			console.log('from router')
 		}).catch(err=>{
 
 			console.log(err)

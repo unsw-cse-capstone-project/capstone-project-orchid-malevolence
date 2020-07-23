@@ -46,6 +46,7 @@
 					<div><p>Author: {{item.authors}}</p></div>
 					<div><p>Publisher: {{item.publisher}}</p></div>
 					<div><p>publish_date: {{item.publish_date}}</p></div>
+					<div><p>category: {{item.categories}}</p></div>
 
 				</div>
 			</div>
@@ -57,7 +58,6 @@
 			<el-pagination
 							background
 							@current-change="getpage"
-							:current-page=books.page
 							:page-size="10"
 							:pager-count="11"
 							layout="prev, pager, next"
@@ -79,7 +79,7 @@ export default {
 			// isShow:false,
 
 			real_page:1,
-			real_book:{}
+
 		}
 	},
 
@@ -95,19 +95,15 @@ export default {
 
 		}
 	},
-	created () {
-		this.real_book=this.books
-	},
 
 	methods:{
 		getpage(value){
 			this.real_page=value
 			console.log("this.real_page "+ this.real_page)
-			this.isShow=true
 
 		},
 		jump_one_book (value) {
-			// console.log(value)
+
 			this.$router.push({
 				name: 'one_book',
 				query: {
@@ -118,7 +114,8 @@ export default {
 					ISBN:value.ISBN,
 					publisher:value.publisher,
 					publisher_data:value.publisher_data,
-					imageLink:value.imageLink
+					imageLink:value.imageLink,
+					category:value.categories
 
 
 				}

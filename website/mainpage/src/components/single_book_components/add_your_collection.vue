@@ -16,7 +16,7 @@
 		<el-drawer
 						:wrapperClosable=this.wrapperClosable
 						title="I am title"
-						@close="afterclose"
+
 						:visible.sync="drawer"
 						:with-header="false">
 			<h3 class="all_margin">Add to your collection</h3>
@@ -46,7 +46,9 @@
 			<div class="all_margin" v-show="isShow">
 				<span>Name:</span>
 				<el-input   style="width: 40%; margin: 0 15px"  v-model="input" placeholder="please add a shelf"></el-input>
+
 				<el-button type="primary" @click="add_new_shelf" >Add</el-button>
+
 
 			</div>
 
@@ -98,13 +100,13 @@ export default {
 		}).catch(res=>{
 			console.log(res)
 		})
-		// let name=""
-		// addCollection()
+
 	},
 	methods: {
-		afterclose () {
-			this.isShow = false
+		Close_drawer(){
+			this.drawer=false
 		},
+
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
@@ -130,6 +132,7 @@ export default {
 
 
 				})
+
 			}
 		},
 
@@ -144,6 +147,7 @@ export default {
 			}).catch(res=>{
 				console.log(res)
 			})
+			this.drawer=false
 
 		}
 	},
