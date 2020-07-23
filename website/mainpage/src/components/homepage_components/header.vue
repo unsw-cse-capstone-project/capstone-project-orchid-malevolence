@@ -85,7 +85,7 @@
             jump_search_result(){
                 this.$router.push({
                             name:'search_result',
-                            params: {
+                            query: {
                                 key_word:this.input3,
                                 search_type:this.select
                             }
@@ -95,6 +95,7 @@
                             // }
                         }
                 )
+
             },
         }
     }

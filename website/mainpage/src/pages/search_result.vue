@@ -13,9 +13,11 @@
 </style>
 
 <template>
+
 	<div>
 		<div>
-			<search_model @childfromheader="childfromheader(arguments)"></search_model>
+			<Header></Header>
+<!--			<search_model @childfromheader="childfromheader(arguments)"></search_model>-->
 		</div>
 
 		<div class="body">
@@ -23,17 +25,23 @@
 			<book_list :books="result_list" v-if="isShow"></book_list>
 
 		</div>
+
+
 	</div>
+
+
 </template>
 
 <script>
-import search_model from '../components/search_result_components/search_model'
+// import search_model from '../components/search_result_components/search_model'
 import book_list from '../components/search_result_components/book_list'
 import {getSearchResult} from '../network/single_book'
+import Header from  '../components/homepage_components/header'
 
 
 export default {
 	name: 'search_result',
+
 	data(){
 
 		return{
@@ -46,15 +54,15 @@ export default {
 		}
 	},
 	components:{
-		search_model,
+		// search_model,
 		book_list,
+		Header
 
 	},
 	methods:{
 		//在监听到子组件搜索点击的时候触发，向后台请求数据，并分页
 
 		childfromheader(value){
-			console.log(value)
 			this.key_word=value[0]
 				this.search_type=value[1]
 				if(this.search_type===""){
@@ -65,28 +73,27 @@ export default {
 				let that=this
 				let post_value={search_type:that.search_type,key_word:that.key_word }
 
-			// console.log(typeof post_value)
+			// console.log(post_value)
 			getSearchResult(post_value).then(res=>{
 				// console.log(res)
 				if (res.status===400){
 					// console.log('ss')
 					this.$message({message:'No related book: '+this.key_word, showClose:true,} )
-					this.$nextTick(()=>{
+
 						this.isShow=false
 						let temp=this.key_word
 						this.key_word=temp+ '. There is no related book'
-					})
+
 
 
 				}else{
-					this.$nextTick(()=>{
+
 						this.isShow=true
-
-					})
-
 					this.result_list=this.slite_pages(res)
+					// this.result_list.push(this.slite_pages(res))
+
 				}
-				// console.log(this.result_list)
+				console.log('fromchild')
 				// console.log(this.result_list)
 			}).catch(err=>{
 
@@ -98,6 +105,7 @@ export default {
 		},
 		//将请求的数据按每页10个显示，包含当前页，总数
 		slite_pages:function(value){
+
 			let list=[]
 			let start=0
 			let num=parseInt(value.length/10)
@@ -122,41 +130,79 @@ export default {
 
 
 	},
+	watch: {
+		'$route' (to, from) {
+			console.log(to)
+			console.log(from)
 
-	created () {
-		this.key_word=this.$route.params.key_word
-		// console.log(this.key_word)
-		this.search_type=this.$route.params.search_type
-		// console.log(this.search_type)
-		if(this.search_type===""){
-			this.search_type='Title'
-		}
+			// 路由传参获取title/author 和keyword
+			this.key_word=this.$route.query.key_word
+			this.search_type=this.$route.query.search_type
+			if(this.search_type===""){
+				this.search_type='Title'
+			}
+			let post_value={search_type:this.search_type,key_word:this.key_word }
+			//发送axios get请求
+			console.log(post_value)
+			getSearchResult(post_value).then(res=>{
+				if (res.status===400){
+					this.$message({message:'No related book: '+this.key_word, showClose:true,} )
 
-
-		let post_value={search_type:this.search_type,key_word:this.key_word }
-		// console.log( post_value)
-		getSearchResult(post_value).then(res=>{
-			// console.log(res)
-			if (res.status===400){
-				// console.log('ss')
-				this.$message({message:'No related book: '+this.key_word, showClose:true,} )
-				this.$nextTick(()=>{
 					this.isShow=false
 					let temp=this.key_word
 					this.key_word=temp+ '. There is no related book'
-				})
 
+				}else{
 
-			}else{
-				this.$nextTick(()=>{
 					this.isShow=true
 
-				})
+					//得到结果
+					this.result_list=this.slite_pages(res)
+				}
+				console.log(this.result_list)
+				console.log('from router')
+			}).catch(err=>{
 
+				console.log(err)
+			})
+
+
+
+		}
+	},
+
+	created () {
+
+		console.log(this.$route.query.path)
+		// this.$router.go(0)
+
+
+		//路由传参获取title/author 和keyword
+		this.key_word=this.$route.query.key_word
+		this.search_type=this.$route.query.search_type
+		if(this.search_type===""){
+			this.search_type='Title'
+		}
+		let post_value={search_type:this.search_type,key_word:this.key_word }
+		//发送axios get请求
+		console.log(post_value)
+		getSearchResult(post_value).then(res=>{
+			if (res.status===400){
+				this.$message({message:'No related book: '+this.key_word, showClose:true,} )
+
+					this.isShow=false
+					let temp=this.key_word
+					this.key_word=temp+ '. There is no related book'
+
+			}else{
+
+					this.isShow=true
+
+				//得到结果
 				this.result_list=this.slite_pages(res)
 			}
-			// console.log(this.result_list)
-			// console.log(this.result_list)
+			console.log(this.result_list)
+			console.log('from router')
 		}).catch(err=>{
 
 			console.log(err)
@@ -165,7 +211,7 @@ export default {
 
 
 
-	}
+	},
 
 }
 </script>

@@ -42,7 +42,8 @@ export default {
       average: 0,
       number: Number(0),
       book_id: String,
-      value: 0
+      value: 0,
+      TotalCount:''
 
 
     }
