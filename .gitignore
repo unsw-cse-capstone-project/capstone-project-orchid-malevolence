@@ -1,0 +1,14 @@
+# .idea should be ignored by git
+.idea/
+
+# pycache should not be include in repo
+Django_and_vue/readbook/backed/__pycache__/
+Django_and_vue/readbook/backed/migrations/__pycache__/
+Django_and_vue/readbook/readbook/__pycache__/
+Django_and_vue/readbook/account/__pycache__/
+
+# misc
+.DS_Store
+
+# venv
+venv/

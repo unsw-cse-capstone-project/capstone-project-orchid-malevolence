@@ -20,8 +20,8 @@
             <!-- collection主体，显示 图 & 书名 -->
             <div class="wrap">
                 <div class="content" v-for="item in books" :key="item.imageLink">
-                    <img :src="item.imageLink" class="img" alt/>
-                    <a href="item.url">{{item.title}}</a>
+                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />
+                    <a>{{item.title}}</a>
                 </div>
             </div>
 
@@ -41,6 +41,7 @@
                 value: '',       // collection name
                 // cur_key: 0,      // collection id
                 collections: [], // result from api package
+                item: '', // one book param
 
                 // TODO: connect with backend, get all book images in this collections
                 img_list: [
@@ -79,24 +80,48 @@
             // get books from specific collection through collection id
             getCollectionBooks(col_id) {
                 this.books = []  // refresh books' list
-                console.log("now select: " + col_id)
+                // console.log("now select: " + col_id)
 
                 let obj = {}
                 obj = this.collections.find((item) => {
                     return item.id === col_id;
                 });
 
+
+
                 let book
                 let len = obj.books.length
                 for(let i = 0; i < len; i++) {
                     book = {}
                     book["id"] = obj.books[i].id
+                    book["authors"] = obj.books[i].authors
                     book["title"] = obj.books[i].title
                     book["imageLink"] = obj.books[i].imageLink
-                    book["url"] = ''   // TODO: 跳转url
+                    book["ISBN"] = obj.books[i].ISBN
+                    book["publisher"] = obj.books[i].publisher
+                    book["publish_date"] = obj.books[i].publish_date
+                    // book["url"] = ''   // TODO: 跳转url
                     this.books.push(book)
                 }
-            }
+            },
+
+            jump_one_book(value) {
+                // console.log(value)
+                this.$router.push({
+                    name: 'one_book',
+                    query: {
+                        // item:value
+                        book_id: value.id,
+                        authors: value.authors,
+                        title: value.title,
+                        ISBN: value.ISBN,
+                        publisher: value.publisher,
+                        publish_date: value.publish_date,
+                        imageLink: value.imageLink
+                    }
+
+                })
+            },
         },
 
         mounted() {
@@ -123,7 +148,7 @@
         border-color: bisque;
         margin: 0 auto;
         width: 100%;
-        height: 1000px;
+        height: 1310px;
     }
 
     .collection-head {
@@ -153,5 +178,6 @@
 
     .img {
         width: 180px;
+        height: 240px;
     }
 </style>
