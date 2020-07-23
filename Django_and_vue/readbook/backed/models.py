@@ -48,11 +48,12 @@ class Collection_Book(models.Model):
 # set a goal
 class Goal(models.Model):
     user = models.ForeignKey(Account,related_name='user_goal',on_delete=models.CASCADE)
+    year = models.PositiveIntegerField(default=0)
     month = models.PositiveIntegerField(default=0)
     target = models.PositiveIntegerField(default=0)
 
     class Meta:
-        unique_together=('user','month')
+        unique_together=('user','year','month')
 
 # 
 class Review(models.Model):
@@ -62,9 +63,9 @@ class Review(models.Model):
     book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
     like_count_num = models.PositiveIntegerField(default=0)
 
-# class LikeCount(models.Model):
-#     review = models.ForeignKey(Review,related_name='like_count',on_delete=models.CASCADE)
-#     total_num=models.PositiveIntegerField(default=0)
+    class Meta:
+        unique_together=('user','book')
+
 
 class LikeIt(models.Model):
     review = models.ForeignKey(Review,related_name='likeit_review',on_delete=models.CASCADE)
@@ -79,7 +80,7 @@ class LikeIt(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(Account,related_name='rating_user',on_delete=models.CASCADE)
     book = models.ForeignKey(Book,related_name='rating_book',on_delete=models.CASCADE)
-    rating = models.DecimalField(max_digits = 5,decimal_places=1,null=True)
+    rating = models.PositiveIntegerField(default=0)
     create_time=models.DateTimeField(auto_now_add=True)
 
     class Meta:

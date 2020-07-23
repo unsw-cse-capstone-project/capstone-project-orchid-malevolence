@@ -1,7 +1,7 @@
 <template>
     <div id="app">
 
-        <router-view/>
+        <router-view v-if="isRouterAlive"/>
     </div>
 </template>
 
@@ -14,8 +14,26 @@
 // 第二步: 映射组件标签
         components:{
 
-        }
-
+        },
+		provide(){
+			return{
+				reload: this.reload
+			};
+		},
+		data(){
+			return{
+				style: '',
+				isRouterAlive: true
+			};
+		},
+		methods: {
+			reload() {
+				this.isRouterAlive = false;
+				this.$nextTick(function() {
+					this.isRouterAlive = true;
+				});
+			}
+		}
     }
 </script>
 

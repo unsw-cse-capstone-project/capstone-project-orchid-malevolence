@@ -32,6 +32,13 @@ export function getperinfodata () {
 
 }
 
+export function getCurGoal(query) {
+	return request({
+		url: '/api/set_goal/',
+		params:query
+	})
+}
+
 export function getSearchResult (query) {
 	return request({
 		url: '/api/searchbook/',
@@ -39,6 +46,14 @@ export function getSearchResult (query) {
 		data:query
 	})
 
+}
+
+export function postCurGoal(data) {
+	return request({
+		url: '/api/set_goal/',
+		method: 'post',
+		data:data
+	})
 }
 
 export function postperinfo (data) {
@@ -57,6 +72,7 @@ export function postrating (query) {
 	})
 
 }
+
 
 export function Add2Collection (query) {
 	return request({
@@ -81,6 +97,14 @@ export function postReview (query) {
 		url: '/api/review/',
 		method:'post',
 		data:query
+	})
+
+
+export function postnewcollection (data) {
+	return request({
+		url: '/api/collection/',
+		method:'post',
+		data:data
 	})
 
 }

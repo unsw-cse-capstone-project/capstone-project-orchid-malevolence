@@ -162,6 +162,39 @@ class AddBookAPIView(APIView):
             print(serializer.errors)
             return Response(data={"mag":"error"},status=HTTP_400_BAD_REQUEST)
 
+class FilterSearchBookAPIView(APIView):
+    def get(self,request,format=None):
+        data=request.query_params
+        print(data)
+        search_key=data['key_word']
+        search_type=data['search_type']
+        filter_rating = data['filter_rating']
+        if search_type.lower() == "title":
+            search_set = Book.objects.filter(title__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                res=[]
+                for i in serializer.data:
+                    if(i['avg_rating']>=filter_rating):
+                        res.append(i)
+                return Response(data=res,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        elif search_type.lower() == 'authors':
+            search_set = Book.objects.filter(authors__contains = search_key)
+            if search_set.exists():
+                serializer = BookSerializer(instance=search_set,many=True)
+                res=[]
+                for i in serializer.data:
+                    if(i['avg_rating']>=filter_rating):
+                        res.append(i)
+                return Response(data=res,status=HTTP_200_OK)
+            else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
+
+
 # 搜做书籍
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
@@ -243,7 +276,7 @@ class AddBookToCollectionAPIView(APIView):
         return Response(data={"msg":"delete it success"},status=HTTP_200_OK)
 
 
-# 添加评论，目前不支持修改和删除
+# 添加评论，目前支持修改
 class ReviewAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -257,19 +290,26 @@ class ReviewAPIView(APIView):
         review_info = request.data['review']
         review_info['user']=user_obj.id
         review_info['book']=book_id
-        serializer = ReviewSerializer(data=review_info)
-        if serializer.is_valid():
-            serializer.save()
-            print('ready to save')
-            return Response(data={'msg':'add review success'},status=HTTP_200_OK)
-        print(serializer.errors)
-        return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
+        review_set = Review.objects.filter(user=user_obj.id,book=book_id)
+        # 存在就是修改
+        if(review_set.exists()):
+            review_temp=review_set[0]
+            review_temp.content = review_info['content']
+            review_temp.save()
+            return Response(data={'msg':'update review success'},status=HTTP_200_OK)
+        else:
+            serializer = ReviewSerializer(data=review_info)
+            if serializer.is_valid():
+                serializer.save()
+                print('ready to save')
+                return Response(data={'msg':'add review success'},status=HTTP_200_OK)
+            print(serializer.errors)
+            return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
 
 # 给书打分,支持修改分数
 class RatingAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # decimal小数位有点不对，后面记得改！！！
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -308,7 +348,6 @@ class LikeItAPIView(APIView):
         like_info = request.data['likeit']
 
         like_set=LikeIt.objects.filter(review=review_id,user=user_obj.id)
-        print("i's here")
         if(like_set.exists()):
             if(like_info["status"]==-1):
                 # 取消点赞，如果已经被取消，则直接返回
@@ -334,12 +373,10 @@ class LikeItAPIView(APIView):
                 return Response(data={"msg":"我又点赞了！"},status=HTTP_200_OK)
             return Response(data={"msg":"already like it!"},status=HTTP_200_OK)
         else:
-            print("i'm in!")
             likeit_info = request.data['likeit']
             likeit_info['user']=user_obj.id
             likeit_info['review']=review_id
             likeit_info['belongto_book']=request.data['book_id']
-            print("284 284 284")
             serializer = LikeItSerializer(data=likeit_info)
             if serializer.is_valid():
                 serializer.save()
@@ -381,25 +418,26 @@ class BookDetailPageAPIView(APIView):
 class MonthlyGoalAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     # 简单测试无问题
-    # 检查是否已经设定月度目标，没有的话会返回404
+    # 检查是否已经设定月度目标，没有的话会返回400
     def get(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
         data=request.query_params
-        goal_info= data['month']
+        month_data= data['month']
+        year_data=data['year']
         print(request.data)
-        goal_set = Goal.objects.filter(user=user_obj.id,month=goal_info)
+        goal_set = Goal.objects.filter(user=user_obj.id,year=year_data,month=month_data)
         if(goal_set.exists()):
             goal_data=goal_set[0]
-            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info)
+            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=year_data,create_time__month=month_data)
             num=0
             if(ans.exists()):
                 num=ans.count()
             return Response(data={"target":goal_data.target,"already_done":num},status=HTTP_200_OK)
         else:
-            return Response(data={"msg":"goal have not set yet!"},status=HTTP_400_BAD_REQUEST)   
+            return Response(data={"target":0,"already_done":0},status=HTTP_400_BAD_REQUEST)   
 
     # 设定每月目标，在第一次设定时会检查并返回当月已经添加的书籍
     # 修改目标，每次也会重新检查并返回数据
@@ -410,12 +448,12 @@ class MonthlyGoalAPIView(APIView):
         user_obj = token_obj.user
         goal_info = request.data['month_goal']
         goal_info['user']=user_obj.id
-        goal_set = Goal.objects.filter(user=user_obj.id,month=goal_info['month'])
+        goal_set = Goal.objects.filter(user=user_obj.id,year=goal_info['year'],month=goal_info['month'])
         if(goal_set.exists()):
             goal_temp = goal_set[0]
             goal_temp.target = goal_info['target']
             goal_temp.save()
-            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info['month'])
+            ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=goal_info['year'],create_time__month=goal_info['month'])
             num=0
             if(ans.exists()):
                 num=ans.count()
@@ -425,7 +463,7 @@ class MonthlyGoalAPIView(APIView):
             if(serializer.is_valid()):
                 serializer.save()
                 # res = MonthlyGoalAPIView(isinstance=goal_info)
-                ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__month=goal_info['month'])
+                ans = Collection_Book.objects.filter(belongto=user_obj.id,create_time__year=goal_info['year'],create_time__month=goal_info['month'])
                 num=0
                 if(ans.exists()):
                     num=ans.count()

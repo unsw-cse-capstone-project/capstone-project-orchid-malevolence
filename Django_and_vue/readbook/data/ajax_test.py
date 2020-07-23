@@ -97,24 +97,27 @@ def ajax(obj):
 
 if __name__ == "__main__":
 
-    # label = ['id','title','authors','publisher','publish_date','page_count','categories','ISBN','imageLink']
-    # already_input_keyword=['python','java','linux','harryporter','Holmes','Django','Twilight','cook',
+    label = ['id','title','authors','publisher','publish_date','page_count','categories','ISBN','imageLink']
+    # already_input_keyword_01=['python','java','linux','harryporter','Holmes','Django','Twilight','cook',
     # 'Shakespeare','hugo','Algorithm','Vampire','Verne','Ocean','Food','Fruit','Maya','Egypt','Roma',
-    # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking']
+    # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking',
+    # 'alcohol','Alexandre Dumas','Goethe','Dante','Tagore','Leo Tolstoy','Maxim Gorky','Hemingway','Balzac','Pushkin',
+    # 'cat','dog','chocolate','pie','database','IBM','piano','violin','elves','tank','cake']
 
     # item_list=[]
-    # key_word=['alcohol','Alexandre Dumas','Goethe','Dante','Tagore','Leo Tolstoy','Maxim Gorky','Hemingway','Balzac','Pushkin']
+    # key_word=['tea','coffee','pizza','milk','rose','spring','shark','lion','cache','cpu','gpu','intel','newspaper','law','sun','moon','basketball','football']
     # for i in key_word:
     #     data=ajax(i)
     #     for j in data['items']:
     #         item_list.append(j)
 
-    df = pd.read_csv("data.csv")
+    # df=pd.DataFrame(columns=label)
+    df = pd.read_csv("data02.csv")
     # for i in item_list:
     #     temp=process(i)
     #     df = df.append(temp,ignore_index=True)
 
-    df['page_count']=df['page_count'].astype(int)
+    
 ###### 筛选 #########
     # "~"->取反
     # df=df[~df['ISBN'].isnull()]
@@ -122,7 +125,9 @@ if __name__ == "__main__":
     # df=df[~df['publisher'].isnull()]
     # df=df[~df['page_count'].isnull()]
     # df=df[~df['categories'].isnull()]
-    df.to_csv("data.csv",index=False)
+    df['page_count']=df['page_count'].astype(int)
+    df['ISBN']=df['ISBN'].astype(int)
+    df.to_csv("data02.csv",index=False)
 
 
 # 通过 django shell插入数据，注意数据类型和model的类型是否一致

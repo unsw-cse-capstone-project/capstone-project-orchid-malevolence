@@ -16,9 +16,6 @@
                         <div class="grid-content bg-purple">
                             <!-- left hand side: current goal -->
                             <Goal></Goal>
-
-
-
                             <Rec></Rec>
                         </div>
                     </el-col>

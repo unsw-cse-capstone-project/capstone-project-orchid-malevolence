@@ -13,3 +13,9 @@ We disscussed which user stories we want to show on the week5 demo. There are tw
 
 Week5
 We finished the first demo on friday. Tutor suggested that we should remain the cookie of login function. Besides, we should do some ui design and layout design. After demo, we disscussed the retrospective A.
+
+Week6
+In this week we are aksed to do restrospective report, mainly about what we need to improve. 
+
+Week7
+In this week, Yang Li and I have discussed what model we will use in our recommendation system. The model will base on all of the users' data. By next week I will finish this part.

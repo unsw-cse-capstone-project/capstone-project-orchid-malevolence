@@ -28,10 +28,24 @@ class UserSerializer(serializers.ModelSerializer):
 # book全部信息
 class BookSerializer(serializers.ModelSerializer):
     # collections = CollectionSerializer(many=True,require = False)
+    avg_rating = serializers.SerializerMethodField('avg_rating_edit',required=False)
     class Meta:
         model = Book
         fields = ('__all__')
         extra_kwargs = {'collection':{'required':False}}
+    
+    def avg_rating_edit(self,obj):
+        book_id=obj.id
+        rating_count_set = Rating.objects.filter(book=book_id)
+        avg_rating=0
+        count_num = rating_count_set.count()
+        if(rating_count_set.exists()):
+            for i in rating_count_set:
+                avg_rating+=i.rating
+            avg_rating=avg_rating/count_num
+            return avg_rating
+        return avg_rating
+
 
 # collection全部信息，包括有哪些书
 class CollectionSerializer(serializers.ModelSerializer):
@@ -65,7 +79,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id','content','user','book','like_count_num']
+        fields = ['id','content','user','book','like_count_num','create_time']
 
 # 点赞信息，
 class LikeItSerializer(serializers.ModelSerializer):
@@ -95,66 +109,117 @@ class MonthlyGoalBaseSerializer(serializers.ModelSerializer):
 # serializer = DeviceByTypeSerializer(device_type, many=True, context={'request': request})
 # 书籍详细信息（包含打分，评论，点赞，赞数，评论排序按时间来）
 class BookDetailPageSerializer(serializers.ModelSerializer):
-    rating = serializers.SerializerMethodField('rating_edit',required=False)
-    # review_book =ReviewSerializer(many=True,required=False)
+    user_rating_review=serializers.SerializerMethodField('user_rating_review_edit',required=False)
+    rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
     review_book =serializers.SerializerMethodField('review_edit',required=False)
-    user_like_which = serializers.SerializerMethodField('like_edit',required=False)
     class Meta:
         model = Book
-        fields = ['id','title','rating','user_like_which','review_book']
+        fields = ['id','title','user_rating_review','rating_analyse','review_book']
     
-    def rating_edit(self,obj):
+    def user_rating_review_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
-        rating_set = Rating.objects.filter(user=user_id,book=book_id)
+        user_rating=0
+        user_review=""
+        rating_count_set = Rating.objects.filter(book=book_id,user=user_id)
+        review_set = Review.objects.filter(book=book_id,user=user_id)
+        if(rating_count_set.exists() and review_set.exists()):
+            user_rating=rating_count_set[0].rating
+            user_review=review_set[0].content
+            return {"user_rating":user_rating, "user_review":user_review}
+        elif(rating_count_set.exists()):
+            user_rating=rating_count_set[0].rating
+            return {"user_rating":user_rating, "user_review":user_review}
+        elif(review_set.exists()):
+            user_review=review_set[0].content
+            return {"user_rating":user_rating, "user_review":user_review}
+        else:
+            return {"user_rating":user_rating, "user_review":user_review}
+
+    def rating_analyse_edit(self,obj):
+        user_id = self.context['user_id']
+        book_id = obj.id
         rating_count_set = Rating.objects.filter(book=book_id)
         avg_rating=0
+        five_nums=0
+        four_nums=0
+        three_nums=0
+        two_nums=0
+        one_nums=0
+        five_percentage=0
+        four_percentage=0
+        three_percentage=0
+        two_percentage=0
+        one_percentage=0
         count_num = rating_count_set.count()
+        # 这一步获取了均分和评分人数
+        # 以及各分段人数
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 avg_rating+=i.rating
-            avg_rating=avg_rating/count_num
-
-        if(rating_set.exists()):
-            rating_temp=rating_set[0]
-            return {"rating":rating_temp.rating,"how_many_user_scored":count_num,'average_rating':avg_rating}
-        else:
-            return {"rating":0,"how_many_user_scored":count_num,'average_rating':avg_rating}
+                if(i.rating==5):
+                    five_nums+=1
+                elif(i.rating==4):
+                    four_nums+=1
+                elif(i.rating==3):
+                    three_nums+=1
+                elif(i.rating==2):
+                    two_nums+=1
+                elif(i.rating==1):
+                    one_nums+=1
+            avg_rating=round(avg_rating/count_num,1)
+            five_percentage=round(five_nums/count_num,3)
+            four_percentage=round(four_nums/count_num,3)
+            three_percentage=round(three_nums/count_num,3)
+            two_percentage=round(two_nums/count_num,3)
+            one_percentage=round(one_nums/count_num,3)
+        return {"how_many_user_scored":count_num,'average_rating':avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
 
 
     def review_edit(self,obj):
+        user_id = self.context['user_id']
         book_id = obj.id
-        review_set = Review.objects.filter(book=book_id)
+        # 检索所有非当前用户的评论
+        review_set = Review.objects.filter(book=book_id).exclude(user=user_id)
         if(review_set.exists()):
             rev_ser = ReviewSerializer(instance=review_set,many=True)
-            return rev_ser.data
+            res=[]
+            for i in rev_ser.data:
+                rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
+                if(rating_temp_set.exists()):
+                    rating_temp=rating_temp_set[0]
+                    i['rating']=rating_temp.rating
+                    res.append(i)
+                else:
+                    i['rating']=0
+                    res.append(i)
+            like_status_set = LikeIt.objects.filter(user=user_id,belongto_book=book_id)
+            like_status_list=[]
+            # 获取所有用户点赞的评论的id
+            if(like_status_set.exists()):
+                for i in like_status_set:
+                    if(i['status']==1):
+                        like_status_list.append(i['review'])
+            
+            # 要让每条评论的obj包含当前用户是否处于点赞状态
+            # 循环遍历列表，还会有个点过赞的列表
+            for i in res:
+                i['like_status']=0
+                if(i['id'] in like_status_list):
+                    i['like_status']=1
+            
+            # 按照时间顺序排列，最新的在上面
+            res.sort(key=lambda i:i['create_time'],reverse=True)
+
+            for i in res:
+                i['create_time']=i['create_time'][:10]
+
+            for i in res:
+                i['user']=(Account.objects.get(id=i['user'])).username
+            return res
         else:
             return [] 
     
-    def like_edit(self,obj):
-        user_id = self.context['user_id']
-        book_id = obj.id
-        liked_set = LikeIt.objects.filter(user=user_id,belongto_book=book_id,status=True)
-        if(liked_set.exists()):
-            like_ser = LikeItSerializer(instance=liked_set,many=True)
-            return like_ser.data
-        else:
-            return []
-
-
-
-# class ReviewEditSerializer(serializers.Serializer):
-#     content = models.TextField(null=True)
-#     create_time = models.DateTimeField(auto_now_add=True)
-#     user = models.ForeignKey(Account,related_name='review_user',on_delete=models.CASCADE)
-#     book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
-#     like_count_num = models.PositiveIntegerField(default=0)
-#     user_liked_or_not = models.BooleanField(default=False)
-
-# class BookDetailSerializer(serializers.Serializer):
-#     book_id = models.CharField()
-#     rating = models.DecimalField(max_digits = 5,decimal_places=2,null=True)
-#     reviews = ReviewEditSerializer(many=True,required=False)
 
 
 
