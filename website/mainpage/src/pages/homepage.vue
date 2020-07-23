@@ -75,6 +75,7 @@
         /*position: relative;*/
         display: flex;
         flex-direction: column;
+        background: aliceblue;
     }
 
     .header {
@@ -94,15 +95,14 @@
         height: 60px;
         bottom: 0;
         box-sizing: border-box;
-        /*position: absolute;*/
     }
 
     .bg-purple {
-        background: #d3dce6;
+        background: aliceblue;
     }
     .grid-content {
         /*border-radius: 4px;*/
         min-height: 36px;
-        height: 1310px;
+        height: 100%;
     }
 </style>
