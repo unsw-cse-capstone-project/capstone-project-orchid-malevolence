@@ -31,7 +31,7 @@
 </style>
 <template>
 	<div>
-		<div class="info" disabled="disabled">Page:{{books[real_page-1].page+1}}   Totally related books: {{books[real_page-1].total_book}}</div>
+		<div class="info" >Page:{{books[real_page-1].page+1}}   Totally related books: {{books[real_page-1].total_book}}</div>
 
 
 		<div class="all_book" v-for="item in books[real_page-1].book_li" :key="item.ISBN">
@@ -57,7 +57,7 @@
 			<el-pagination
 							background
 							@current-change="getpage"
-							:current-page=this.books.page
+							:current-page=books.page
 							:page-size="10"
 							:pager-count="11"
 							layout="prev, pager, next"
@@ -74,9 +74,12 @@
 export default {
 	data(){
 		return{
+			token_log: localStorage.getItem('token'),
+
 			// isShow:false,
 
-			real_page:1
+			real_page:1,
+			real_book:{}
 		}
 	},
 
@@ -92,11 +95,14 @@ export default {
 
 		}
 	},
+	created () {
+		this.real_book=this.books
+	},
 
 	methods:{
 		getpage(value){
 			this.real_page=value
-			// console.log(value)
+			console.log("this.real_page "+ this.real_page)
 			this.isShow=true
 
 		},
@@ -104,8 +110,16 @@ export default {
 			// console.log(value)
 			this.$router.push({
 				name: 'one_book',
-				params: {
-					item: value,
+				query: {
+					// item:value
+					book_id: value.id,
+					authors:value.authors,
+					title:value.title,
+					ISBN:value.ISBN,
+					publisher:value.publisher,
+					publisher_data:value.publisher_data,
+					imageLink:value.imageLink
+
 
 				}
 
