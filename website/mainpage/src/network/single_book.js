@@ -107,5 +107,5 @@ export function postnewcollection (data) {
 		method:'post',
 		data:data
 	})
-
 }
+

@@ -42,6 +42,4 @@
 </style>
 
 
-<!-- TODO: layout after login -->
-<!-- TODO: token save style session->local -->
 <!-- TODO: strict login after registered -->

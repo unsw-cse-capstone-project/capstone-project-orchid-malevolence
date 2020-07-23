@@ -1,48 +1,37 @@
 <template>
-    <!-- TODO: 2 type: before set goal, after set goal -->
-
     <div class="goal mid" id="app_goal">
-        <h3>{{ goal_title }}</h3>
+        <h3 class="title">{{ goal_title }}</h3>
 
         <div v-if="this.goalStatus===0">
             <div class="text_part">
-                <p>Set a monthly goal</p>
+                <p class="sub-title">Set a monthly goal</p>
             </div>
-            <div>
+            <div class="input-group">
                 <el-input
                         placeholder="input a number"
-                        v-model="goalNum"
+                        v-model="textGoal"
                         oninput="value=value.replace(/[^\d]/g,'')"
                         maxLength='3'
                         clearable>
                 </el-input>
-                <el-button type="warning" plain @click="setGoal">Set Goal</el-button>
+                <el-button type="warning" plain @click="setGoal()" class="set-goal">Set Goal</el-button>
             </div>
         </div>
 
         <div v-else>
             <div class="text_part">
-                <p>{{ read }} books complete</p>
-                <p>{{ Number(totalBook - read) }} books in the schedule</p>
+                <p>{{ bookData[0].read }} books complete</p>
+                <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books in the schedule</p>
             </div>
 
-            <el-progress :text-inside="true" :stroke-width="26" :percentage="read/totalBook * 100"></el-progress>
+            <el-progress :text-inside="true"
+                         :stroke-width="26"
+                         :percentage="bookData[0].read/bookData[0].totalBook * 100"
+                         class="process-bar">
+            </el-progress>
 
-            <!-- TODO: change goal -->
-            <div>
-                <el-input
-                        placeholder="reset your goal"
-                        v-model="goalNum"
-                        oninput="value=value.replace(/[^\d]/g,'')"
-                        maxLength='3'
-                        clearable
-                        class="input">
-                </el-input>
-                <el-button type="warning" plain @click="setGoal(2)" class="button2">Reset Goal</el-button>
-            </div>
-
-<!--            <el-divider class="divider"></el-divider>-->
-
+            <!-- TODO: 弹窗，reset goal -->
+            <el-button type="text" @click="open">Click to reset goal</el-button>
         </div>
     </div>
 </template>
@@ -53,63 +42,85 @@
     let now = new Date()
     let nowMonth = now.getMonth() + 1
     let nowYear = now.getFullYear()
-    let curMonth = {month:nowMonth}
+    let curMonth = {year:nowYear, month:nowMonth}
 
     export default {
         name: 'homepage-goal',
         data() {
             return {
-                read: '',
-                totalBook: '',
+                bookData: [{read: '', totalBook: ''}],
                 goal_title: nowYear + "-" + nowMonth + " Reading Challenge",
                 response: {},
                 target: null,
                 already_done: null,
                 goalStatus: 0,  // 0代表没设置，1代表设置了
-                goalNum: '',
+                textGoal: '',
             }
         },
 
         methods: {
+            open() {
+                this.$prompt('Set a new goal', 'hint', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    inputPattern: /^\d{0,3}$/,
+                    inputErrorMessage: 'Please input a digit (<1000)'
+                }).then(({value}) => {
+                    this.$message({
+                        type: 'success',
+                        message: 'Reset successfully: ' + value
+                    });
+                    this.setGoal(value)
+                    this.$forceUpdate()
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Stop to reset'
+                    });
+                });
+            },
+
             getGoal() {
                 getCurGoal(curMonth).then(res=>{
-                    // console.log(res)
+                    console.log("get: ",res)
                     this.goalStatus = 1
-                    this.read = res.already_done
-                    this.totalBook = res.target
-                    // console.log("no need to set goal: " + this.goalStatus)
-                    // console.log("read: " + res.already_done)
-                    // console.log("totalBook: " + this.totalBook)
 
                     if(res.status === 400) {
-                        // TODO: set goal
                         this.goalStatus = 0
-                        // this.goalStatus = 0
-                        console.log("need set goal: " + this.goalStatus)
+                        // console.log("need set goal: " + this.goalStatus)
                     }
+
+                    this.bookData[0].read = res.already_done
+                    this.bookData[0].totalBook = res.target
+                    // console.log("no need to set goal: " + this.goalStatus)
+                    // console.log("read: " + res.already_done)
+                    // console.log("totalBook: " + res.target)
                 }).catch(error => {
                     console.log(error)
                 });
             },
 
-            setGoal(mode=1) {
-                if(this.goalNum === '') {
+            setGoal(value = this.textGoal) {
+                if(value === '') {
                     this.$message.error('Please input something.')
                     return
                 }
 
-                let data = {month_goal:{month:nowMonth,target:this.goalNum}}
+                let data = {month_goal:{month:nowMonth,year:nowYear ,target:value}}
                 postCurGoal(data).then(res=>{
-                    // console.log("setgoal result: " + res)
-                    this.read = res.already_done
+                    // console.log("setgoal result: " + res.already_done)
+                    // this.bookData[0].read = res.already_done
                     this.goalStatus = 1
-                    this.totalBook = this.goalNum
-                    if(mode===2) {
-                        this.goalNum = ''
-                        this.$message.success("Reset successfully!")
-                    }
+                    // this.bookData[0].totalBook = res.target
+                    // if(mode===2) {
+                    //     // this.textGoal = ''
+                    //     // this.$message.success("Reset successfully!")
+                    // }
                     // console.log(this.totalBook, this.read, this.goalStatus)
                     this.$forceUpdate()
+                    this.$set(this.bookData[0], "read", res.already_done)
+                    this.$set(this.bookData[0], "totalBook", value)
+                    // console.log(this.bookData[0].totalBook, this.bookData[0].read, this.goalStatus)
                 }).catch(error => {
                     console.log(error)
                 });
@@ -120,28 +131,18 @@
             // console.log("curMonth:" + curMonth.month)
             this.getGoal()
         },
-
-        mounted() {
-            // this.timer = setInterval(() => {
-            //     this.getGoal()
-            // })
-        },
-
-        // beforeDestroy() {
-        //     if (this.timer) {
-        //         clearInterval(this.timer);
-        //     }
-        // },
     }
 </script>
 
 <style lang="less" scoped>
     .goal {
         margin: auto;
-        height: 330px;
+        height: 280px;
         width: 270px;
+        border-style: solid;
         border-radius: 2px;
-        background: crimson;
+        border-color: bisque;
+        background-color: darkgrey;
         padding-top: 30px;
     }
 
@@ -149,17 +150,29 @@
         margin-top: 60px;
     }
 
-    .divider {
-        background-color: black;
-        height: 2px;
+    .title {
+
     }
 
-    .input {
-        margin-top: 20px;
+    .sub-title {
+        margin-top: 10px;
     }
 
-    .button2 {
-        margin-top: 5px;
+    .input-group {
+        margin-top: 25px;
+        float: left;
+        height: 40px;
+    }
+
+    .el-input {
+        margin: 5px 2px 0 2px;;
+        width: 60%;
+        float: left;
+    }
+
+    .set-goal {
+        margin: 5px 2px 0 2px;
+        height: 100%;
     }
 </style>
 
