@@ -377,7 +377,7 @@ export default {
 		grid-template-columns: repeat(5, 1fr);
 	}
 	.coll_content {
-		margin: 10px 10px 10px 10px;
+		margin: 10px 30px 30px 15px;
 	}
 	
 	.img {
