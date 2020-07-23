@@ -96,7 +96,7 @@
 				<div><p>Publisher: {{book.publisher}}</p></div>
 				<div><p>publish_date: {{book.publisher_data}}</p></div>
 				<div><p>ISBN: {{book.ISBN}}</p></div>
-				<div><p>categorie: {{book.category}}</p></div>
+				<div><p>categories: {{book.category}}</p></div>
 
 			</div>
 
@@ -211,7 +211,7 @@ export default {
 
 			getSingleBookmultdata(post_value).then(result => {
 				console.log(result)
-
+				this.result=result
 				this.result.rate=result.rating_analyse.rating
 				this.result.TotalCount=result.rating_analyse.how_many_user_scored
 				this.result.averageScore=result.rating_analyse.average_rating

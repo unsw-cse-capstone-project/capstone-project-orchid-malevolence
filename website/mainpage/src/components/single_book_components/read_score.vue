@@ -23,13 +23,15 @@
             text-color="#ff9900"
             score-template="{value}">
     </el-rate>
-    <span> {{res.TotalCount }} people have read this book</span>
+    <span> {{res.TotalCount}} people have read this book</span>
 
   </div>
 
 </template>
 
 <script>
+
+// import {getSingleBookmultdata} from '../../network/single_book'
 
 // import {getSingleBookmultdata} from '../../network/single_book'
 
@@ -50,32 +52,32 @@ export default {
     }
   },
   props: {
-    res: Object
+    res: Object,
+    default:{}
   },
-  watch:{
-    average(newV,oldV) {
-      this.average=newV
-      console.log(oldV)
 
 
-    }
-  },
   // request method page initial and get average score of this book
   updated () {
-    if(this.res.averageScore!==undefined){
-      let average=this.res.averageScore
-      let book_id=this.res.book_id
-      this.average = average
-      this.book_id = book_id
+
+    let temp=window.localStorage.getItem('token')
+    console.log(temp)
+    if(temp){
+      this.average=this.res.averageScore
+      this.book_id=this.res.book_id
+      this.TotalCount=this.res.TotalCount
+
       // this.$forceUpdate()
 
 
         // this.$forceUpdate()
+      console.log(this.isShow)
 
       // this.TotalCount=this.res.TotalCount
       console.log(this.book_id + " aaaa")
     }
     else{
+      console.log(this.isShow)
       this.isShow=false
     }
 
