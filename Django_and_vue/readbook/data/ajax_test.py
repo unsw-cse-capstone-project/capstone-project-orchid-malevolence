@@ -102,10 +102,10 @@ if __name__ == "__main__":
     # 'Shakespeare','hugo','Algorithm','Vampire','Verne','Ocean','Food','Fruit','Maya','Egypt','Roma',
     # 'Carthage','United Kingdom','Blues','Rock','sex','education','love','friend','countryside','airplane','magic','speaking',
     # 'alcohol','Alexandre Dumas','Goethe','Dante','Tagore','Leo Tolstoy','Maxim Gorky','Hemingway','Balzac','Pushkin',
-    # 'cat','dog','chocolate','pie','database','IBM','piano','violin','elves','tank','cake']
+    # 'cat','dog','chocolate','pie','database','IBM','piano','violin','elves','tank','cake','tea','coffee','pizza','milk','rose','spring','shark','lion','cache','cpu','gpu','intel','newspaper','law','sun','moon','basketball','football']
 
     # item_list=[]
-    # key_word=['tea','coffee','pizza','milk','rose','spring','shark','lion','cache','cpu','gpu','intel','newspaper','law','sun','moon','basketball','football']
+    # key_word=[]
     # for i in key_word:
     #     data=ajax(i)
     #     for j in data['items']:

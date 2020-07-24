@@ -71,7 +71,9 @@ class AccountDetailAPIView(APIView):
         user_obj = token_obj.user
         print(type(user_obj))
         serializer = AccountDetailSerializer(instance=user_obj)
-        return Response(serializer.data, status=HTTP_200_OK)
+        account_data=serializer.data
+        account_data['join_date']=account_data['join_date'][:10]
+        return Response(data=account_data, status=HTTP_200_OK)
     
     def post(self,request,format=None):
         user_id=request.data['id']
