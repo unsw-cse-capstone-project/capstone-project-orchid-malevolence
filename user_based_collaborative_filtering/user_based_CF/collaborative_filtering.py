@@ -50,7 +50,7 @@ class CF:
         for user in self.pref_dict:
             if user == target_user_id:
                 continue
-            faith = obj.score(target_user_id, user)
+            faith = self.score(target_user_id, user)
             for item in self.pref_dict[user]:
                 if item not in total_score:
                     total_score[item] = 0
@@ -62,6 +62,3 @@ class CF:
         total_score_sorted = sorted(total_score.items(), key=lambda x: x[1], reverse=True)
         return total_score_sorted
 
-
-# obj = CF(input, distance_method= "euclidean_distance")
-# obj.recommendation_res(target_user_id=1)
