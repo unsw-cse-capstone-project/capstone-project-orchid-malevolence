@@ -13,7 +13,6 @@
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		/*padding-top: 10px;*/
 
 		width: 65%;
 		word-break: break-all
@@ -94,6 +93,13 @@ export default {
 			}
 
 		}
+	},
+	watch:{
+		books(val){
+			console.log(val)
+			this.real_page=1
+		}
+
 	},
 
 
