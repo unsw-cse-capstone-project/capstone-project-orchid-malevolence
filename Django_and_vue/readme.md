@@ -21,7 +21,20 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+# Reids
+https://redis.io/download
+please download redis server
+
 # How to run it
+
+before you run web server, you need to start redis server first
+
+```bash
+cd ....\src
+redis-server
+
+```
+
 cd to the root dir which contains manage.py file.<br>
 ```
 python manage.py runserver
