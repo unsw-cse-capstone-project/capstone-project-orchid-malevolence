@@ -16,6 +16,9 @@
 
     margin-top: 20px;
   }
+  .inner_usernamne{
+    display: block;
+  }
 
 
 
@@ -44,6 +47,11 @@
         </el-rate>
 
       </div>
+    </div>
+    {{textarea2}}
+    <div class="inner _content">
+      <span class="inner_usernamne"> {{username}}</span>
+      <span class="inner_usernamne" style="overflow-wrap:break-word;">{{textarea2}}</span>
     </div>
 
 
@@ -76,6 +84,7 @@
 
       </div>
       <p class="line"></p>
+
       <el-input class="margin_class input_content"
               type="textarea"
               :autosize="{ minRows: 7, maxRows: 10}"
@@ -102,7 +111,7 @@ export default {
       exist: true,
       textarea1: '',
       textarea2: '',
-      token_log: localStorage.getItem('token'),
+      username: localStorage.getItem('username'),
       value: 0,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
     }
@@ -111,6 +120,8 @@ export default {
     bookID: String
   },
   created () {
+    console.log(this.username)
+
 
   },
   methods: {

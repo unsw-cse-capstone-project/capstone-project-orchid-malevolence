@@ -59,9 +59,11 @@ export default {
 				if(res.status === 400){
 					this.$message.error('fail to login')
 				}else if(res.status === 200){
-					console.log(res.data.token);
+					// console.log(this.loginForm.username);
+					window.localStorage.setItem('username',this.loginForm.username)
 					window.localStorage.setItem('token', res.data.token)
-					this.$message.success('login successfully')
+
+          this.$message.success('login successfully')
 					this.$router.push('/')
 				}
 			})
