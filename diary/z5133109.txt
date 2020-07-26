@@ -28,3 +28,8 @@ I insert some data into our database to test some api fucntion. Base on the orde
 In next week, i will finish recommand system code. For some get request, i use post to replace that, so i need to turn t back.
 Do more test!
 
+week 8 
+Update some apis and insert more data into database. Add redis as cache. Use uWSGI to replace default django web server.
+Next week, more test!
+
+
