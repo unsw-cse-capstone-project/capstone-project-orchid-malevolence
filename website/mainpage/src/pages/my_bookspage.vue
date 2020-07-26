@@ -89,7 +89,7 @@
 
 					<div class="item_box" v-for="item in all_books" :key="item.ISBN">
 						<div class="book_item img-box" >
-							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" >
+							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
 						</div>
 
 						<div class="book_item text-block">
@@ -116,7 +116,7 @@
 					<el-divider content-position="center" class="divider">search result in your collections</el-divider>
 					<div   class="item_box" v-for="(item,index) in search_book" :key="index">
 						<div class="book_item img-box" >
-							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" >
+							<img  :src="item.imageLink" style="width:90%;height: 100% " alt=""  @click="jump_one_book(item)">
 						</div>
 						<div class="book_item text-block">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
