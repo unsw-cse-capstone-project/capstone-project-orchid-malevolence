@@ -29,6 +29,7 @@
 		display: inline-block;
 		margin: 20px 20px 20px 5px
 
+
 	}
 	.img-box{
 		width: 20%;
@@ -44,11 +45,17 @@
 	}
 	.search_model{
 		width: 25%;
-		margin: 10px 25%;
+		margin: 20px 25%;
 
 	}
 	.collections{
 		margin-top: 10px;
+	}
+	.size{
+		font-size: 15px;
+	}
+	p{
+		line-height: 1;
 	}
 
 
@@ -87,7 +94,7 @@
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
 
-					<div class="item_box" v-for="item in all_books" :key="item.ISBN">
+					<div  v-for="item in all_books" :key="item.ISBN">
 						<div class="book_item img-box" >
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
 						</div>
@@ -101,10 +108,16 @@
 											text-color="#ff9900"
 											score-template="{value}">
 							</el-rate>
+							<div class="size">
+								<div><p>Author: {{item.authors}}</p></div>
+								<div><p>Publisher: {{item.publisher}}</p></div>
+								<div><p>publish_date: {{item.publish_date}}</p></div>
+								<div><p>category: {{item.categories}}</p></div>
 
-							<div><p>Author: {{item.authors}}</p></div>
-							<div><p>Publisher: {{item.publisher}}</p></div>
-							<div><p>publish_date: {{item.publish_date}}</p></div>
+							</div>
+
+
+
 
 						</div>
 					</div>
@@ -114,7 +127,7 @@
 				<!--			显示搜索到的书-->
 				<div v-show="show">
 					<el-divider content-position="center" class="divider">search result in your collections</el-divider>
-					<div   class="item_box" v-for="(item,index) in search_book" :key="index">
+					<div   v-for="(item,index) in search_book" :key="index">
 						<div class="book_item img-box" >
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt=""  @click="jump_one_book(item)">
 						</div>
@@ -127,10 +140,13 @@
 											text-color="#ff9900"
 											score-template="{value}">
 							</el-rate>
+							<div class="size">
+								<div><p>Author: {{item.authors}}</p></div>
+								<div><p>Publisher: {{item.publisher}}</p></div>
+								<div><p>publish_date: {{item.publish_date}}</p></div>
+								<div><p>category: {{item.categories}}</p></div>
 
-							<div><p>Author: {{item.authors}}</p></div>
-							<div><p>Publisher: {{item.publisher}}</p></div>
-							<div><p>publish_date: {{item.publish_date}}</p></div>
+							</div>
 
 						</div>
 					</div>
@@ -142,7 +158,7 @@
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
-					<div  v-for="item in books2" :key="item.imageLink" class="item_box">
+					<div  v-for="item in books2" :key="item.imageLink" >
 
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
@@ -156,10 +172,13 @@
 											text-color="#ff9900"
 											score-template="{value}">
 							</el-rate>
+							<div class="size">
+								<div><p>Author: {{item.authors}}</p></div>
+								<div><p>Publisher: {{item.publisher}}</p></div>
+								<div><p>publish_date: {{item.publish_date}}</p></div>
+								<div><p>category: {{item.categories}}</p></div>
 
-							<div><p>Author: {{item.authors}}</p></div>
-							<div><p>Publisher: {{item.publisher}}</p></div>
-							<div><p>publish_date: {{item.publish_date}}</p></div>
+							</div>
 						</div>
 					</div>
 				</div>
