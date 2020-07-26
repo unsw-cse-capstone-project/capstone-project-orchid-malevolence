@@ -129,6 +129,7 @@
 
         mounted() {
             getCollectionmultdata().then(res=>{
+                console.log(res)
                 this.collections = res
                 this.value = this.collections[0].name
                 this.getCollectionNames(res)   // 把api返回的collection名字整理出来

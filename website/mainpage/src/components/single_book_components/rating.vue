@@ -48,11 +48,7 @@
 
       </div>
     </div>
-    {{textarea2}}
-    <div class="inner _content">
-      <span class="inner_usernamne"> {{username}}</span>
-      <span class="inner_usernamne" style="overflow-wrap:break-word;">{{textarea2}}</span>
-    </div>
+
 
 
     <el-drawer

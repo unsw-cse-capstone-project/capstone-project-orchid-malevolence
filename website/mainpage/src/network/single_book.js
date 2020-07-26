@@ -124,3 +124,10 @@ export function delecollection (data) {
 		data:data
 	})
 }
+
+export function filtersearchbook (data) {
+	return request({
+		url: '/api/filtersearchbook/',
+		params:data
+	})
+}
