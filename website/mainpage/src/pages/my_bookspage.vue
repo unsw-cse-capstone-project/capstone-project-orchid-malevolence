@@ -340,6 +340,8 @@ export default {
 				book["publisher"] = obj.books[i].publisher
 				book["publish_date"] = obj.books[i].publish_date
 				book["categories"] = obj.books[i].categories
+				book["avg_rating"] = obj.books[i].avg_rating
+
 				// book["url"] = ''   // TODO: 跳转url
 				this.books2 .push(book)
 			}
