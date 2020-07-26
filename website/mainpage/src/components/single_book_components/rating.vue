@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
   span{
     /*margin-left: 10px;*/
     font-size: 16px;
@@ -115,11 +115,10 @@ export default {
   props: {
     bookID: String
   },
-  created () {
-    console.log(this.username)
-
+  computed:{
 
   },
+
   methods: {
     submite_review () {
       let post_review = {
@@ -145,7 +144,7 @@ export default {
         console.log(res)
       })
       this.drawer=false
-
+      location.reload()
 
     },
     Close_drawer(){
@@ -155,6 +154,7 @@ export default {
 
     afterclose () {
       this.drawer = false
+
     },
     disable () {
       console.log(this.bookID)
@@ -171,6 +171,7 @@ export default {
       console.log(this.bookID)
 
       this.exist = false
+
 
 
     },

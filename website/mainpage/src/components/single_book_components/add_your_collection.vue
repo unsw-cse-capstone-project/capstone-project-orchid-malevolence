@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.all_margin{
 		margin: 10px 20px;
 	}
@@ -85,6 +85,8 @@ export default {
 	components:{
 
 	},
+
+
 	created () {
 		getCollectionmultdata().then(res=>{
 			console.log(res)
@@ -151,6 +153,22 @@ export default {
 				message: 'Congratulations, You have added a shelf',
 				type: 'success'
 			});
+			getCollectionmultdata().then(res=>{
+				console.log(res)
+				this.options=[]
+
+				for (let i=0;i<res.length;i++){
+					let j=res[i].id
+					let k=res[i].name
+					this.options.push({id:j,name:k})
+				}
+
+				console.log(this.options)
+
+			}).catch(res=>{
+				console.log(res)
+			})
+
 
 
 		},

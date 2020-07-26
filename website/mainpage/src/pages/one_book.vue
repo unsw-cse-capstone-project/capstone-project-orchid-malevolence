@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.body{
 		width: 70%;
 		margin: 80px auto;
@@ -126,6 +126,7 @@
 
 
 
+
 			</div>
 
 
@@ -162,6 +163,7 @@ export default {
 			book:{
 
 			},
+
 			book_id:null,
 			result:{
 				rate:Number,
@@ -186,7 +188,7 @@ export default {
 		// get_reviews
 	},
 
-	created () {
+	mounted () {
 		this.getData();
 
 	},

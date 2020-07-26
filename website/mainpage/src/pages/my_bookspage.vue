@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.body{
 		width: 80%;
 		margin: auto;
@@ -27,7 +27,8 @@
 	}
 	.book_item{
 		display: inline-block;
-		margin: 20px 20px 20px 5px
+		margin: 20px 20px 20px 5px;
+
 
 
 	}
@@ -40,8 +41,8 @@
 		display: inline-block;
 		vertical-align: top;
 
-		width: 65%;
-		word-break: break-all
+		width: 52%;
+		word-break: break-all;
 	}
 	.search_model{
 		width: 25%;
@@ -50,12 +51,21 @@
 	}
 	.collections{
 		margin-top: 10px;
+
 	}
 	.size{
 		font-size: 15px;
 	}
 	p{
 		line-height: 1;
+	}
+	.operate{
+		display: inline-block;
+		vertical-align: top;
+
+	}
+	.right_border{
+		border-right: 1px solid gray;
 	}
 
 
@@ -78,6 +88,7 @@
 			<div class="choose_collection">
 				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
+				<p style="display: inline-block; margin:auto 10px">Your collections:</p>
 				<el-select class="collections" v-model="value" placeholder="please select a collection" @change="currentSel(value)">
 					<el-option
 									v-for="item in options"
@@ -116,10 +127,8 @@
 
 							</div>
 
-
-
-
 						</div>
+
 					</div>
 				</div>
 
@@ -163,7 +172,7 @@
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
 						</div>
-						<div class="book_item text-block">
+						<div class="book_item text-block right_border">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
 							<el-rate
 											v-model="item.avg_rating"
@@ -180,12 +189,29 @@
 
 							</div>
 						</div>
+						<div class="operate book_item">
+							<el-popconfirm
+											confirmButtonText='confirm'
+											cancelButtonText='cancel'
+											icon="el-icon-info"
+											iconColor="red"
+											title="Confirm to delete this book from current collection"
+											@onConfirm="del(value,item)"
+
+							>
+								<el-button slot="reference">Remove this book</el-button>
+							</el-popconfirm>
+
+
+						</div>
+
 					</div>
 				</div>
 
 
 <!--					</div>-->
 				</div>
+
 
 
 			</div>
@@ -202,7 +228,7 @@
 
 <script>
 
-import {getCollectionmultdata} from '../network/single_book'
+import {getCollectionmultdata,delBookfromCollection} from '../network/single_book'
 import Header from '../components/homepage_components/header'
 // import search_inner_collections from '../components/search_result_components/search_inner_collections'
 export default {
@@ -224,6 +250,11 @@ export default {
 			// cur_key: 0,      // collection id
 			collections: [], // result from api package
 			item: '', // one book param
+			delbookform: {
+				collection_id: '',
+				book_id:''
+			},
+
 
 			// TODO: connect with backend, get all book images in this collections
 
@@ -258,6 +289,33 @@ export default {
 
 	},
 	methods: {
+		del(name,book){ //delete this book from currnt collection
+			console.log(book)
+
+			console.log(name)
+			console.log(this.books)
+			// this.value=val.id
+			let len=this.books.length
+
+			for(let i =0;i<len;i++){
+				if (this.books[i].name===name){
+
+					this.delbookform.collection_id=this.books[i].id
+					this.delbookform.book_id=book.id
+				}
+
+					}
+
+			console.log(this.delbookform)
+
+			delBookfromCollection(this.delbookform).then(res=>{
+				console.log(res)})
+			// location.reload()
+			// obj = this.collections.find((item) => {
+			// 	return item.id === col_id;
+			// });
+
+		},
 		getAllBooks(val){
 			let len=val.length
 			for (let i=0;i<len;i++){
@@ -343,7 +401,7 @@ export default {
 				book["avg_rating"] = obj.books[i].avg_rating
 
 				// book["url"] = ''   // TODO: 跳转url
-				this.books2 .push(book)
+				this.books2.push(book)
 			}
 			console.log(book)
 		},

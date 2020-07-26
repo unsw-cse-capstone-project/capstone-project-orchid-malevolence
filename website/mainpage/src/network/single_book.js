@@ -131,3 +131,11 @@ export function filtersearchbook (data) {
 		params:data
 	})
 }
+
+export function delBookfromCollection (data) {
+	return request({
+		url: '/api/collection/',
+		method:'delete',
+		data:data
+	})
+}

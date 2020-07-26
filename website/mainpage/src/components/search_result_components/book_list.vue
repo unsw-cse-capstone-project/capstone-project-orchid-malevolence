@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 
 	.book_item{
 		display: inline-block;
@@ -21,9 +21,9 @@
 		font-size: 14px;
 		opacity: 0.7;
 	}
-	.book_detail{
-		display: inline-block;
-		margin: 5px 20px 5px 5px
+
+	p{
+		line-height: 1;
 	}
 
 
@@ -57,7 +57,7 @@
 					<div><p>Author: {{item.authors}}</p></div>
 					<div><p>Publisher: {{item.publisher}}</p></div>
 					<div><p>publish_date: {{item.publish_date}}</p></div>
-<!--					<div><p>category: {{item.categories}}</p></div>-->
+					<div><p>category: {{item.categories}}</p></div>
 
 				</div>
 			</div>

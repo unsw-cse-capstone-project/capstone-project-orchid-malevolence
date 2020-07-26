@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.body{
 		width: 70%;
 		margin: auto;
