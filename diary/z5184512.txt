@@ -11,13 +11,13 @@ week4
 In this week, we are prepare for the demoA, and just divided the work into serveral parts, I am going to do the rating and review page. In this period, I have some technical obstacles that I still need to learn new programming like Vue.js. For next week, we need to done all things and meething in next Thursday.
 
 week5
-we have finished the presentation of the demo1 and discussion the retrospective A. in demo1, we displaied the serveral function like login, register, the mainpage and rating and review page. I am responsible for the rating and review page. For next week, we will divided the left work into every member and track the individual's work.
+we have finished the presentation of the demo1 and discussion the retrospective A. in demo1, we displaied the serveral function like login, register, the mainpage and rating and review page. I am responsible for the rating and review page. For next week, we will divided the left works into every member and track the individual's work.
 
 week6
 In this week, I will continous do my individual part that will send post or get request to the back end, and need to communicate with back-end about the JSON format of the request data.
 
 Week7
-In this week, we have finished the retrospective A and talk it in lab. And I also finish search page in this week, the non-technical obstacle is that communication from back-end is a litter difficult due to the few knowldge about back-end.
+In this week, we have finished the retrospective A and talk it in lab. And I also finish search page only based on Author/Title in this week, the non-technical obstacle is that communication from back-end is a litter difficult due to the few knowldge about back-end.
 
 Week8
-In this week, we have show the demoB to tutor. In this week I finsihed the the most part of the search page and build a new page called My books pgae, which can search any book in my collection and aslo delet the book in this collection.
+In this week, we have show the demo B to tutor. In this week I finsihed the the most part of the search page and build a new page called My books pgae, which can search any book in my collection and aslo delete the book in this collection. In next week, we will finish almost all part of this website, and we will focus on the left works
