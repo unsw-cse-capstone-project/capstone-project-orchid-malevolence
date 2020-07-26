@@ -18,3 +18,6 @@ In this week, I will continous do my individual part that will send post or get 
 
 Week7
 In this week, we have finished the retrospective A and talk it in lab. And I also finish search page in this week, the non-technical obstacle is that communication from back-end is a litter difficult due to the few knowldge about back-end.
+
+Week8
+In this week, we have show the demoB to tutor. In this week I finsihed the the most part of the search page and build a new page called My books pgae, which can search any book in my collection and aslo delet the book in this collection.
