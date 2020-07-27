@@ -271,6 +271,7 @@ export default {
 	},
 	mounted () {
 		getCollectionmultdata().then(res=>{
+
 			this.books=res
 			this.getAllBooks(res)
 			console.log(this.books)
@@ -318,13 +319,25 @@ export default {
 		},
 		getAllBooks(val){
 			let len=val.length
+			let books_name=[]
 			for (let i=0;i<len;i++){
+				// console.log(val[i])
 				let new_len=val[i].books.length
 				let books=val[i].books
+
+
 				for(let j=0;j<new_len;j++){
-					this.all_books.push(books[j])
+
+					console.log(books_name)
+					if (books_name.indexOf(books[j].title)===-1){
+						books_name.push(books[j].title)
+						books[j].avg_rating=parseFloat(books[j].avg_rating)
+						this.all_books.push(books[j])
+
+					}
 				}
 			}
+			console.log(books_name)
 			console.log(this.all_books)
 		},
 		jump_this_book(){
@@ -336,9 +349,10 @@ export default {
 
 			let len=this.all_books.length
 			for(let i=0;i<len;i++){
+				console.log(this.all_books[i])
 				let title=this.all_books[i].title.toLowerCase()
 				let input=this.input.toLowerCase()
-					if ( title.indexOf(input)!==-1){
+					if ( title.indexOf(input)!==-1  ){
 					this.search_book.push(this.all_books[i])
 
 				}
@@ -398,7 +412,8 @@ export default {
 				book["publisher"] = obj.books[i].publisher
 				book["publish_date"] = obj.books[i].publish_date
 				book["categories"] = obj.books[i].categories
-				book["avg_rating"] = obj.books[i].avg_rating
+				book["avg_rating"] = parseFloat(obj.books[i].avg_rating)
+
 
 				// book["url"] = ''   // TODO: 跳转url
 				this.books2.push(book)
