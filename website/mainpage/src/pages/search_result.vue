@@ -33,7 +33,7 @@
 
 <script>
 import book_list from '../components/search_result_components/book_list'
-import {getSearchResult, filtersearchbook} from '../network/requests'
+import {getSearchResult, filtersearchbook,getCollectionmultdata} from '../network/requests'
 import Header from '../components/homepage_components/header'
 
 
@@ -62,8 +62,8 @@ export default {
 	},
 	methods: {
 
-		//将请求的数据按每页10个显示，包含当前页，总数
-		slite_pages: function (value) {
+		//divided the books into pages, every page contains 10 books
+		slite_pages(value) {
 			console.log(value)
 			let len = value.length
 			for (let j = 0; j < len; j++) {
@@ -101,6 +101,9 @@ export default {
 				// case0 search based on user
 				if (this.search_type === 'User') {
 					this.isShow = false
+					getCollectionmultdata().then(res=>{
+						console.log(res)})
+
 
 				}
 				//search based on Title or authors

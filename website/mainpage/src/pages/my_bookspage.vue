@@ -77,6 +77,7 @@
 			<Header></Header>
 		</div>
 		<div class="search_model">
+<!--			search a book inside your collection-->
 			<el-input v-model="input" placeholder="Search a book inside your collections">
 				<el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_this_book"></el-button>
 			</el-input>
@@ -100,7 +101,7 @@
 			</div>
 
 			<div class="collection_book" >
-<!--				show all books in all collections-->
+<!--				show all books in your collections-->
 				<div v-show="isShow" >
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
@@ -133,7 +134,7 @@
 				</div>
 
 
-				<!--			显示搜索到的书-->
+				<!--			show all books when search in your collections-->
 				<div v-show="show">
 					<el-divider content-position="center" class="divider">search result in your collections</el-divider>
 					<div   v-for="(item,index) in search_book" :key="index">

@@ -33,6 +33,7 @@
 </style>
 <template>
 	<div>
+<!--		current page and total books-->
 		<div class="info">Page:{{books[real_page-1].page+1}} Totally related books: {{books[real_page-1].total_book}}</div>
 
 
@@ -96,7 +97,7 @@ export default {
 
 	name: 'book_list',
 	props: {
-		//books是从父组件search_result传递过来的参数
+		//books is received from father search_result page
 		books: {
 			type: Array,
 			default () {
@@ -121,6 +122,7 @@ export default {
 
 
 	methods: {
+
 		getpage (value) {
 			this.real_page = value
 			console.log('this.real_page ' + this.real_page)

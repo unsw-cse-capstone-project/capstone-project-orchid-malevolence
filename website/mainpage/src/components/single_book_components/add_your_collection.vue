@@ -112,7 +112,7 @@ export default {
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
-			for (var i = 0; i < this.options.length; i++) {
+			for (let i = 0; i < this.options.length; i++) {
 				if (value.name === this.options[i].name) {
 					exist = true
 				}
