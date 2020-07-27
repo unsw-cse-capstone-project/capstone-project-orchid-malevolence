@@ -63,6 +63,7 @@ class RegisterAPIView(APIView):
             default_collection = CollectionSerializer(data=collection_temp)
             if(default_collection.is_valid()):
                 default_collection.save()
+                temp=user_recommend(int(user.id))
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
         print(res.errors)
@@ -542,20 +543,22 @@ class UserBaseRecAPIView(APIView):
             temp_1=con.lrange('highrating',0,-1)
             for i in temp_1:
                 res_rating.append(json.loads(i))
-            temp_2=con.lrang('highadded',0,-1)
+            temp_2=con.lrange('highadded',0,-1)
             for i in temp_2:
                 res_add.append(json.loads(i))
-            return Response(data={"rec":rec,"rating_rec":temp_1,"added_rec":temp_2},status=HTTP_200_OK)
+            # data={"rec":rec,"rating_rec":temp_1,"added_rec":temp_2}
+            return Response(data={"rec":rec,"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
         else:
             res_rating=[]
             res_add=[]
             temp_1=con.lrange('highrating',0,-1)
             for i in temp_1:
                 res_rating.append(json.loads(i))
-            temp_2=con.lrang('highadded',0,-1)
+            temp_2=con.lrange('highadded',0,-1)
             for i in temp_2:
                 res_add.append(json.loads(i))
-            return Response(data={"rating_rec":temp_1,"added_rec":temp_2},status=HTTP_200_OK)
+            # data={"rating_rec":res_rating,"added_rec":res_add}
+            return Response(data={"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
 
 
 # test
