@@ -262,7 +262,7 @@ url: /api/searchbook/
 
 ！！！！！ 我get和post都做了接口，爱用哪个用哪个，get用params参数，post用body参数 ！！！！！
 
->POST search some book with title or authors.
+>GET search some book with title or authors.
 
 搜索书籍，通过post方法。
 请求数据包含搜索类型和搜索关键词
@@ -271,10 +271,19 @@ url: /api/searchbook/
 
 ```
 {
-    "search_type": "Title"/"Authors",
+    "search_type": "Title"/"Authors/user",
     "key_word": "python"
 }
 ```
+
+
+```
+{
+    "search_type": "user",
+    "key_word": "p/pi/pin/pink/Pink"
+}
+```
+
 
 return all book objects related to "key_word"
 if no result, it will return error msg and status 400.
