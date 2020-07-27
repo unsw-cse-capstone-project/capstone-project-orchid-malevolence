@@ -22,6 +22,7 @@ urlpatterns=[
     url('searchbook/', SearchBookAPIView.as_view()),
     url('filtersearchbook/', FilterSearchBookAPIView.as_view()),
     url('mainpagerec/', MainPageRecAPIView.as_view()),
+    url('recommend/', UserBaseRecAPIView.as_view()),
     url('test/', TestAPIView.as_view()),
 
 ]

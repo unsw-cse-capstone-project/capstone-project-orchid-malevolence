@@ -15,12 +15,16 @@ from .serializers import *
 
 import json
 from backed.pearson import *
+from backed.simple_rec import *
 
 # redis
 from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
 con.flushdb()
+# 系统推荐
+# 三个简单推荐
+operation()
 
 # 获取token
 class CustomAuthToken(ObtainAuthToken):
@@ -30,6 +34,7 @@ class CustomAuthToken(ObtainAuthToken):
         if serializer.is_valid():
             ob=serializer.validated_data
             user = serializer.validated_data['user']
+            # 登录触发推荐
             temp=user_recommend(int(user.id))
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
@@ -509,38 +514,48 @@ class MonthlyGoalAPIView(APIView):
 class MainPageRecAPIView(APIView):
 
     def get(self,request,format=None):
-        if(con.exists('pagelist')):
-            print('if')
-            temp=con.lrange('pagelist',0,-1)
+        if(con.exists('mainpagelist')):
+            temp=con.lrange('mainpagelist',0,-1)
             res=[]
             for i in temp:
                 res.append(json.loads(i))
             return Response(data=res,status=HTTP_200_OK)
         else:
-            info = request.query_params
             main_page_rec_set = Book.objects.all().order_by('-avg_rating','-added_times')[:5]
             serializer = BookSerializer(instance=main_page_rec_set,many=True)
-            for i in serializer.data:
-                con.rpush('pagelist',json.dumps(i))
-            print('else')
-            return Response(serializer.data,status=HTTP_200_OK)
+            return Response(serializer.data)
 
 # user_base recommend
 
 class UserBaseRecAPIView(APIView):
     def get(self,request,format=None):
-        if(con.exists('recommend')):
+        info = request.query_params
+        user_id=info['id']
+        if(con.exists('rec_'+str(user_id))):
             print('get from cache')
-            temp=con.lrange('recommend',0,-1)
+            temp=con.lrange('rec_'+str(user_id),0,-1)
             res=[]
             for i in temp:
                 res.append(json.loads(i))
-            return Response(data=res,status=HTTP_200_OK)
+            res_rating=[]
+            res_add=[]
+            temp_1=con.lrange('highrating',0,-1)
+            for i in temp_1:
+                res_rating.append(json.loads(i))
+            temp_2=con.lrang('highadded',0,-1)
+            for i in temp_2:
+                res_add.append(json.loads(i))
+            return Response(data={"rec":rec,"rating_rec":temp_1,"added_rec":temp_2},status=HTTP_200_OK)
         else:
-            info = request.query_params
-            user_id=int(info['id'])
-            res=user_recommend(user_id)
-            return Response(data=res,status=HTTP_200_OK)
+            res_rating=[]
+            res_add=[]
+            temp_1=con.lrange('highrating',0,-1)
+            for i in temp_1:
+                res_rating.append(json.loads(i))
+            temp_2=con.lrang('highadded',0,-1)
+            for i in temp_2:
+                res_add.append(json.loads(i))
+            return Response(data={"rating_rec":temp_1,"added_rec":temp_2},status=HTTP_200_OK)
 
 
 # test

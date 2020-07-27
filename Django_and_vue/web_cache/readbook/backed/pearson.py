@@ -70,18 +70,22 @@ def calculate_correlation(target,datas):
     return rec_list[:5]
 
 def user_recommend(user_id):
-    data=Collection_Book.objects.all()
-    serializer = RecUserBookSerializer(instance=data,many=True)
+    temp_set = Rating.objects.filter(user=str(user_id))
+    if(temp_set.count<=2):
+        return 0
+    else:
+        data=Collection_Book.objects.all()
+        serializer = RecUserBookSerializer(instance=data,many=True)
 
-    user={}
-    for i in serializer.data:
-        if(i['belongto'] not in user):
-            user[i['belongto']]={}
-        user[i['belongto']][i['book']]=float(i['rating'])
-    
-    res=calculate_correlation(user_id,user)
-    for i in res:
-        book_temp=Book.objects.get(id=i[0])
-        serializer=BookSerializer(instance=book_temp)
-        con.rpush('recommend',json.dumps(serializer.data))
-    return res
+        user={}
+        for i in serializer.data:
+            if(i['belongto'] not in user):
+                user[i['belongto']]={}
+            user[i['belongto']][i['book']]=float(i['rating'])
+        
+        res=calculate_correlation(user_id,user)
+        for i in res:
+            book_temp=Book.objects.get(id=i[0])
+            serializer=BookSerializer(instance=book_temp)
+            con.rpush('rec_'+str(user_id),json.dumps(serializer.data))
+        return 1
