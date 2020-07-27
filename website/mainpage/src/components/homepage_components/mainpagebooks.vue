@@ -3,6 +3,11 @@
     <el-row class="book_cards">
         <el-col :span="4" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 1 : 0">
             <el-card :body-style="{ padding: '0px' }">
+                <div class="content" v-for="item in books" :key="item.imageLink">
+                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />
+                    <a>{{item.title}}</a>
+                </div>
+
                 <img src="https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX667_CR0,0,667,999_AL_.jpg" class="image" alt/>
                 <div style="padding: 14px;">
                     <span>Harry Porter</span>
@@ -18,17 +23,31 @@
 </template>
 
 <script>
+    // import {getMainpageRec} from "../../network/requests";
+
     export default {
         name: "mainpagebooks",
         data() {
             return {
-                currentDate: new Date()
+                currentDate: new Date(),
+                books: []
             };
         },
       methods:{
 
 
 
+      },
+
+      mounted() {
+            this.$axios({
+                method: 'get',
+                url: 'http://127.0.0.1:8000/api/mainpagerec/'
+            }).then(res=>{
+                console.log("123:", res)
+            })
+
+            // getMainpageRec()
       }
     }
 </script>
