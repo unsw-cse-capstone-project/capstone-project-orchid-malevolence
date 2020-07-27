@@ -75,7 +75,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: 'Stop to reset'
+                        message: 'Stop reset'
                     });
                 });
             },
