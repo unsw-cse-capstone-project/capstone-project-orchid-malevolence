@@ -147,6 +147,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         user_id = self.context['user_id']
         book_id = obj.id
         rating_count_set = Rating.objects.filter(book=book_id)
+        count_num=rating_count_set.count()
         five_nums=0
         four_nums=0
         three_nums=0

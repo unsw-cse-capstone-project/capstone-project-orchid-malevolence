@@ -181,6 +181,7 @@ class AddBookAPIView(APIView):
 class FilterSearchBookAPIView(APIView):
     def get(self,request,format=None):
         info=request.query_params
+        print('filter')
         search_key=info['key_word']
         search_type=info['search_type']
         filter_rating = int(info['filter_rating'])
@@ -212,6 +213,7 @@ class FilterSearchBookAPIView(APIView):
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
         print(request.data)
+        print('search not filter')
         search_type = request.data['search_type']
         if search_type.lower() == "title":
             search_key = request.data['key_word']

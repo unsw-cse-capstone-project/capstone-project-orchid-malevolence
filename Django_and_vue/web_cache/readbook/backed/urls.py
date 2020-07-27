@@ -20,6 +20,7 @@ urlpatterns=[
     url('set_goal/', MonthlyGoalAPIView.as_view()),
     url('bookdetail/', BookDetailPageAPIView.as_view()),
     url('searchbook/', SearchBookAPIView.as_view()),
+    # url(r'filtersearchbook/$', FilterSearchBookAPIView.as_view()),
     url('filter/', FilterSearchBookAPIView.as_view()),
     url('mainpagerec/', MainPageRecAPIView.as_view()),
     url('recommend/', UserBaseRecAPIView.as_view()),
