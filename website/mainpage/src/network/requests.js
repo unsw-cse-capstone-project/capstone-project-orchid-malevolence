@@ -126,7 +126,7 @@ export function delecollection (data) {
 
 export function filtersearchbook (data) {
 	return request({
-		url: '/api/filtersearchbook/',
+		url: '/api/filter/',
 		params:data
 	})
 }
