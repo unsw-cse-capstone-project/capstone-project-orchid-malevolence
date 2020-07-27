@@ -50,10 +50,10 @@ class BookSerializer(serializers.ModelSerializer):
 # collection全部信息，包括有哪些书
 class CollectionSerializer(serializers.ModelSerializer):
     # books = BookSerializer(many=True, required = False, read_only=True)
-    book_list=serializers.SerializerMethodField('book_list_edit',required=False)
+    books=serializers.SerializerMethodField('book_list_edit',required=False)
     class Meta:
         model = Collection
-        fields = ('id','name','user','book_list')
+        fields = ('id','name','user','books')
     
     def book_list_edit(self,obj):
         books_relation_set = Collection_Book.objects.filter(collection=obj.id)
