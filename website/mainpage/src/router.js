@@ -6,6 +6,7 @@ import homepage from './pages/homepage.vue'
 import search_result from './pages/search_result'
 import person from './pages/person.vue'
 import one_book from './pages/one_book'
+import my_bookspage from './pages/my_bookspage'
 
 
 Vue.use(Router)
@@ -63,6 +64,14 @@ const router = new Router({
             meta:{
                 title:'search_result'
             }
+        },
+        {
+            path: '/my_bookspage',
+            name: 'my_bookspage',
+            component: my_bookspage,
+            meta:{
+                title:'my_bookspage'
+            }
         }
     ],
 
@@ -77,7 +86,7 @@ router.beforeEach((to, from, next) => {
     // next 是一个函数，表示放行
     // next() 放行， next('/login') 强制跳转
     const tokenStr = window.localStorage.getItem('token')
-    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/one_book' | to.path==='/search_result') { return next() }
+    if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/one_book' | to.path==='/search_result' | to.path==='/my_bookspage') { return next() }
     else if (tokenStr == null) {
         return next('/homepage')
     }

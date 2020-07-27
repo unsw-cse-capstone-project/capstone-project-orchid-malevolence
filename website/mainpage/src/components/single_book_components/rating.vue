@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
   span{
     /*margin-left: 10px;*/
     font-size: 16px;
@@ -15,6 +15,9 @@
     width: 95%;
 
     margin-top: 20px;
+  }
+  .inner_usernamne{
+    display: block;
   }
 
 
@@ -47,6 +50,7 @@
     </div>
 
 
+
     <el-drawer
 
             title="I am title"
@@ -76,6 +80,7 @@
 
       </div>
       <p class="line"></p>
+
       <el-input class="margin_class input_content"
               type="textarea"
               :autosize="{ minRows: 7, maxRows: 10}"
@@ -92,7 +97,7 @@
 </template>
 
 <script>
-import {getSingleBookmultdata,postrating,postReview} from "../../network/single_book"
+import {getSingleBookmultdata,postrating,postReview} from "../../network/requests"
 export default {
   name: 'rate',
   data () {
@@ -102,7 +107,7 @@ export default {
       exist: true,
       textarea1: '',
       textarea2: '',
-      token_log: localStorage.getItem('token'),
+      username: localStorage.getItem('username'),
       value: 0,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
     }
@@ -110,9 +115,10 @@ export default {
   props: {
     bookID: String
   },
-  created () {
+  computed:{
 
   },
+
   methods: {
     submite_review () {
       let post_review = {
@@ -138,7 +144,7 @@ export default {
         console.log(res)
       })
       this.drawer=false
-
+      location.reload()
 
     },
     Close_drawer(){
@@ -148,6 +154,7 @@ export default {
 
     afterclose () {
       this.drawer = false
+
     },
     disable () {
       console.log(this.bookID)
@@ -164,6 +171,7 @@ export default {
       console.log(this.bookID)
 
       this.exist = false
+
 
 
     },

@@ -1,6 +1,6 @@
-<style scoped>
+<style lang="less" scoped>
 	.all_margin{
-		margin: 10px 20px;
+		margin: 10px 10px;
 	}
 
 </style>
@@ -21,7 +21,7 @@
 						:with-header="false">
 			<h3 class="all_margin">Add to your collection</h3>
 
-			<span class="all_margin">Add: </span>
+			<span class="all_margin">Add to: </span>
 			<el-select  class="all_margin" v-model="value"  placeholder="please choose one"  >
 				<el-option
 
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/single_book"
+import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
 export default {
 	name: 'add_your_collection',
 	data () {
@@ -85,6 +85,8 @@ export default {
 	components:{
 
 	},
+
+
 	created () {
 		getCollectionmultdata().then(res=>{
 			console.log(res)
@@ -151,6 +153,22 @@ export default {
 				message: 'Congratulations, You have added a shelf',
 				type: 'success'
 			});
+			getCollectionmultdata().then(res=>{
+				console.log(res)
+				this.options=[]
+
+				for (let i=0;i<res.length;i++){
+					let j=res[i].id
+					let k=res[i].name
+					this.options.push({id:j,name:k})
+				}
+
+				console.log(this.options)
+
+			}).catch(res=>{
+				console.log(res)
+			})
+
 
 
 		},

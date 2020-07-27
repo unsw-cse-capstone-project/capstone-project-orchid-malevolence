@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.body{
 		width: 70%;
 		margin: 80px auto;
@@ -126,6 +126,7 @@
 
 
 
+
 			</div>
 
 
@@ -141,7 +142,7 @@
 
 <script>
 import Header from '../components/homepage_components/header'
-import {getSingleBookmultdata} from '../network/single_book'
+import {getSingleBookmultdata} from '../network/requests'
 
 import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'
@@ -162,6 +163,7 @@ export default {
 			book:{
 
 			},
+
 			book_id:null,
 			result:{
 				rate:Number,
@@ -186,7 +188,7 @@ export default {
 		// get_reviews
 	},
 
-	created () {
+	mounted () {
 		this.getData();
 
 	},

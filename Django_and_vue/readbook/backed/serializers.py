@@ -180,7 +180,8 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         user_id = self.context['user_id']
         book_id = obj.id
         # 检索所有非当前用户的评论
-        review_set = Review.objects.filter(book=book_id).exclude(user=user_id)
+        # exclude(user=user_id)
+        review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
             rev_ser = ReviewSerializer(instance=review_set,many=True)
             res=[]

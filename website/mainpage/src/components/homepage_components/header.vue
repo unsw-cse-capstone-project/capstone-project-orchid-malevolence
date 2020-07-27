@@ -4,18 +4,36 @@
         <el-menu-item index="1" @click="jump_homepage">
             Home
         </el-menu-item>
+        <el-menu-item index="1" @click="jump_my_books_page">
+            My books
+        </el-menu-item>
 
-<!--        <Search></Search>-->
+        <!--        <Search></Search>-->
 
         <div class="search">
+            <el-select class="select_box1" v-model="select" slot="prepend" placeholder="select book/author">
+                <el-option  label="Title" value="Title" ></el-option>
+                <el-option label="Author" value="Authors" ></el-option>
+                <!--                    <el-option label="My Book" value="3"></el-option>-->
+            </el-select>
+            <el-select class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
+                <el-option label="all books" value="0" ></el-option>
+
+                <el-option label="4-5" value="4" ></el-option>
+
+                <el-option  label="3-5" value="3" ></el-option>
+                <el-option label="2-5" value="2" ></el-option>
+                <el-option label="1-5" value="1" ></el-option>
+
+
+                <!--                    <el-option label="My Book" value="3"></el-option>-->
+            </el-select>
             <el-input placeholder="input contents" v-model="input3" class="input-with-select">
-                <el-select v-model="select" slot="prepend" placeholder="please select">
-                    <el-option  label="Title" value="Title" ></el-option>
-                    <el-option label="Authors" value="Authors" ></el-option>
-<!--                    <el-option label="My Book" value="3"></el-option>-->
-                </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="jump_search_result"></el-button>
+
+
             </el-input>
+            <el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_search_result"></el-button>
+
         </div>
 
         <!--    注册跳转    -->
@@ -42,63 +60,65 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                token_log: localStorage.getItem('token'),
-                activeIndex: '1',
-                activeIndex2: '1',
-                input1: '',
-                input2: '',
-                input3: '',
-                select: '',
+export default {
+    data() {
+        return {
+            token_log: localStorage.getItem('token'),
+            activeIndex: '1',
+            activeIndex2: '1',
+            input1: '',
+            input2: '',
+            input3: '',
+            select: '',
+            score: ''
 
 
 
 
-            };
+        };
+    },
+
+    methods: {
+        handleSelect(key, keyPath) {
+            console.log(key, keyPath);
         },
 
-        methods: {
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-            },
+        jump_homepage() {
+            this.$router.push('/')
+        },
 
-            jump_homepage() {
-                this.$router.push('/')
-            },
+        jump_reg() {
+            this.$router.push('register')
+        },
 
-            jump_reg() {
-                this.$router.push('register')
-            },
+        jump_login() {
+            this.$router.push('login')
+        },
+        jump_Profile() {
+            this.$router.push('person')
+        },
+        jump_logout() {
+            window.localStorage.clear()
+            this.$router.go(0)
+        },
+        jump_my_books_page() {
+            this.$router.push('my_bookspage')
 
-            jump_login() {
-                this.$router.push('login')
-            },
-			jump_Profile() {
-				this.$router.push('person')
-			},
-            jump_logout() {
-                window.localStorage.clear()
-                this.$router.go(0)
-            },
-            jump_search_result(){
-                this.$router.push({
-                            name:'search_result',
-                            query: {
-                                key_word:this.input3,
-                                search_type:this.select
-                            }
-                            // query:{
-                            //     key_word:this.input3,
-                            //     search_type:this.select
-                            // }
-                        }
-                )
+        },
 
-            },
+        jump_search_result(){
+            this.$router.push({
+                name:'search_result',
+                query: {
+                    key_word:this.input3,
+                    search_type:this.select,
+                    score:this.score
+                }
+            })
         }
-    }
+    },
+
+}
 </script>
 
 <style lang="less" scoped>
@@ -109,7 +129,7 @@
 
     .search {
         position: absolute;
-        width: 300px;
+        width: 50%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -118,8 +138,21 @@
     .el-select .el-input {
         width: 130px;
     }
-    .input-with-select .el-input-group__prepend {
+    .input-with-select{
         background-color: #fff;
+        width: 40%;
+        margin-right: 5px;
+        border-radius: 3px;
+
+
+    }
+    .el-input-group__prepend {
+
+    }
+    .select_box1{
+        width: 22%;
+        margin-right: 10px;
+
     }
 </style>
 

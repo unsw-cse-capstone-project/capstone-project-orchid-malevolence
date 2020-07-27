@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 
 	.book_item{
 		display: inline-block;
@@ -13,7 +13,6 @@
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		/*padding-top: 10px;*/
 
 		width: 65%;
 		word-break: break-all
@@ -21,6 +20,10 @@
 	.info{
 		font-size: 14px;
 		opacity: 0.7;
+	}
+
+	p{
+		line-height: 1;
 	}
 
 
@@ -43,6 +46,14 @@
 
 				<div class="book_item text-block">
 					<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
+					<el-rate
+									v-model="item.avg_rating"
+									disabled
+									show-score
+									text-color="#ff9900"
+									score-template="{value}">
+					</el-rate>
+
 					<div><p>Author: {{item.authors}}</p></div>
 					<div><p>Publisher: {{item.publisher}}</p></div>
 					<div><p>publish_date: {{item.publish_date}}</p></div>
@@ -76,6 +87,7 @@ export default {
 		return{
 			token_log: localStorage.getItem('token'),
 
+
 			// isShow:false,
 
 			real_page:1,
@@ -95,6 +107,13 @@ export default {
 
 		}
 	},
+	watch:{
+		books(val){
+			console.log(val)
+			this.real_page=1
+		}
+
+	},
 
 
 	methods:{
@@ -105,12 +124,10 @@ export default {
 		},
 		jump_one_book (value) {
 			console.log(value)
-
 			this.$router.push({
 				name: 'one_book',
 
 				query: {
-
 					// item:value
 					book_id: value.id,
 					authors:value.authors,
@@ -120,8 +137,6 @@ export default {
 					publisher_data:value.publish_date,
 					imageLink:value.imageLink,
 					category:value.categories
-
-
 				}
 
 			})

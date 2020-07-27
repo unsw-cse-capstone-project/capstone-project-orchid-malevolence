@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
 	.body{
 		width: 70%;
 		margin: auto;
@@ -32,9 +32,8 @@
 </template>
 
 <script>
-// import search_model from '../components/search_result_components/search_model'
 import book_list from '../components/search_result_components/book_list'
-import {getSearchResult} from '../network/single_book'
+import {getSearchResult,filtersearchbook} from '../network/requests'
 import Header from  '../components/homepage_components/header'
 
 
@@ -47,8 +46,9 @@ export default {
 			token_log: localStorage.getItem('token'),
 			search_type:'',
 			key_word:'',
+			score:'',
 			result_list:[],
-			isShow:false
+			isShow:false,
 
 		}
 	},
@@ -96,40 +96,74 @@ export default {
 			// 路由传参获取title/author 和keyword
 			this.key_word=this.$route.query.key_word
 			this.search_type=this.$route.query.search_type
-			if(this.search_type===""){
-				this.search_type='Title'
-			}
-			let post_value={search_type:this.search_type,key_word:this.key_word }
-			//发送axios get请求
-			console.log(post_value)
-			getSearchResult(post_value).then(res=>{
-				if (res.status===400){
-					this.$message({message:'No book about: '+this.key_word, showClose:true,} )
-
-					this.isShow=false
-					let temp=this.key_word
-					this.key_word=this.search_type+temp+ '. There is no related book'
-
-				}else{
-
-					this.isShow=true
-
-					//得到结果
-					this.result_list=this.slite_pages(res)
+			this.score=this.$route.query.score
+			if (this.score===''){
+				if(this.search_type===""){
+					this.search_type='Title'
 				}
-				console.log(this.result_list)
-				console.log('from router')
-			}).catch(err=>{
+				let post_value={search_type:this.search_type,key_word:this.key_word }
+				//发送axios get请求
+				console.log(post_value)
+				getSearchResult(post_value).then(res=>{
+					if (res.status===400){
+						this.$message({message:'No book about: '+this.key_word, showClose:true,} )
 
-				console.log(err)
-			})
+						this.isShow=false
+						let temp=this.key_word
+						this.key_word=this.search_type+temp+ '. There is no related book'
+
+					}else{
+
+						this.isShow=true
+
+						//得到结果
+						this.result_list=this.slite_pages(res)
+					}
+					console.log(this.result_list)
+					console.log('from router')
+				}).catch(err=>{
+
+					console.log(err)
+				})
+
+			}
+			else {
+				if(this.search_type===""){
+					this.search_type='Title'
+				}
+				let post_value={search_type:this.search_type,key_word:this.key_word,filter_rating:this.score }
+				//发送axios get请求
+				console.log(post_value)
+				filtersearchbook(post_value).then(res=>{
+					if (res.status===400){
+						this.$message({message:'No book about: '+this.key_word, showClose:true,} )
+
+						this.isShow=false
+						let temp=this.key_word
+						this.key_word=this.search_type+temp+ '. There is no related book'
+
+					}else{
+
+						this.isShow=true
+
+						//得到结果
+						this.result_list=this.slite_pages(res)
+					}
+					console.log(this.result_list)
+					console.log('from router')
+				}).catch(err=>{
+
+					console.log(err)
+				})
+			}
+
 
 
 
 		}
 	},
 
-	created () {
+	mounted () {
 
 		//路由传参获取title/author 和keyword
 		this.key_word=this.$route.query.key_word

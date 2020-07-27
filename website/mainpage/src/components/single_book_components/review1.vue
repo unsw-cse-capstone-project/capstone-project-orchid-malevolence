@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import {getSingleBookmultdata} from '../../network/single_book'
+import {getSingleBookmultdata} from '../../network/requests'
 
 export default {
   name:"review1",
