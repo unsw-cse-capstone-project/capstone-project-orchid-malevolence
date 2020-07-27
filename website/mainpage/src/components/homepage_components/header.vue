@@ -4,10 +4,10 @@
         <el-menu-item index="1" @click="jump_homepage">
             Home
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_my_books_page">
+        <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log != null">
             My books
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_test">
+        <el-menu-item index="1" @click="jump_test" v-if="token_log != null">
             test
         </el-menu-item>
 

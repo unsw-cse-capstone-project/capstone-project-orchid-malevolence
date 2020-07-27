@@ -24,12 +24,6 @@ export function addCollection (query) {
 
 }
 
-export function getMainpageRec() {
-	return request( {
-		url: 'api/mainpagerec/'
-	})
-}
-
 export function getperinfodata () {
 	return request({
 		url: '/api/account/'

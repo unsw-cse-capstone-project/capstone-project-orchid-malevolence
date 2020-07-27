@@ -1,30 +1,26 @@
 <!-- TODO: Books位置调整 -->
 <template>
-    <el-row class="book_cards">
-        <el-col :span="4" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 1 : 0">
-            <el-card :body-style="{ padding: '0px' }">
-                <div class="content" v-for="item in books" :key="item.imageLink">
-                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />
-                    <a>{{item.title}}</a>
-                </div>
-
-                <img src="https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX667_CR0,0,667,999_AL_.jpg" class="image" alt/>
-                <div style="padding: 14px;">
-                    <span>Harry Porter</span>
-                    <div class="bottom clearfix">
-                      <router-link :to="{name:'one_book',query:{id:'23'}}">
-                        <el-button type="text" class="button">More Details</el-button>
-                      </router-link>
+    <div>
+        <el-divider content-position="center" class="divider">Everyday Recommendation</el-divider>
+        <el-row :gutter="30" type="flex" justify="center">
+            <el-col :span="4" v-for="item in books" :key="item.imageLink">
+                <el-card :body-style="{ padding: '0px' }">
+                    <img :src="item.imageLink" class="image" alt/>
+                    <div style="padding: 14px;">
+                        <span>{{item.title}}</span>
+                        <div class="bottom clearfix">
+                            <router-link :to="{name:'one_book',query:{id:'23'}}">
+                                <el-button type="text" class="button" @click="jump_one_book(item)">More Details</el-button>
+                            </router-link>
+                        </div>
                     </div>
-                </div>
-            </el-card>
-        </el-col>
-    </el-row>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script>
-    // import {getMainpageRec} from "../../network/requests";
-
     export default {
         name: "mainpagebooks",
         data() {
@@ -34,34 +30,44 @@
             };
         },
       methods:{
+          jump_one_book(value) {
+              console.log(value)
+              this.$router.push({
+                  name: 'one_book',
+                  query: {
+                      // item:value
+                      book_id: value.id,
+                      authors: value.authors,
+                      title: value.title,
+                      ISBN: value.ISBN,
+                      publisher: value.publisher,
+                      imageLink: value.imageLink,
+                      publisher_data:value.publish_date,
+                      category:value.categories
+                  }
 
-
-
+              })
+          },
       },
 
       mounted() {
-            this.$axios({
-                method: 'get',
-                url: 'http://127.0.0.1:8000/api/mainpagerec/'
-            }).then(res=>{
-                console.log("123:", res)
-            })
-
-            // getMainpageRec()
+          this.$axios({
+              method: 'get',
+              url: 'http://127.0.0.1:8000/api/mainpagerec/',
+              // data: this.loginForm
+          }).then(res => {
+              let len = res.data.length
+              for(let i = 0; i < len; i++) {
+                  this.books.push(res.data[i])
+              }
+          }).catch(error => {
+              console.log(error)
+          });
       }
     }
 </script>
 
 <style  lang="less" scoped>
-    .book_cards {
-        margin: 40px 20px 40px 20px;
-    }
-
-    .time {
-        font-size: 13px;
-        color: #999;
-    }
-
     .bottom {
         margin-top: 13px;
         line-height: 12px;
@@ -72,18 +78,30 @@
         /*float: center;*/
     }
 
-    .image {
+    .el-row {
+        margin: 40px 0 40px 0;
+        text-align:center;
         width: 100%;
-        display: block;
     }
 
-    /*.clearfix:before,*/
-    /*.clearfix:after {*/
-    /*    display: table;*/
-    /*    content: "";*/
-    /*}*/
+    .el-card {
+        height: 400px;
+        width: 200px;
+        /*margin-left: 20px;*/
+    }
 
-    /*.clearfix:after {*/
-    /*    clear: both*/
-    /*}*/
+    .image {
+        margin-top: 13.5px;
+        width: 175px;
+        height: 265px;
+    }
+
+    .el-divider {
+        margin-top: 50px;
+    }
+
+    .el-divider__text {
+        font-size: 20px;
+        background: aliceblue;
+    }
 </style>
