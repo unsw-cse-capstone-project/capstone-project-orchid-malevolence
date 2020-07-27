@@ -81,6 +81,12 @@ class AccountDetailSerializer(serializers.ModelSerializer):
         # fields = "__all__"
         # exclude = ('password',)
 
+class OtherAccountDetailSerializer(serializers.ModelSerializer):
+    collections = CollectionSerializer(many=True, required = False)
+    class Meta:
+        model = Account
+        fields = ['username','collections']
+
 # 评论的信息，
 class ReviewSerializer(serializers.ModelSerializer):
 

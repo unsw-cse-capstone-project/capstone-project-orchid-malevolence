@@ -251,6 +251,13 @@ class SearchBookAPIView(APIView):
                 serializer = BookSerializer(instance=search_set,many=True)
                 return Response(serializer.data,status=HTTP_200_OK)
             else:
+                return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST) 
+        elif search_type.lower() == 'user':
+            users_set = Account.objects.filter(username__contains = search_key)
+            if(users_set.exists()):
+                serializer=OtherAccountDetailSerializer(instance=users_set,many=True)
+                return Response(serializer.data,status=HTTP_200_OK)
+            else:
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
         else:
             return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
