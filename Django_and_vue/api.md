@@ -281,7 +281,7 @@ if no result, it will return error msg and status 400.
 
 ## search filter
 ```
-url: /api/filtersearchbook/
+url: /api/filter/
 ```
 
 >GET
