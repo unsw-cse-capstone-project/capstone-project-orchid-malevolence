@@ -148,7 +148,6 @@ import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'
 import add_your_collection from '../components/single_book_components/add_your_collection'
 
-// import get_reviews from '../components/single_book_components/get_reviews'
 
 
 export default {

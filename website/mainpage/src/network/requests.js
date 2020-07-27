@@ -133,7 +133,7 @@ export function filtersearchbook (data) {
 
 export function delBookfromCollection (data) {
 	return request({
-		url: '/api/collection/',
+		url: '/api/add_to_collection/',
 		method:'delete',
 		data:data
 	})

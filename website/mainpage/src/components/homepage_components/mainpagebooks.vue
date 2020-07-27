@@ -7,7 +7,7 @@
                 <div style="padding: 14px;">
                     <span>Harry Porter</span>
                     <div class="bottom clearfix">
-                      <router-link :to="{name:'single_book',query:{id:'23'}}">
+                      <router-link :to="{name:'one_book',query:{id:'23'}}">
                         <el-button type="text" class="button">More Details</el-button>
                       </router-link>
                     </div>
