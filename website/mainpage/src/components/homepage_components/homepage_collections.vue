@@ -87,11 +87,10 @@
                     return item.id === col_id;
                 });
 
-
-
                 let book
                 let len = obj.books.length
                 for(let i = 0; i < len; i++) {
+                    console.log(obj.books[i])
                     book = {}
                     book["id"] = obj.books[i].id
                     book["authors"] = obj.books[i].authors
@@ -104,7 +103,7 @@
                     // book["url"] = ''   // TODO: 跳转url
                     this.books.push(book)
                 }
-                console.log(book)
+                // console.log(book)
             },
 
             jump_one_book(value) {

@@ -4,10 +4,10 @@
         <el-menu-item index="1" @click="jump_homepage">
             Home
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_my_books_page">
+        <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log != null">
             My books
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_test">
+        <el-menu-item index="1" @click="jump_test" v-if="token_log != null">
             test
         </el-menu-item>
 
@@ -18,9 +18,9 @@
             <el-select class="select_box1" v-model="select" slot="prepend" placeholder="select book/author">
                 <el-option  label="Title" value="Title" ></el-option>
                 <el-option label="Author" value="Authors" ></el-option>
-                <!--                    <el-option label="My Book" value="3"></el-option>-->
+                <el-option label="User" value="User"></el-option>
             </el-select>
-            <el-select class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
+            <el-select  :disabled="isShow()" class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
                 <el-option label="all books" value="0" ></el-option>
 
                 <el-option label="4-5" value="4" ></el-option>
@@ -74,7 +74,8 @@ export default {
             input2: '',
             input3: '',
             select: '',
-            score: ''
+            score: '',
+
 
 
 
@@ -83,6 +84,13 @@ export default {
     },
 
     methods: {
+        isShow(){
+            if (this.select==='User'){
+                return true
+            }
+
+
+        },
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -120,7 +128,7 @@ export default {
                 query: {
                     key_word:this.input3,
                     search_type:this.select,
-                    score:this.score
+                    score:this.score,
                 }
             })
         }

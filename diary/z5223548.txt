@@ -57,3 +57,8 @@ time.
 In the next week, I will create a recommand page to show the recommand result of the user. In addition, 
 the CSS should be changed as the homepage only complete the functions but not the outlook.
 
+-- Week8 2020/07/26  Sunday --
+This week, all the homepage has been finished. I optimize the layout of the homepage, and change the mainpage's book reccomendation in the before login view.
+
+Some bugs in set goal part has been fixed. In the next week, I will complete the recommendation part.
+And finish all the layout and css.

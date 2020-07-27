@@ -1,13 +1,13 @@
 <style lang="less" scoped>
-	.body{
+	.body {
 		width: 70%;
 		margin: auto;
 	}
-	h2{
+
+	h2 {
 		height: 30px;
 		margin: 10px 0 20px 0;
 	}
-
 
 
 </style>
@@ -20,8 +20,8 @@
 		</div>
 
 		<div class="body">
-			<h2>Search {{key_word}}</h2>
-			<book_list :books="result_list" v-if="isShow"></book_list>
+			<h2 v-show="isShow">Search {{key_word}}</h2>
+			<book_list v-if="isShow" :books="result_list"></book_list>
 
 		</div>
 
@@ -33,212 +33,145 @@
 
 <script>
 import book_list from '../components/search_result_components/book_list'
-import {getSearchResult,filtersearchbook} from '../network/requests'
-import Header from  '../components/homepage_components/header'
+import {getSearchResult, filtersearchbook} from '../network/requests'
+import Header from '../components/homepage_components/header'
 
 
 export default {
 	name: 'search_result',
 
-	data(){
+	data () {
 
-		return{
+		return {
 			token_log: localStorage.getItem('token'),
-			search_type:'',
-			key_word:'',
-			score:0,
-			result_list:[],
-			isShow:false,
+			search_type: 'Title',
+			key_word: '',
+			score: 0,
+			result_list: [],
+			isShow: false,
+			user: '',
+			post_value: {}
 
 		}
 	},
-	components:{
+	components: {
 		// search_model,
 		book_list,
 		Header
 
 	},
-	methods:{
+	methods: {
 
 		//将请求的数据按每页10个显示，包含当前页，总数
-		slite_pages:function(value){
-			console.log( value)
-			let len=value.length
-			for(let j=0;j<len;j++){
-				value[j].avg_rating=parseFloat(value[j].avg_rating)
+		slite_pages: function (value) {
+			console.log(value)
+			let len = value.length
+			for (let j = 0; j < len; j++) {
+				value[j].avg_rating = parseFloat(value[j].avg_rating)
 			}
-			let list=[]
-			let start=0
-			let num=parseInt(value.length/10)
+			let list = []
+			let start = 0
+			let num = parseInt(value.length / 10)
 			let i
-			for (i=0;i<=num;i++ ){
-				list.push({total_book:value.length,page:i,book_li:value.slice(start,(i+1)*10)})
-				start=(i+1)*10
+			for (i = 0; i <= num; i++) {
+				list.push({total_book: value.length, page: i, book_li: value.slice(start, (i + 1) * 10)})
+				start = (i + 1) * 10
 			}
-			let result=value.slice(start,i*10)
-			if (result.length){
-				list.push({total_book:value.length,page:i,book_li:value.slice(start,(i+1)*10)})
+			let result = value.slice(start, i * 10)
+			if (result.length) {
+				list.push({total_book: value.length, page: i, book_li: value.slice(start, (i + 1) * 10)})
 			}
 			console.log(list)
 			return list
 		},
-		getResult(){
-			
+
+
+		//search result based on title/author/user
+		getResult: function (val) {
+
+			this.key_word = val.key_word
+			if (val.search_type !== '') {
+				this.search_type = val.search_type
+
+			}
+			this.score = parseFloat(val.score)
+
+			// if search not based on rating, which means not choose rating range
+			if (isNaN(this.score)) {
+				// case0 search based on user
+				if (this.search_type === 'User') {
+					this.isShow = false
+
+				}
+				//search based on Title or authors
+				else {
+					this.post_value = {search_type: this.search_type, key_word: this.key_word}
+					getSearchResult(this.post_value).then(res => {
+						if (res.status === 400) {
+							this.$message({message: 'No book about: ' + this.key_word, showClose: true,})
+							this.isShow = false
+							let temp = this.key_word
+							this.key_word = this.search_type + temp + '. There is no related book'
+						} else {
+							console.log(res)
+							//if get the response, the show the result
+
+
+							//get the resut
+							this.result_list = this.slite_pages(res)
+							this.isShow = true
+						}
+						console.log(this.result_list)
+						console.log('from router')
+					}).catch(err => {
+
+						console.log(err)
+					})
+				}
+			}
+			// if search based on rating range
+			else {
+				this.post_value = {search_type: this.search_type, key_word: this.key_word, filter_rating: this.score}
+				filtersearchbook(this.post_value).then(res => {
+					if (res.status === 400) {
+						this.$message({message: 'No book about: ' + this.key_word, showClose: true,})
+
+						this.isShow = false
+						let temp = this.key_word
+						this.key_word = this.search_type + temp + '. There is no related book'
+
+					} else {
+
+
+						console.log(res)
+
+						//get the result
+						this.result_list = this.slite_pages(res)
+						this.isShow = true
+					}
+					console.log(this.result_list)
+					console.log('from router')
+				}).catch(err => {
+
+					console.log(err)
+				})
+
+			}
 		}
 
 
-
-
 	},
-	//在监听到搜索点击的时候触发，向后台请求数据，并分页
-
+	//listen to the route, and to check whether it changed
 	watch: {
 		'$route' () {
-			// console.log(to)
-			// console.log(from)
-
-			// 路由传参获取title/author 和keyword
-			this.key_word=this.$route.query.key_word
-			this.search_type=this.$route.query.search_type
-			this.score=parseFloat(this.$route.query.score)
-			if (isNaN(this.score)){
-				if(this.search_type===""){
-					this.search_type='Title'
-				}
-				let post_value={search_type:this.search_type,key_word:this.key_word  }
-				//发送axios get请求
-				console.log(post_value)
-				getSearchResult(post_value).then(res=>{
-					if (res.status===400){
-						this.$message({message:'No book about: '+this.key_word, showClose:true,} )
-						this.isShow=false
-						let temp=this.key_word
-						this.key_word=this.search_type+temp+ '. There is no related book'
-					}else{
-						console.log(res)
-
-						this.isShow=true
-						//得到结果
-						this.result_list=this.slite_pages(res)
-					}
-					console.log(this.result_list)
-					console.log('from router')
-				}).catch(err=>{
-
-					console.log(err)
-				})
-
-			}
-			else {
-				if(this.search_type===""){
-					this.search_type='Title'
-				}
-				let post_value={search_type:this.search_type,key_word:this.key_word,filter_rating:this.score }
-				//发送axios get请求
-				console.log(post_value)
-				filtersearchbook(post_value).then(res=>{
-					if (res.status===400){
-						this.$message({message:'No book about: '+this.key_word, showClose:true,} )
-
-						this.isShow=false
-						let temp=this.key_word
-						this.key_word=this.search_type+temp+ '. There is no related book'
-
-					}else{
-
-						this.isShow=true
-						console.log(res)
-
-						//得到结果
-						this.result_list=this.slite_pages(res)
-					}
-					console.log(this.result_list)
-					console.log('from router')
-				}).catch(err=>{
-
-					console.log(err)
-				})
-			}
-
-
-
-
+			this.getResult(this.$route.query)
+			this.search_type = 'Title'
 		}
 	},
 
 	mounted () {
-		// console.log(to)
-		// console.log(from)
-
-		// 路由传参获取title/author 和keyword
-		this.key_word=this.$route.query.key_word
-		this.search_type=this.$route.query.search_type
-		this.score=parseInt(this.$route.query.score)
-		if (isNaN(this.score)){
-			if(this.search_type===""){
-				this.search_type='Title'
-			}
-			let post_value={search_type:this.search_type,key_word:this.key_word }
-			//发送axios get请求
-			console.log(post_value)
-			getSearchResult(post_value).then(res=>{
-				if (res.status===400){
-					this.$message({message:'No book about: '+this.key_word, showClose:true,} )
-
-					this.isShow=false
-					let temp=this.key_word
-					this.key_word=this.search_type+temp+ '. There is no related book'
-
-				}else{
-					console.log(res)
-
-					this.isShow=true
-
-					//得到结果
-					this.result_list=this.slite_pages(res)
-				}
-				console.log(this.result_list)
-				console.log('from router')
-			}).catch(err=>{
-
-				console.log(err)
-			})
-
-		}
-		else {
-			if(this.search_type===""){
-				this.search_type='Title'
-			}
-			let post_value={search_type:this.search_type,key_word:this.key_word,filter_rating:this.score }
-			//发送axios get请求
-			console.log(post_value)
-			filtersearchbook(post_value).then(res=>{
-				if (res.status===400){
-					this.$message({message:'No book about: '+this.key_word, showClose:true,} )
-
-					this.isShow=false
-					let temp=this.key_word
-					this.key_word=this.search_type+temp+ '. There is no related book'
-
-				}else{
-
-					this.isShow=true
-					console.log(res)
-
-					//得到结果
-					this.result_list=this.slite_pages(res)
-				}
-				console.log(this.result_list)
-				console.log('from router')
-			}).catch(err=>{
-
-				console.log(err)
-			})
-		}
-
-
-
-
+		this.getResult(this.$route.query)
+		this.search_type = 'Title'
 	},
 
 }
