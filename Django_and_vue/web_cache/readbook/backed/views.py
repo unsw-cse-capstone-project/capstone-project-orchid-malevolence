@@ -180,19 +180,16 @@ class AddBookAPIView(APIView):
 
 class FilterSearchBookAPIView(APIView):
     def get(self,request,format=None):
-        data=request.query_params
-        print(data)
-        search_key=data['key_word']
-        search_type=data['search_type']
-        filter_rating = data['filter_rating']
+        info=request.query_params
+        print('filter')
+        search_key=info['key_word']
+        search_type=info['search_type']
+        filter_rating = int(info['filter_rating'])
         if search_type.lower() == "title":
-            search_set = Book.objects.filter(title__contains = search_key)
+            print('yes')
+            search_set = Book.objects.filter(title__contains = search_key,avg_rating__gte=filter_rating).order_by('-avg_rating')
             if search_set.exists():
-                serializer = Book.objects.filter(authors__contains = search_key,avg_rating__gte=filter_rating).order_by('-avg_rating')
-                # res=[]
-                # for i in serializer.data:
-                #     if(i['avg_rating']>=filter_rating):
-                #         res.append(i)
+                serializer = BookSerializer(instance=search_set,many=True)
                 return Response(serializer.data,status=HTTP_200_OK)
             else:
                 return Response(data={"msg":"no result!"},status=HTTP_400_BAD_REQUEST)
@@ -216,6 +213,7 @@ class FilterSearchBookAPIView(APIView):
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
         print(request.data)
+        print('search not filter')
         search_type = request.data['search_type']
         if search_type.lower() == "title":
             search_key = request.data['key_word']
@@ -238,7 +236,6 @@ class SearchBookAPIView(APIView):
         
     def get(self,request,format=None):
         data=request.query_params
-        print(data)
         search_key=data['key_word']
         search_type=data['search_type']
         if search_type.lower() == "title":
@@ -565,18 +562,14 @@ class UserBaseRecAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
-        if(con.exists('recommend')):
-            print('get from cache')
-            temp=con.lrange('recommend',0,-1)
-            res=[]
-            for i in temp:
-                res.append(json.loads(i))
-            return Response(data=res,status=HTTP_200_OK)
-        else:
-            info = request.query_params
-            user_id=int(info['id'])
-            res=user_recommend(user_id)
-            return Response(data=res,status=HTTP_200_OK)
+        info=request.query_params
+        print(info)
+        print(info['rating'])
+        nums=info['rating']
+        book_set=Book.objects.filter(title__contains=info['key_word'],avg_rating__gte=nums)
+        serializer=BookSerializer(instance=book_set,many=True)
+        return Response(serializer.data)
+
 
         
 

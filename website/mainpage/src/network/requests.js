@@ -132,14 +132,14 @@ export function delecollection (data) {
 
 export function filtersearchbook (data) {
 	return request({
-		url: '/api/filtersearchbook/',
+		url: '/api/filter/',
 		params:data
 	})
 }
 
 export function delBookfromCollection (data) {
 	return request({
-		url: '/api/collection/',
+		url: '/api/add_to_collection/',
 		method:'delete',
 		data:data
 	})

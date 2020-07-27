@@ -219,7 +219,7 @@
   import review1 from '../components/single_book_components/review1'
   import read_score from '../components/single_book_components/read_score'
   import add_collection from '../components/single_book_components/add_collection'
-  import {getSingleBookmultdata} from '../network/single_book'
+  import {getSingleBookmultdata} from '../network/requests'
 
   export default {
 

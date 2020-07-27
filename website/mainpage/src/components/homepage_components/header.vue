@@ -7,6 +7,10 @@
         <el-menu-item index="1" @click="jump_my_books_page">
             My books
         </el-menu-item>
+        <el-menu-item index="1" @click="jump_test">
+            test
+        </el-menu-item>
+
 
         <!--        <Search></Search>-->
 
@@ -103,6 +107,10 @@ export default {
         },
         jump_my_books_page() {
             this.$router.push('my_bookspage')
+
+        },
+        jump_test() {
+            this.$router.push('test')
 
         },
 
