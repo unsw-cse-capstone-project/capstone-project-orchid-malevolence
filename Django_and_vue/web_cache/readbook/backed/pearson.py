@@ -71,7 +71,7 @@ def calculate_correlation(target,datas):
 
 def user_recommend(user_id):
     temp_set = Rating.objects.filter(user=str(user_id))
-    if(temp_set.count<=2):
+    if(temp_set.count()<=2):
         return 0
     else:
         data=Collection_Book.objects.all()
