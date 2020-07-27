@@ -1,5 +1,4 @@
-import {request} from './request_singleBook'
-// import {request_normal} from './request_singleBook'
+import {request} from './baseline_configuration'
 
 export function getSingleBookmultdata (query) {
 	return request({

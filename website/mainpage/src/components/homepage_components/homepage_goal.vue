@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import {getCurGoal, postCurGoal} from "../../network/single_book";
+    import {getCurGoal, postCurGoal} from "../../network/requests";
 
     let now = new Date()
     let nowMonth = now.getMonth() + 1

@@ -33,9 +33,8 @@
 
 <script>
 import book_list from '../components/search_result_components/book_list'
-import {getSearchResult,filtersearchbook} from '../network/single_book'
+import {getSearchResult,filtersearchbook} from '../network/requests'
 import Header from  '../components/homepage_components/header'
-// import header1 from '../components/homepage_components/header1'
 
 
 export default {

@@ -142,7 +142,7 @@
 
 <script>
 import Header from '../components/homepage_components/header'
-import {getSingleBookmultdata} from '../network/single_book'
+import {getSingleBookmultdata} from '../network/requests'
 
 import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'

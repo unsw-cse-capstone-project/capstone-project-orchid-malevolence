@@ -121,12 +121,12 @@
 
 <script>
 import Header from '../components/homepage_components/header.vue'
-import {getperinfodata} from '../network/single_book'
-import {postperinfo} from '../network/single_book'
-import {getCollectionmultdata} from '../network/single_book'
-import {postnewcollection} from '../network/single_book'
-import {changecollectioname} from '../network/single_book'
-import {delecollection} from '../network/single_book'
+import {getperinfodata} from '../network/requests'
+import {postperinfo} from '../network/requests'
+import {getCollectionmultdata} from '../network/requests'
+import {postnewcollection} from '../network/requests'
+import {changecollectioname} from '../network/requests'
+import {delecollection} from '../network/requests'
 // import axios from 'axios'
 export default {
 	components:{

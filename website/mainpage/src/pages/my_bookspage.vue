@@ -228,7 +228,7 @@
 
 <script>
 
-import {getCollectionmultdata,delBookfromCollection} from '../network/single_book'
+import {getCollectionmultdata,delBookfromCollection} from '../network/requests'
 import Header from '../components/homepage_components/header'
 // import search_inner_collections from '../components/search_result_components/search_inner_collections'
 export default {

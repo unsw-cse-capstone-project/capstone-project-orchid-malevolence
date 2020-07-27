@@ -31,9 +31,6 @@
 
 <script>
 
-// import {getSingleBookmultdata} from '../../network/single_book'
-
-// import {getSingleBookmultdata} from '../../network/single_book'
 
 export default {
   name: "read_score",

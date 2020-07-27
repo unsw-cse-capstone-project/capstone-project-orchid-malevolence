@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import {getSingleBookmultdata,postrating,postReview} from "../../network/single_book"
+import {getSingleBookmultdata,postrating,postReview} from "../../network/requests"
 export default {
   name: 'rate',
   data () {

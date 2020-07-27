@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 	.all_margin{
-		margin: 10px 20px;
+		margin: 10px 10px;
 	}
 
 </style>
@@ -21,7 +21,7 @@
 						:with-header="false">
 			<h3 class="all_margin">Add to your collection</h3>
 
-			<span class="all_margin">Add: </span>
+			<span class="all_margin">Add to: </span>
 			<el-select  class="all_margin" v-model="value"  placeholder="please choose one"  >
 				<el-option
 
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/single_book"
+import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
 export default {
 	name: 'add_your_collection',
 	data () {

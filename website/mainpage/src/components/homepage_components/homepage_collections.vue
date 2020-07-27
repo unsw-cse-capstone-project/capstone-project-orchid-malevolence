@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {getCollectionmultdata} from '../../network/single_book'
+    import {getCollectionmultdata} from '../../network/requests'
 
     export default {
         data() {
