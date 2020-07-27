@@ -2,26 +2,26 @@ import axios from 'axios'
 
 export function request (config) {
 	//create instance of axios
-	const instance=axios.create({
-		baseURL:'http://127.0.0.1:8000',
-		timeout:5000
+	const instance = axios.create({
+		baseURL: 'http://127.0.0.1:8000',
+		timeout: 5000
 
 	})
 
 	//axios  interceptor request
-	instance.interceptors.request.use(config=>{
+	instance.interceptors.request.use(config => {
 		// console.log(config)
-		config.headers.Authorization   ='Token '+window.localStorage.getItem('token')
+		config.headers.Authorization = 'Token ' + window.localStorage.getItem('token')
 
 		return config
-	},err => {
+	}, err => {
 		console.log(err)
 
 	})
 	//axios  interceptor response
-	instance.interceptors.response.use(res=>{
+	instance.interceptors.response.use(res => {
 		return res.data
-	},err => {
+	}, err => {
 		return Promise.resolve(err.response)
 		// console.log(err)
 
