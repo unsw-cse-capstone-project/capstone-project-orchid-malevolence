@@ -8,7 +8,6 @@ import person from './pages/person.vue'
 import one_book from './pages/one_book'
 import my_bookspage from './pages/my_bookspage'
 
-
 Vue.use(Router)
 
 const router = new Router({
@@ -72,7 +71,8 @@ const router = new Router({
             meta:{
                 title:'my_bookspage'
             }
-        }
+        },
+
     ],
 
 })

@@ -310,7 +310,7 @@ export default {
 
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
-			// location.reload()
+				location.reload()
 			// obj = this.collections.find((item) => {
 			// 	return item.id === col_id;
 			// });
