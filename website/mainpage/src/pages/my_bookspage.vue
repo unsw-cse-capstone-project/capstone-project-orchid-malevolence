@@ -46,7 +46,8 @@
 	}
 	.search_model{
 		width: 25%;
-		margin: 20px 25%;
+		margin: 20px 20%;
+
 
 	}
 	.collections{

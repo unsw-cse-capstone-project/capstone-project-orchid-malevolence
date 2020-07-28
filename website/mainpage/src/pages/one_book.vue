@@ -124,9 +124,6 @@
 					<span style="overflow-wrap:break-word;">{{item.content  }}</span>
 				</div>
 
-
-
-
 			</div>
 
 
