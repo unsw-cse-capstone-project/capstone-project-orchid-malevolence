@@ -45,8 +45,8 @@
 		word-break: break-all;
 	}
 	.search_model{
-		width: 25%;
-		margin: 20px 20%;
+		width: 22%;
+		margin: 20px 25%;
 
 
 	}
@@ -86,7 +86,7 @@
 		</div>
 
 		<div class="body">
-
+<!--			choose a collection-->
 			<div class="choose_collection">
 				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false;reload_page()" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
