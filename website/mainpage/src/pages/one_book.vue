@@ -199,8 +199,7 @@ export default {
 			this.book=this.$route.query
 			// console.log(this.book)
 			let post_value={book_id:this.book.book_id}
-			console.log(post_value)
-			console.log(this.token_log)
+
 			if(this.token_log){
 				getSingleBookmultdata(post_value).then(result => {
 
@@ -220,10 +219,8 @@ export default {
 				})
 			}
 			else{
-				console.log('sss')
-				getSingleBookmultdata1(post_value).then(result=>{
 
-					console.log(result)
+				getSingleBookmultdata1(post_value).then(result=>{
 					this.result=result
 					this.result.rate=result.rating_analyse.rating
 					this.result.TotalCount=result.rating_analyse.how_many_user_scored

@@ -276,7 +276,7 @@ export default {
 							let temp = this.key_word
 							this.key_word = this.search_type + temp + '. There is no related book'
 						} else {
-							console.log(res)
+							// console.log(res)
 							//if get the response, the show the result
 
 
