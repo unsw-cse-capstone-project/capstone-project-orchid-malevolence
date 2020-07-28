@@ -64,7 +64,7 @@ class CollectionSerializer(serializers.ModelSerializer):
                 ser=BookSerializer(instance=temp)
                 res.append(ser.data)
                 res[-1]['join_time']=str(i.create_time)
-                res[-1]['join_time']=res[-1]['join_time'][:10]
+                # res[-1]['join_time']=res[-1]['join_time'][:10]
             res.sort(key=lambda i:i['join_time'],reverse=True)
             return res
         else:

@@ -5,14 +5,27 @@
         <el-row :gutter="30" type="flex" justify="center">
             <el-col :span="4" v-for="item in books" :key="item.imageLink">
                 <el-card :body-style="{ padding: '0px' }">
-                    <img :src="item.imageLink" class="image" alt/>
-                    <div style="padding: 14px;">
-                        <span>{{item.title}}</span>
-                        <div class="bottom clearfix">
-                            <router-link :to="{name:'one_book',query:{id:'23'}}">
-                                <el-button type="text" class="button" @click="jump_one_book(item)">More Details</el-button>
-                            </router-link>
-                        </div>
+                    <div class="bottom">
+                        <!-- Hover part: put cursor on the book image show details -->
+                        <el-popover
+                                placement="right"
+                                width="400"
+                                trigger="hover">
+                            <div>
+                                <b>{{item.title}}</b>
+                                <el-rate
+                                        v-model="item.avg_rating"
+                                        disabled
+                                        show-score
+                                        text-color="#ff9900"
+                                        score-template="{value}">
+                                </el-rate>
+                                {{item.description}}
+                            </div>
+                            <img :src="item.imageLink" class="image" alt slot="reference"/>
+                        </el-popover>
+                        <el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
+                        <!-- End Hover -->
                     </div>
                 </el-card>
             </el-col>
@@ -58,6 +71,7 @@
           }).then(res => {
               let len = res.data.length
               for(let i = 0; i < len; i++) {
+                  res.data[i].avg_rating = parseInt(res.data[i].avg_rating)
                   this.books.push(res.data[i])
               }
           }).catch(error => {
@@ -67,7 +81,7 @@
     }
 </script>
 
-<style  lang="less" scoped>
+<style lang="less" scoped>
     .bottom {
         margin-top: 13px;
         line-height: 12px;
@@ -85,7 +99,7 @@
     }
 
     .el-card {
-        height: 400px;
+        height: 360px;
         width: 200px;
         /*margin-left: 20px;*/
     }
@@ -103,5 +117,9 @@
     .el-divider__text {
         font-size: 20px;
         background: aliceblue;
+    }
+
+    .book-detail {
+        margin-top: 10px;
     }
 </style>
