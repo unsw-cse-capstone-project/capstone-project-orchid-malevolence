@@ -122,7 +122,7 @@
 
 <script>
 import book_list from '../components/search_result_components/book_list'
-import {getSearchResult, filtersearchbook,getSearchUserResult} from '../network/requests'
+import {getSearchResult1, filtersearchbook1,getSearchUserResult1} from '../network/requestsWithoutLogin'
 import Header from '../components/homepage_components/header'
 
 
@@ -180,7 +180,7 @@ export default {
 		},
 		// search based on user get the result
 		getUserResult(val){
-			getSearchUserResult(val).then(res => {
+			getSearchUserResult1(val).then(res => {
 				if(res.status===400){
 					this.$message({message: 'cannot find user: ' + this.key_word, showClose: true,})
 					this.isShowUser=false
@@ -267,7 +267,7 @@ export default {
 					this.isShowUser=false
 					this.post_value = {search_type: this.search_type, key_word: this.key_word}
 				// console.log(this.post_value)
-				getSearchResult(this.post_value).then(res => {
+				getSearchResult1(this.post_value).then(res => {
 						if (res.status === 400) {
 							this.$message({message: 'cannot search: ' + this.key_word, showClose: true,})
 							this.isShow = false
@@ -307,7 +307,7 @@ export default {
 					this.isShowUser=false
 
 					this.post_value = {search_type: this.search_type, key_word: this.key_word, filter_rating: this.score}
-					filtersearchbook(this.post_value).then(res => {
+					filtersearchbook1(this.post_value).then(res => {
 						if (res.status === 400) {
 							this.$message({message: 'cannot search: ' + this.key_word, showClose: true,})
 

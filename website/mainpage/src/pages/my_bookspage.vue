@@ -238,6 +238,7 @@ export default {
 	name: 'my_bookspage',
 	data () {
 		return {
+			token_log: localStorage.getItem('token'),
 			books:[],
 			all_books:[],
 			name:'',

@@ -4,7 +4,7 @@
         <el-menu-item index="1" @click="jump_homepage">
             Home
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log != null">
+        <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log">
             My books
         </el-menu-item>
 
@@ -73,6 +73,10 @@ export default {
             input3: '',
             select: '',
             score: '',
+
+
+
+
 
         };
     },

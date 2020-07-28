@@ -55,10 +55,8 @@ export default {
 
 	// request method page initial and get average score of this book
 	updated () {
-
-		let temp = window.localStorage.getItem('token')
 		// console.log(temp)
-		if (temp) {
+
 			this.average = this.res.averageScore
 			this.book_id = this.res.book_id
 			this.TotalCount = this.res.TotalCount
@@ -66,11 +64,6 @@ export default {
 			// console.log(this.isShow)
 
 			// this.TotalCount=this.res.TotalCount
-			// console.log(this.book_id + ' aaaa')
-		} else {
-			// console.log(this.isShow)
-			this.isShow = false
-		}
 
 
 	},

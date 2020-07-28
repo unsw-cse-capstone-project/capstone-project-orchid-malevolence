@@ -9,7 +9,7 @@
 		<div>
 
 		</div>
-		<el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
+		<el-button @click="loginfirst()" type="primary" style="margin-left: 16px;">
 			Add to collection
 		</el-button>
 
@@ -67,6 +67,8 @@ export default {
 	name: 'add_your_collection',
 	data () {
 		return {
+			token_log: localStorage.getItem('token'),
+
 			wrapperClosable:true,
 			drawer: false,
 			img:[],
@@ -88,25 +90,39 @@ export default {
 
 
 	created () {
-		getCollectionmultdata().then(res=>{
-			console.log(res)
+		if(this.token_log){
+			getCollectionmultdata().then(res=>{
+				console.log(res)
 
-			for (let i=0;i<res.length;i++){
-				let j=res[i].id
-				let k=res[i].name
-				this.options.push({id:j,name:k})
-			}
-			// console.log(this.options)
+				for (let i=0;i<res.length;i++){
+					let j=res[i].id
+					let k=res[i].name
+					this.options.push({id:j,name:k})
+				}
+				// console.log(this.options)
 
-		}).catch(res=>{
-			console.log(res)
-		})
+			}).catch(res=>{
+				console.log(res)
+			})
+
+		}
+
+
 
 	},
 
 	methods: {
 		Close_drawer(){
 			this.drawer=false
+		},
+		loginfirst(){
+			if(this.token_log){
+				this.drawer = true;
+
+			}else{
+				this.$message({message: 'please login', showClose: true,})
+				return false
+			}
 		},
 		add_new_shelf () {
 			let value = {name: this.input}

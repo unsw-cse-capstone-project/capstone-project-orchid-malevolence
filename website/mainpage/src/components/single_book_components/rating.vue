@@ -27,7 +27,7 @@
 <template>
   <div>
     <span class="demonstration">Rating and commit</span>
-    <div @click="drawer = true">
+    <div @click="checkLogin()">
       <div v-if="exist===true" @click="disable() ">
         <el-rate
                 v-model="value"
@@ -98,10 +98,14 @@
 
 <script>
 import {getSingleBookmultdata,postrating,postReview} from "../../network/requests"
+// import {getSingleBookmultdata1,postrating1,postReview1} from "../../network/requestsWithoutLogin"
+
 export default {
   name: 'rate',
   data () {
     return {
+      token_log: localStorage.getItem('token'),
+
       // wrapperClosable:true,
       drawer: false,
       exist: true,
@@ -119,32 +123,42 @@ export default {
 
   },
 
+
   methods: {
+    checkLogin(){
+      if(this.token_log){
+      this.drawer = true
+
+    }
+    },
     submite_review () {
-      let post_review = {
-        "book_id": this.bookID,
-        "review": {
-          "content": this.textarea2
+      if(this.token_log){
+        let post_review = {
+          "book_id": this.bookID,
+          "review": {
+            "content": this.textarea2
+          }
         }
-      }
-      console.log(post_review)
-      postReview(post_review).then(res => {
-        console.log(res)
-      }).catch(res => {
-        console.log(res)
-      })
-      let get_book_value = {
-        "book_id": this.bookID,
+        console.log(post_review)
+        postReview(post_review).then(res => {
+          console.log(res)
+        }).catch(res => {
+          console.log(res)
+        })
+        let get_book_value = {
+          "book_id": this.bookID,
 
-      }
-      getSingleBookmultdata(get_book_value).then(res => {
-        console.log(res)
+        }
+        getSingleBookmultdata(get_book_value).then(res => {
+          console.log(res)
 
-      }).catch(res => {
-        console.log(res)
-      })
-      this.drawer=false
-      location.reload()
+        }).catch(res => {
+          console.log(res)
+        })
+        this.drawer=false
+        location.reload()
+      }
+
 
     },
     Close_drawer(){
@@ -157,20 +171,27 @@ export default {
 
     },
     disable () {
-      // console.log(this.bookID)
-      let postvalue = {
-        "rating_info": {
-          "book": this.bookID,
-          "rating": this.value
+      if(this.token_log){
+        // console.log(this.bookID)
+        let postvalue = {
+          "rating_info": {
+            "book": this.bookID,
+            "rating": this.value
+          }
         }
+
+        postrating(postvalue).then(res => {
+          console.log(res)
+        })
+        // console.log(this.bookID)
+
+        this.exist = false
+
+      }else{
+        this.$message({message: 'please login', showClose: true,})
+        return false
       }
 
-      postrating(postvalue).then(res => {
-        console.log(res)
-      })
-      // console.log(this.bookID)
-
-      this.exist = false
 
 
 

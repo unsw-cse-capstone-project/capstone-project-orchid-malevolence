@@ -106,6 +106,7 @@
 			<div class="btn_add">
 				<add_your_collection :bookID="result.book_id" ></add_your_collection>
 			</div>
+
 			<div class="rating">
 				<rating :bookID="result.book_id"></rating>
 			</div>
@@ -140,6 +141,7 @@
 <script>
 import Header from '../components/homepage_components/header'
 import {getSingleBookmultdata} from '../network/requests'
+import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
 
 import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'
@@ -197,22 +199,48 @@ export default {
 			this.book=this.$route.query
 			// console.log(this.book)
 			let post_value={book_id:this.book.book_id}
-			// console.log(post_value)
+			console.log(post_value)
+			console.log(this.token_log)
+			if(this.token_log){
+				getSingleBookmultdata(post_value).then(result => {
 
-			getSingleBookmultdata(post_value).then(result => {
-				// console.log(result)
-				this.result=result
-				this.result.rate=result.rating_analyse.rating
-				this.result.TotalCount=result.rating_analyse.how_many_user_scored
-				this.result.averageScore=result.rating_analyse.average_rating
-				this.result.book_id=result.id
-				this.result.review_book=result.review_book
-				// console.log(this.result)
+					// console.log(result)
+					this.result=result
+					this.result.rate=result.rating_analyse.rating
+					this.result.TotalCount=result.rating_analyse.how_many_user_scored
+					this.result.averageScore=result.rating_analyse.average_rating
+					this.result.book_id=result.id
+					this.result.review_book=result.review_book
+
+					// console.log(this.result)
 
 
-			}).catch(res=>{
-				console.log(res)
-			})
+				}).catch(res=>{
+					console.log(res)
+				})
+			}
+			else{
+				console.log('sss')
+				getSingleBookmultdata1(post_value).then(result=>{
+
+					console.log(result)
+					this.result=result
+					this.result.rate=result.rating_analyse.rating
+					this.result.TotalCount=result.rating_analyse.how_many_user_scored
+					this.result.averageScore=result.rating_analyse.average_rating
+					this.result.book_id=result.id
+					this.result.review_book=result.review_book
+
+					// console.log(this.result)
+
+
+				}).catch(res=>{
+					console.log(res)
+				})
+
+			}
+
+
 		},
 
 	},
