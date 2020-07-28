@@ -87,7 +87,7 @@
 		<div class="body">
 
 			<div class="choose_collection">
-				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false" size="small">All books</el-button>
+				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false;reload_page()" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
 				<p style="display: inline-block; margin:auto 10px">Your collections:</p>
 				<el-select class="collections" v-model="value" placeholder="please select a collection" @change="currentSel(value)">
@@ -417,6 +417,12 @@ export default {
 				this.books2.push(book)
 			}
 			// console.log(book)
+		},
+		//reload page
+		reload_page(){
+			console.log('sss')
+			location.reload()
+
 		},
 
 		jump_one_book(value) {
