@@ -231,7 +231,84 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         else:
             return [] 
 
+#
+class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
+    rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
+    review_book =serializers.SerializerMethodField('review_edit',required=False)
+    class Meta:
+        model = Book
+        fields = ['id','title','rating_analyse','review_book']
+    
+    def rating_analyse_edit(self,obj):
+        book_id = obj.id
+        rating_count_set = Rating.objects.filter(book=book_id)
+        count_num=rating_count_set.count()
+        five_nums=0
+        four_nums=0
+        three_nums=0
+        two_nums=0
+        one_nums=0
+        five_percentage=0
+        four_percentage=0
+        three_percentage=0
+        two_percentage=0
+        one_percentage=0
+        # 这一步获取了均分和评分人数
+        # 以及各分段人数
+        if(rating_count_set.exists()):
+            for i in rating_count_set:
+                if(i.rating==5):
+                    five_nums+=1
+                elif(i.rating==4):
+                    four_nums+=1
+                elif(i.rating==3):
+                    three_nums+=1
+                elif(i.rating==2):
+                    two_nums+=1
+                elif(i.rating==1):
+                    one_nums+=1
+            five_percentage=round(five_nums/count_num,3)
+            four_percentage=round(four_nums/count_num,3)
+            three_percentage=round(three_nums/count_num,3)
+            two_percentage=round(two_nums/count_num,3)
+            one_percentage=round(one_nums/count_num,3)
+        return {"how_many_user_scored":count_num,'average_rating':obj.avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
+    
+    def review_edit(self,obj):
+        book_id = obj.id
+        review_set = Review.objects.filter(book=book_id)
+        if(review_set.exists()):
+            rev_ser = ReviewSerializer(instance=review_set,many=True)
+            res=[]
+            for i in rev_ser.data:
+                rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
+                if(rating_temp_set.exists()):
+                    rating_temp=rating_temp_set[0]
+                    i['rating']=rating_temp.rating
+                    res.append(i)
+                else:
+                    i['rating']=0
+                    res.append(i)
+            
+            # 要让每条评论的obj包含当前用户是否处于点赞状态
+            # 循环遍历列表，还会有个点过赞的列表
+            for i in res:
+                i['like_status']=0
+            
+            # 按照时间顺序排列，最新的在上面
+            res.sort(key=lambda i:i['create_time'],reverse=True)
 
+            for i in res:
+                i['create_time']=i['create_time'][:10]
+
+            for i in res:
+                i['user']=(Account.objects.get(id=i['user'])).username
+            return res
+        else:
+            return [] 
+
+
+#
 class RecUserBookSerializer(serializers.ModelSerializer):
     rating=serializers.SerializerMethodField('rating_edit',required=False)
     class Meta:

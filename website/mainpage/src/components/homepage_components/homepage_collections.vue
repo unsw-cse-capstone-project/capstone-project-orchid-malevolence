@@ -15,13 +15,32 @@
         <!-- get collections base on selection -->
         <div class="collection-body">
             <!-- 分割线，显示当前collection名字 -->
-            <el-divider content-position="center" class="divider">{{value}}</el-divider>
+            <el-divider content-position="center">{{value}}</el-divider>
 
             <!-- collection主体，显示 图 & 书名 -->
             <div class="wrap">
                 <div class="content" v-for="item in books" :key="item.imageLink">
-                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />
-                    <a>{{item.title}}</a>
+                    <el-popover
+                            placement="right"
+                            width="400"
+                            trigger="hover">
+                        <div>
+                            <b>{{item.title}}</b>
+                            <el-rate
+                                    v-model="item.avg_rating"
+                                    disabled
+                                    show-score
+                                    text-color="#ff9900"
+                                    score-template="{value}">
+                            </el-rate>
+                            {{item.description}}
+                        </div>
+<!--                        <el-button slot="reference">hover 激活</el-button>-->
+                        <img :src="item.imageLink" class="img" alt slot="reference"/>
+                    </el-popover>
+<!--                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />-->
+<!--                    <a>{{item.title}}</a>-->
+                    <el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
                 </div>
             </div>
 
@@ -42,6 +61,7 @@
                 // cur_key: 0,      // collection id
                 collections: [], // result from api package
                 item: '', // one book param
+                visible: false,
 
                 // TODO: connect with backend, get all book images in this collections
                 img_list: [
@@ -55,6 +75,12 @@
         },
 
         methods: {
+            // sortBook() {
+            //     this.books.sort(function(a, b) {
+            //         return Date.parse(b.time) - Date.parse(a.time);
+            //     })
+            // },
+
             // check which collection is now selecting
             currentSel(selVal) {
                 this.value = selVal;
@@ -90,7 +116,7 @@
                 let book
                 let len = obj.books.length
                 for(let i = 0; i < len; i++) {
-                    console.log(obj.books[i])
+                    // console.log(obj.books[i])
                     book = {}
                     book["id"] = obj.books[i].id
                     book["authors"] = obj.books[i].authors
@@ -100,14 +126,19 @@
                     book["publisher"] = obj.books[i].publisher
                     book["publish_date"] = obj.books[i].publish_date
                     book["categories"] = obj.books[i].categories
-                    // book["url"] = ''   // TODO: 跳转url
+                    book["join_date"] = obj.books[i].join_date
+                    book["description"] = obj.books[i].description
+                    book["avg_rating"] = parseInt(obj.books[i].avg_rating)
                     this.books.push(book)
                 }
-                // console.log(book)
+                // this.sortBook()
+                // console.log(this.books.length, typeof this.books)
+                this.books = this.books.slice(0, 10)
+                // console.log(this.books.length)
             },
 
             jump_one_book(value) {
-                console.log(value)
+                // console.log(value)
                 this.$router.push({
                     name: 'one_book',
                     query: {
@@ -170,8 +201,9 @@
         grid-template-columns: repeat(4, 1fr);
     }
 
-    .divider {
-
+    .el-divider__text {
+        font-size: 20px;
+        background-color: aliceblue;
     }
 
     .content {
@@ -182,5 +214,9 @@
     .img {
         width: 180px;
         height: 240px;
+    }
+
+    .book-detail {
+        margin-top: 10px;
     }
 </style>
