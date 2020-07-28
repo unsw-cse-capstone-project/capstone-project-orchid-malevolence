@@ -157,7 +157,7 @@ export default {
 
     },
     disable () {
-      console.log(this.bookID)
+      // console.log(this.bookID)
       let postvalue = {
         "rating_info": {
           "book": this.bookID,
@@ -168,7 +168,7 @@ export default {
       postrating(postvalue).then(res => {
         console.log(res)
       })
-      console.log(this.bookID)
+      // console.log(this.bookID)
 
       this.exist = false
 

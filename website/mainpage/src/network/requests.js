@@ -47,6 +47,14 @@ export function getSearchResult (query) {
 
 }
 
+export function getSearchUserResult (query) {
+	return request({
+		url: '/api/searchbook/',
+		params: query
+	})
+
+}
+
 export function postCurGoal (data) {
 	return request({
 		url: '/api/set_goal/',

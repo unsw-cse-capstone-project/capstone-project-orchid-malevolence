@@ -96,8 +96,7 @@ export default {
 				let k=res[i].name
 				this.options.push({id:j,name:k})
 			}
-
-			console.log(this.options)
+			// console.log(this.options)
 
 		}).catch(res=>{
 			console.log(res)
@@ -138,7 +137,7 @@ export default {
 						this.$nextTick().then(() => {
 							this.options = this.list;
 						});
-						console.log(this.options)
+						// console.log(this.options)
 
 					}
 
@@ -147,7 +146,7 @@ export default {
 
 
 			}
-			console.log(this.options)
+			// console.log(this.options)
 
 			this.$message({
 				message: 'Congratulations, You have added a shelf',
@@ -163,7 +162,7 @@ export default {
 					this.options.push({id:j,name:k})
 				}
 
-				console.log(this.options)
+				// console.log(this.options)
 
 			}).catch(res=>{
 				console.log(res)
@@ -177,7 +176,7 @@ export default {
 
 			// console.log("book_id"+this.bookID,"collection_id"+value)
 			let postvalue={collection_id:value,book_id:this.bookID}
-			console.log(postvalue)
+			// console.log(postvalue)
 
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
