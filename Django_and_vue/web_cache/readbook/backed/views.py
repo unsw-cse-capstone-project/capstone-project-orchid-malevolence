@@ -438,17 +438,21 @@ class LikeItAPIView(APIView):
 # 4.用户是否对某一条或者多条评论点过赞
 class BookDetailPageAPIView(APIView):
 
-    permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
-        token=request.META.get('HTTP_AUTHORIZATION')
-        token=token.split()
-        token_obj=Token.objects.get(key=token[1])
-        user_obj = token_obj.user
         data=request.query_params
         book_id = data['book_id']
         book_set = Book.objects.filter(id=book_id)
+        book_obj = book_set[0]
+
         if(book_set.exists()):
-            book_obj = book_set[0]
+            try:
+                token=request.META.get('HTTP_AUTHORIZATION')
+                token=token.split()
+                token_obj=Token.objects.get(key=token[1])
+                user_obj = token_obj.user
+            except:
+                serializer = BookDetailPageNoUserSerializer(instance=book_obj)
+                return Response(serializer.data,status=HTTP_200_OK)
             serializer = BookDetailPageSerializer(instance=book_obj,context={'user_id': user_obj.id})
             return Response(serializer.data,status=HTTP_200_OK)
         else:
