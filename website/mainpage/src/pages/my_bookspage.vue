@@ -46,7 +46,8 @@
 	}
 	.search_model{
 		width: 25%;
-		margin: 20px 25%;
+		margin: 20px 20%;
+
 
 	}
 	.collections{
@@ -87,13 +88,14 @@
 		<div class="body">
 
 			<div class="choose_collection">
-				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false" size="small">All books</el-button>
+				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false;reload_page()" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
 				<p style="display: inline-block; margin:auto 10px">Your collections:</p>
 				<el-select class="collections" v-model="value" placeholder="please select a collection" @change="currentSel(value)">
 					<el-option
 									v-for="item in options"
-									:key="item.label"
+									:key="item.value"
+									:label="item.label"
 									:value="item.value"
 					>
 					</el-option>
@@ -275,16 +277,16 @@ export default {
 
 			this.books=res
 			this.getAllBooks(res)
-			console.log(this.books)
-			console.log(this.isShow)
+			// console.log(this.books)
+			// console.log(this.isShow)
 // 所有的collections
 			this.collections = res
-			this.value = this.collections[0].name
+			// this.value = this.collections[0].name
 			this.getCollectionNames(res)   // 把api返回的collection名字整理出来
 			// this.getCollectionBooks(this.collections[0].id) // default select first collection
-			console.log(this.options)
-			console.log(this.value)
-			console.log(this.books2)
+			// console.log(this.options)
+			// console.log(this.value)
+			// console.log(this.books2)
 		}).catch(res=>{
 			console.log(res)})
 		// 所有的collections
@@ -292,10 +294,10 @@ export default {
 	},
 	methods: {
 		del(name,book){ //delete this book from currnt collection
-			console.log(book)
-
-			console.log(name)
-			console.log(this.books)
+			// console.log(book)
+			//
+			// console.log(name)
+			// console.log(this.books)
 			// this.value=val.id
 			let len=this.books.length
 
@@ -308,14 +310,12 @@ export default {
 
 					}
 
-			console.log(this.delbookform)
+			// console.log(this.delbookform)
 
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
 				location.reload()
-			// obj = this.collections.find((item) => {
-			// 	return item.id === col_id;
-			// });
+
 
 		},
 		getAllBooks(val){
@@ -329,7 +329,7 @@ export default {
 
 				for(let j=0;j<new_len;j++){
 
-					console.log(books_name)
+					// console.log(books_name)
 					if (books_name.indexOf(books[j].title)===-1){
 						books_name.push(books[j].title)
 						books[j].avg_rating=parseFloat(books[j].avg_rating)
@@ -338,8 +338,8 @@ export default {
 					}
 				}
 			}
-			console.log(books_name)
-			console.log(this.all_books)
+			// console.log(books_name)
+			// console.log(this.all_books)
 		},
 		jump_this_book(){
 			this.search_book=[]
@@ -350,7 +350,7 @@ export default {
 
 			let len=this.all_books.length
 			for(let i=0;i<len;i++){
-				console.log(this.all_books[i])
+				// console.log(this.all_books[i])
 				let title=this.all_books[i].title.toLowerCase()
 				let input=this.input.toLowerCase()
 					if ( title.indexOf(input)!==-1  ){
@@ -359,8 +359,8 @@ export default {
 				}
 
 			}
-			console.log(this.search_book)
-			console.log(this.isShow)
+			// console.log(this.search_book)
+			// console.log(this.isShow)
 
 
 		},
@@ -392,8 +392,6 @@ export default {
 		// get books from specific collection through collection id
 		getCollectionBooks(col_id) {
 			this.books2 = []  // refresh books' list
-			// console.log("now select: " + col_id)
-
 			let obj = {}
 			obj = this.collections.find((item) => {
 				return item.id === col_id;
@@ -419,11 +417,17 @@ export default {
 				// book["url"] = ''   // TODO: 跳转url
 				this.books2.push(book)
 			}
-			console.log(book)
+			// console.log(book)
+		},
+		//reload page
+		reload_page(){
+			console.log('sss')
+			location.reload()
+
 		},
 
 		jump_one_book(value) {
-			console.log(value)
+			// console.log(value)
 			this.$router.push({
 				name: 'one_book',
 				query: {

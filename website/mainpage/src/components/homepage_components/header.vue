@@ -7,9 +7,7 @@
         <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log != null">
             My books
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_test" v-if="token_log != null">
-            test
-        </el-menu-item>
+
 
 
         <!--        <Search></Search>-->
@@ -18,9 +16,9 @@
             <el-select class="select_box1" v-model="select" slot="prepend" placeholder="select book/author">
                 <el-option  label="Title" value="Title" ></el-option>
                 <el-option label="Author" value="Authors" ></el-option>
-                <el-option label="User" value="User"></el-option>
+                <el-option label="User" value="user"></el-option>
             </el-select>
-            <el-select  :disabled="isShow()" class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
+            <el-select      :disabled="isShow()" class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
                 <el-option label="all books" value="0" ></el-option>
 
                 <el-option label="4-5" value="4" ></el-option>
@@ -76,16 +74,12 @@ export default {
             select: '',
             score: '',
 
-
-
-
-
         };
     },
 
     methods: {
         isShow(){
-            if (this.select==='User'){
+            if (this.select==='user'){
                 return true
             }
 
@@ -117,10 +111,7 @@ export default {
             this.$router.push('my_bookspage')
 
         },
-        jump_test() {
-            this.$router.push('test')
 
-        },
 
         jump_search_result(){
             this.$router.push({

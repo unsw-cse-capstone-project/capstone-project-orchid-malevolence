@@ -31,3 +31,7 @@ week7
 The front end layout of the personal center page has been completed, and the interaction with the back end has also been completed. 
 Changed the way the data is stored so that users do not have to log in again after closing the page and reopening it.
 The collection part will be completed next week.
+
+week8
+Added the ability to display user collection on the personal center page. 
+The ability to display history completion goals will be completed next week

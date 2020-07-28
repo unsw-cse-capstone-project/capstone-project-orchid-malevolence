@@ -113,7 +113,7 @@ export default {
 
 	watch: {
 		books (val) {
-			console.log(val)
+			// console.log(val)
 			this.real_page = 1
 			this.books = val
 		}
@@ -125,7 +125,7 @@ export default {
 
 		getpage (value) {
 			this.real_page = value
-			console.log('this.real_page ' + this.real_page)
+			// console.log('this.real_page ' + this.real_page)
 
 		},
 		isShow () {
@@ -135,7 +135,7 @@ export default {
 
 		},
 		jump_one_book (value) {
-			console.log(value)
+			// console.log(value)
 			this.$router.push({
 				name: 'one_book',
 
