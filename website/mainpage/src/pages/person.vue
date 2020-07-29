@@ -114,6 +114,22 @@
 					</div>
 				</div>
 			</el-tab-pane>
+			
+			<!-- goal -->
+			<el-tab-pane label="history goal">
+				<div class="history_goal">
+					<div>
+						<el-timeline :reverse="reverse">
+							<el-timeline-item
+								v-for="(activity, index) in students"
+								:key="index"
+								>
+								{{activity.content}}
+							</el-timeline-item>
+						</el-timeline>
+					</div>
+				</div>
+			</el-tab-pane>
 		</el-tabs>
 	</div>
 </div>
@@ -127,13 +143,27 @@ import {getCollectionmultdata} from '../network/requests'
 import {postnewcollection} from '../network/requests'
 import {changecollectioname} from '../network/requests'
 import {delecollection} from '../network/requests'
+import {getCurGoal} from "../network/requests";
 // import axios from 'axios'
+
 export default {
 	components:{
 		Header
 	},
 	inject: ["reload"],
 	data() {
+		// 验证密码
+		// let validate_new_name = (rule, value, callback) => {
+		// 	if (value === '') {
+		// 		callback(new Error('Please enter your password.'))
+		// 	} 
+			// else {
+			// 	if (this.RegisterForm.checkpass !== '') {
+			// 	this.$refs.RegisterFormRef.validateField('checkpass')
+			// }
+			// 	callback()
+			// }
+		// }
 		return {
 			// personal information
 			tabPosition: 'left',
@@ -154,8 +184,14 @@ export default {
 				new_name: '',
 				collection_id: ''
 			},
-			//collection_id: '',
-			// collection
+			// 注册表单验证规则
+			// collectionformRules: {
+			// // 用户名验证
+			// 	new_name: [
+			// 		{ required: true, validator: validate_new_name, trigger: 'blur' },
+			// 		{ min: 6, max: 10, message: 'The length is between 6 and 10 characters', trigger: 'blur' }
+			// 	]
+			// },
 			books: [],       // current collection's books
 			options: [],     // collections' content
 			value: '',       // collection name
@@ -164,6 +200,25 @@ export default {
 			collectionform: {
 				name: ''
 			},
+
+			//shiyan2: [],
+			addv: '',
+			
+			students: [
+				{ contents: 'sss', key: 1 },
+				{ contents: 'sss', key: 2 },
+				{ contents: 'sss', key: 3 },
+				{ contents: 'sss', key: 4 },
+				{ contents: 'sss', key: 5 },
+				{ contents: 'sss', key: 6 },
+				{ contents: 'sss', key: 7 },
+				{ contents: 'sss', key: 8 },
+				{ contents: 'sss', key: 9 },
+				{ contents: 'sss', key: 10 },
+				{ contents: 'sss', key: 11 },
+				{ contents: 'sss', key: 12 }
+			],
+
 			
 			delecollectionform: {
 				collection_id: ''
@@ -179,7 +234,14 @@ export default {
 					title: 'Harry Porter',
 					url: ''  // TODO: fill the url
 				},
-			]
+			],
+			reverse: true,
+			value3: '', // year
+			value2: '', // month
+			goal: {
+				target : '',
+				already_done: ''
+			}
 		}
 	},
 	methods: {
@@ -281,6 +343,43 @@ export default {
 				console.log(err)
 				this.$message.error('delete failure');
 			})
+		},
+		
+		sortBykey(ary, key) {
+			return ary.sort(function (a, b) {
+				let x = a[key]
+				let y = b[key]
+				console.log(key)
+				return ((x < y) ? -1 : (x > y) ? 1 : 0)
+			})
+		},
+		
+		// get current goal
+		getGoal() {
+			//this.activities = []
+			let now = new Date()
+			//let nowMonth = now.getMonth() + 1
+			let nowYear = now.getFullYear()
+			for(let month = 1; month < 13; month++){
+				let curMonth = {year:nowYear, month:month}
+				getCurGoal(curMonth).then(res=>{
+					console.log(res.target)
+					if(typeof(res.target) != undefined){
+						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.target+' books. you have already read '+res.already_done, key:month}
+						//this.shiyan2.push(this.addv)
+						this.students[month-1] = this.addv
+						//console.log(this.activities)
+					}
+					if(typeof(res.data.target) != undefined){
+						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.data.target+' books. you have already read '+res.data.already_done, key:month}
+						//this.shiyan2.push(this.addv)
+						this.students[month-1] = this.addv
+					}
+					
+				}).catch(error => {
+					console.log(error)
+				});
+			}
 		}
 	},
 	mounted: function () {
@@ -311,6 +410,26 @@ export default {
 		.catch(error => {
 			console.log(error)
 		})
+	},
+	
+	
+	
+	created() {
+		//this.value3 = nowYear
+		// console.log("curMonth:" + curMonth.month)
+		this.getGoal()
+		// console.log(this.activities)
+		// this.activities.reverse()
+		
+		// console.log(this.shiyan2)
+		// this.sortBykey(this.shiyan2, 'key')
+		// //this.shiyan2.sort('key')
+		// console.log(this.shiyan2)
+		
+		console.log(this.students[0])
+		this.sortBykey(this.students, 'age')
+		//this.shiyan2.sort('key')
+		console.log(this.students)
 	}
 }
 </script>
@@ -378,8 +497,7 @@ export default {
 	}
 	.coll_content {
 		margin: 10px 30px 30px 15px;
-	}
-	
+		}
 	.img {
 		width: 180px;
 		height: 300px;
@@ -398,4 +516,5 @@ export default {
 		margin-top: 10px;
 		margin-left: 100px;
 	}
+
 </style>
