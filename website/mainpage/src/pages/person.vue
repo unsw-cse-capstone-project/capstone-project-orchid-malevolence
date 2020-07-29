@@ -65,6 +65,7 @@
 							</el-option>
 						</el-select>
 					</div>
+
 					<!-- create an new collection -->
 					<div class="collection_add">
 						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
@@ -99,13 +100,13 @@
 					
 					<!-- delete collection -->
 					<div class="collection_dele">
-						<el-button type="text" @click="open" class="collection_dele_button">delete collection</el-button>
+						<el-button type="text" @click="delete_button" class="collection_dele_button">delete collection</el-button>
 					</div>
-					</div>
-					<!-- 分割线，显示当前collection名字 -->
-					<el-divider content-position="center" class="divider">{{value}}</el-divider>
+				</div>
+				<!-- Line showing the current collection name -->
+				<el-divider content-position="center" class="divider">{{value}}</el-divider>
 					
-					<!-- collection主体，显示 图 & 书名 -->
+					<!-- Collection body, display diagram & Title -->
 					<div class="coll_wrap">
 						<div class="coll_content" v-for="item in books" :key="item.imageLink">
 							<img :src="item.imageLink" class="img" alt/>
@@ -115,13 +116,13 @@
 				</div>
 			</el-tab-pane>
 			
-			<!-- goal -->
+			<!-- goal detail in current year -->
 			<el-tab-pane label="history goal">
 				<div class="history_goal">
 					<div>
 						<el-timeline :reverse="reverse">
 							<el-timeline-item
-								v-for="(activity, index) in students"
+								v-for="(activity, index) in activities"
 								:key="index"
 								>
 								{{activity.content}}
@@ -144,7 +145,6 @@ import {postnewcollection} from '../network/requests'
 import {changecollectioname} from '../network/requests'
 import {delecollection} from '../network/requests'
 import {getCurGoal} from "../network/requests";
-// import axios from 'axios'
 
 export default {
 	components:{
@@ -152,24 +152,14 @@ export default {
 	},
 	inject: ["reload"],
 	data() {
-		// 验证密码
-		// let validate_new_name = (rule, value, callback) => {
-		// 	if (value === '') {
-		// 		callback(new Error('Please enter your password.'))
-		// 	} 
-			// else {
-			// 	if (this.RegisterForm.checkpass !== '') {
-			// 	this.$refs.RegisterFormRef.validateField('checkpass')
-			// }
-			// 	callback()
-			// }
-		// }
 		return {
-			// personal information
+			//Set the location of the label
 			tabPosition: 'left',
+			
+			// personal information
 			pickerOptions0: {
 				disabledDate(time) {
-					return time.getTime() > Date.now() - 8.64e6//如果没有后面的-8.64e6就是不可以选择今天的
+					return time.getTime() > Date.now() - 8.64e6 // birthday : only choose dates before today
 				}
 			},
 			PerinfoForm: {
@@ -180,64 +170,56 @@ export default {
 				date_of_birth:'',
 				gender: ''
 			},
-			recollectionForm: {
-				new_name: '',
-				collection_id: ''
-			},
-			// 注册表单验证规则
-			// collectionformRules: {
-			// // 用户名验证
-			// 	new_name: [
-			// 		{ required: true, validator: validate_new_name, trigger: 'blur' },
-			// 		{ min: 6, max: 10, message: 'The length is between 6 and 10 characters', trigger: 'blur' }
-			// 	]
-			// },
-			books: [],       // current collection's books
-			options: [],     // collections' content
-			value: '',       // collection name
-			collections: [], // result from api package\
+			
 			// create an new collection
 			collectionform: {
 				name: ''
 			},
-
-			//shiyan2: [],
-			addv: '',
+			dialogFormVisible: false,
+			formLabelWidth: '120px',
 			
-			students: [
-				{ contents: 'sss', key: 1 },
-				{ contents: 'sss', key: 2 },
-				{ contents: 'sss', key: 3 },
-				{ contents: 'sss', key: 4 },
-				{ contents: 'sss', key: 5 },
-				{ contents: 'sss', key: 6 },
-				{ contents: 'sss', key: 7 },
-				{ contents: 'sss', key: 8 },
-				{ contents: 'sss', key: 9 },
-				{ contents: 'sss', key: 10 },
-				{ contents: 'sss', key: 11 },
-				{ contents: 'sss', key: 12 }
-			],
-
+			// reset collection name 
+			recollectionForm: {
+				new_name: '',
+				collection_id: ''
+			},
+			dialogFormVisible2: false,
 			
+			// delete collection
 			delecollectionform: {
 				collection_id: ''
 			},
-			dialogFormVisible: false,
-			dialogFormVisible2: false,
 			
-			formLabelWidth: '120px',
-			// TODO: connect with backend, get all book images in this collections
+			//Collection body, display diagram & Title
+			books: [],       // current collection's books
+			options: [],     // collections' content
+			value: '',       // collection name
+			collections: [], // result from api package
 			img_list: [
 				{
 					imageLink: require("../img/test book image/harry.jpg"),
 					title: 'Harry Porter',
-					url: ''  // TODO: fill the url
+					url: ''  
 				},
 			],
-			reverse: true,
-			value3: '', // year
-			value2: '', // month
+			
+			// goal detail in current year
+			addv: '',
+			activities: [
+				{ contents: 'need to add', key: 1 },
+				{ contents: 'need to add', key: 2 },
+				{ contents: 'need to add', key: 3 },
+				{ contents: 'need to add', key: 4 },
+				{ contents: 'need to add', key: 5 },
+				{ contents: 'need to add', key: 6 },
+				{ contents: 'need to add', key: 7 },
+				{ contents: 'need to add', key: 8 },
+				{ contents: 'need to add', key: 9 },
+				{ contents: 'need to add', key: 10 },
+				{ contents: 'need to add', key: 11 },
+				{ contents: 'need to add', key: 12 }
+			],
+			reverse: false, // Specifies the node sort direction. Reverse order
 			goal: {
 				target : '',
 				already_done: ''
@@ -245,6 +227,7 @@ export default {
 		}
 	},
 	methods: {
+		// Personal information
 		confirm() {
 			this.$refs.PerinfoFormRef.validate(async valid => {
 				if (!valid) { return }
@@ -255,6 +238,50 @@ export default {
 					console.log(err)
 					this.$message.error('Modify failure');
 				})
+			})
+		},
+		
+		// create an new collection
+		submit() {
+			this.$refs.collectionformRef.validate(async valid => {
+				if (!valid) { return }
+				postnewcollection(this.collectionform).then(res=>{
+					console.log(res);
+					this.$message.success('Successfully created');
+					this.dialogFormVisible = false;
+					this.reload();
+				}).catch(err=>{
+					console.log(err);
+					this.$message.error('Create failure');
+				})
+			})
+		},
+		
+		// reset collection name
+		change() {
+			this.$refs.recollectionFormRef.validate(async valid => {
+				if (!valid) { return }
+				changecollectioname(this.recollectionForm).then(res=>{
+					console.log(res);
+					this.$message.success('Modify successfully');
+					this.dialogFormVisible2 = false;
+					this.reload();
+				}).catch(err=>{
+					console.log(err)
+					this.$message.error('Modify failure');
+				})
+			})
+		},
+		
+		//delete collection
+		delete_button() {
+			delecollection(this.delecollectionform).then(res=>{
+				console.log(res);
+				this.$message.success('delete successfully');
+				this.reload();
+			}).catch(err=>{
+				console.log(err)
+				this.$message.error('delete failure');
 			})
 		},
 		
@@ -290,7 +317,6 @@ export default {
 			obj = this.collections.find((item) => {
 				return item.id === col_id;
 			});
-		
 			let book
 			let len = obj.books.length
 			for(let i = 0; i < len; i++) {
@@ -302,49 +328,8 @@ export default {
 				this.books.push(book)
 			}
 		},
-		// create an new collection
-		submit() {
-			this.$refs.collectionformRef.validate(async valid => {
-				if (!valid) { return }
-				postnewcollection(this.collectionform).then(res=>{
-					console.log(res);
-					this.$message.success('Successfully created');
-					this.dialogFormVisible = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err);
-					this.$message.error('Create failure');
-				})
-			})
-		},
-		// reset collection name
-		change() {
-			this.$refs.recollectionFormRef.validate(async valid => {
-				if (!valid) { return }
-				changecollectioname(this.recollectionForm).then(res=>{
-					console.log(res);
-					this.$message.success('Modify successfully');
-					this.dialogFormVisible2 = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err)
-					this.$message.error('Modify failure');
-				})
-			})
-		},
 		
-		//delete collection
-		open() {
-			delecollection(this.delecollectionform).then(res=>{
-				console.log(res);
-				this.$message.success('delete successfully');
-				this.reload();
-			}).catch(err=>{
-				console.log(err)
-				this.$message.error('delete failure');
-			})
-		},
-		
+		// sorted by month
 		sortBykey(ary, key) {
 			return ary.sort(function (a, b) {
 				let x = a[key]
@@ -367,13 +352,13 @@ export default {
 					if(typeof(res.target) != undefined){
 						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.target+' books. you have already read '+res.already_done, key:month}
 						//this.shiyan2.push(this.addv)
-						this.students[month-1] = this.addv
+						this.activities[month-1] = this.addv
 						//console.log(this.activities)
 					}
 					if(typeof(res.data.target) != undefined){
 						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.data.target+' books. you have already read '+res.data.already_done, key:month}
 						//this.shiyan2.push(this.addv)
-						this.students[month-1] = this.addv
+						this.activities[month-1] = this.addv
 					}
 					
 				}).catch(error => {
@@ -383,6 +368,7 @@ export default {
 		}
 	},
 	mounted: function () {
+		// Get personal information in advance
 		this.$refs.PerinfoFormRef.validate(async valid => {
 			if (!valid) { return }
 			getperinfodata().then(result =>{
@@ -397,6 +383,8 @@ export default {
 				console.log(error);
 			})
 		}),
+		
+		// Get collection in advance
 		getCollectionmultdata().then(res=>{
 			//console.log(res)
 			this.collections = res
@@ -412,36 +400,30 @@ export default {
 		})
 	},
 	
-	
-	
+	// get current goal
 	created() {
 		//this.value3 = nowYear
 		// console.log("curMonth:" + curMonth.month)
 		this.getGoal()
-		// console.log(this.activities)
-		// this.activities.reverse()
-		
-		// console.log(this.shiyan2)
-		// this.sortBykey(this.shiyan2, 'key')
-		// //this.shiyan2.sort('key')
-		// console.log(this.shiyan2)
-		
-		console.log(this.students[0])
-		this.sortBykey(this.students, 'age')
+		console.log(this.activities[0])
+		this.sortBykey(this.activities, 'age')
 		//this.shiyan2.sort('key')
-		console.log(this.students)
+		console.log(this.activities)
 	}
 }
 </script>
 
 <style lang="less" scoped>
+	// total
 	body, html{
 		height: 100%;
 		overflow: hidden;
 	}
+	// header: The navigation bar
 	.header{
 		margin-bottom: 10px;
 	}
+	// The outermost div
 	.wrap{
 		position: absolute;
 		height: 100%;
@@ -449,17 +431,15 @@ export default {
 		background: url(../assets/person2.png) no-repeat fixed;
 		background-size: cover;
 		background-origin: border-box;
-		opacity:0.85;
+		opacity:0.75;
 		overflow: scroll;
 	}
+	// The outermost tab
 	.content{
-		// height: 10000px;
 		width: 90%;		
-		//border: 1px solid;
 		margin: auto;
-		// overflow: scroll;
 	}
-	// 个人资料
+	// Personal information
 	.person_information{
 		margin-left: 60px;
 	}
@@ -473,10 +453,10 @@ export default {
 	.Per_info{
 		margin-top: 50px;
 	}
-
 	// collection	
+	// Remove the floating
 	.clearfix{
-		*zoom: 1;    /* 开启haslayout *只有在ie6,7下认识这个hack*/
+		*zoom: 1;    
 	}
 	.clearfix:after{
 		content: "";
@@ -487,9 +467,25 @@ export default {
 		margin-top: 10px;
 		float: left;
 	}
+	// create an new collection
+	.collection_add_button{
+		margin-top: 10px;
+		margin-left: 80px;
+	}
 	.collection_add{
 		margin-top: 10px;
 	}
+	// reset collection name
+	.collection_change_button{
+		margin-top: 10px;
+		margin-left: 90px;
+	}
+	// delete collection
+	.collection_dele_button{
+		margin-top: 10px;
+		margin-left: 100px;
+	}
+	// Collection body, display diagram & Title
 	.coll_wrap {
 		margin-top: 30px;
 		display: grid;
@@ -502,19 +498,9 @@ export default {
 		width: 180px;
 		height: 300px;
 	}
-	// add
-	.collection_add_button{
-		margin-top: 10px;
-		margin-left: 80px;
-	}
-	// reset
-	.collection_change_button{
-		margin-top: 10px;
-		margin-left: 90px;
-	}
-	.collection_dele_button{
-		margin-top: 10px;
-		margin-left: 100px;
+	// goal detail in current year
+	.history_goal{
+		margin-top: 20px;
 	}
 
 </style>
