@@ -15,11 +15,12 @@
 
         <!-- get collections base on selection -->
         <div class="collection-body">
-            <!-- 分割线，显示当前collection名字 -->
+            <!-- divider, show collection's name -->
             <el-divider content-position="center">{{value}}</el-divider>
 
-            <!-- collection主体，显示 图 & 书名 -->
+            <!-- main part of collection: with image, title, rating, brief description and jump button -->
             <div class="wrap">
+				<!-- show top-10 recent books -->
                 <div class="content" v-for="item in books" :key="item.imageLink">
                     <el-popover
                             placement="right"
@@ -38,6 +39,7 @@
                         </div>
                         <img :src="item.imageLink" class="img" alt slot="reference"/>
                     </el-popover>
+					<!-- click to jump -->
                     <el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
                 </div>
             </div>

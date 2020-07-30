@@ -1,6 +1,8 @@
+<!-- Written by Yangyu GAO -->
 <template>
 	<div id="app1">
 		<Header></Header>
+		<!-- left part: select which kind of recommendation style used -->
 		<el-row>
 			<el-col :span="6">
 				<div class="grid-content bg-purple">
@@ -19,12 +21,13 @@
 				</div>
 			</el-col>
 
+			<!-- right part: show all result books -->
 			<el-col :span="18">
 				<div class="collection-body">
-					<!-- 分割线，显示当前collection名字 -->
+					<!-- divider, show recommendation types -->
 					<el-divider content-position="center">{{show_types(value)}}</el-divider>
 
-					<!-- collection主体，显示 图 & 书名 -->
+					<!-- show recommend books -->
 					<div class="wrap">
 						<div class="content" v-for="item in books" :key="item.imageLink">
 							<el-popover
@@ -42,11 +45,8 @@
 									</el-rate>
 									{{item.description}}
 								</div>
-								<!--                        <el-button slot="reference">hover 激活</el-button>-->
 								<img :src="item.imageLink" class="img" alt slot="reference"/>
 							</el-popover>
-							<!--                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />-->
-							<!--                    <a>{{item.title}}</a>-->
 							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
 						</div>
 					</div>
@@ -64,8 +64,8 @@ export default {
 	name: "recommendation",
 	data() {
 		return {
-			myID: '',
-			recommendList: [],
+			myID: '',           // user id
+			recommendList: [],  // all recommend books
 			books: [],			// current collection's books
 			options: [],		// collections' content
 			value: '',       	// collection name
@@ -78,11 +78,13 @@ export default {
 	},
 
 	methods: {
+		/* each para have a English words result */
 		show_types(type) {
 			const rec_type = {"rating_rec": "By Rating", "added_rec":"By Added Books"}
 			return rec_type[type]
 		},
 
+		/* find current selection of recommendation style, insert all books in books list */
 		currentSel(selVal) {
 			this.value = selVal;
 			let obj = {}
@@ -92,10 +94,10 @@ export default {
 			this.getCollectionBooks(obj.value)
 		},
 
+		/* el-select function */
 		getCollectionNames(res) {
 			let option
 			for(let item_ in res) {
-				// 提取collections' name
 				option = {}
 				option["key"] = item_
 				option["value"] = item_
@@ -103,6 +105,7 @@ export default {
 			}
 		},
 
+		/* put book details into books list */
 		getCollectionBooks(value) {
 			this.books = []  // refresh books' list
 
@@ -111,7 +114,6 @@ export default {
 			let book
 			let len = obj.length
 			for(let i = 0; i < len; i++) {
-				// console.log(obj.books[i])
 				book = {}
 				book["id"] = obj[i].id
 				book["authors"] = obj[i].authors
@@ -131,6 +133,7 @@ export default {
 			}
 		},
 
+		/* jump to specific book page after clicking */
 		jump_one_book(value) {
 			this.$router.push({
 				name: 'one_book',
@@ -151,6 +154,7 @@ export default {
 	},
 
 	mounted() {
+		/* get recommend result through backend api */
 		getRecommend({id:this.myID}).then(res => {
 			this.recommendList = res
 			for(let v in res){
@@ -166,6 +170,7 @@ export default {
 	},
 
 	created() {
+		/* get account id through backend api */
 		getAccount().then(res => {
 			this.myID = parseInt(res.id)
 			console.log("id: ", this.myID)

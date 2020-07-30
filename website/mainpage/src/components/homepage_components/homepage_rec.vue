@@ -1,10 +1,8 @@
-<!-- TODO: Recommendation entrance -->
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="rec">
         <div class="rec-body">
             <strong>New Book Recommendations</strong>
-
-            <!-- TODO: add onclick function -->
             <el-button type="primary" plain class="rec-button" @click="jump_rec">Recommendation</el-button>
         </div>
     </div>
