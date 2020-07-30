@@ -5,13 +5,19 @@
             <strong>New Book Recommendations</strong>
 
             <!-- TODO: add onclick function -->
-            <el-button type="primary" plain class="rec-button">Recommendation</el-button>
+            <el-button type="primary" plain class="rec-button" @click="jump_rec">Recommendation</el-button>
         </div>
     </div>
 </template>
 
 <script>
-
+	export default {
+		methods: {
+			jump_rec() {
+				this.$router.push('/recommendation')
+			}
+		}
+	}
 </script>
 
 <style lang="less" scoped>

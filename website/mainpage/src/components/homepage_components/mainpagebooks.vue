@@ -72,6 +72,10 @@
               let len = res.data.length
               for(let i = 0; i < len; i++) {
                   res.data[i].avg_rating = parseInt(res.data[i].avg_rating)
+                  let des = res.data[i].description
+                  if(des.length > 200) {
+                      res.data[i].description = res.data[i].description.slice(0, 200) + "..."
+                  }
                   this.books.push(res.data[i])
               }
           }).catch(error => {
@@ -105,7 +109,7 @@
     }
 
     .image {
-        margin-top: 13.5px;
+        /*margin-top: 13.5px;*/
         width: 175px;
         height: 265px;
     }

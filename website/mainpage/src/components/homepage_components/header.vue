@@ -8,10 +8,6 @@
             My books
         </el-menu-item>
 
-
-
-        <!--        <Search></Search>-->
-
         <div class="search">
             <el-select class="select_box1" v-model="select" slot="prepend" placeholder="select book/author">
                 <el-option  label="Title" value="Title" ></el-option>
@@ -73,11 +69,6 @@ export default {
             input3: '',
             select: '',
             score: '',
-
-
-
-
-
         };
     },
 
@@ -89,6 +80,7 @@ export default {
 
 
         },
+
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
         },

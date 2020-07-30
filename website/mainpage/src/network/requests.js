@@ -21,7 +21,19 @@ export function addCollection (query) {
 		method: 'post',
 		data: query
 	})
+}
 
+export function getAccount() {
+	return request( {
+		url: '/api/account/',
+	})
+}
+
+export function getRecommend(query) {
+	return request( {
+		url: '/api/recommend/',
+		params: query
+	})
 }
 
 export function getperinfodata () {

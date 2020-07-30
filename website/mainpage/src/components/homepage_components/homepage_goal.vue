@@ -42,7 +42,6 @@
     let now = new Date()
     let nowMonth = now.getMonth() + 1
     let nowYear = now.getFullYear()
-    let curMonth = {year:nowYear, month:nowMonth}
 
     export default {
         name: 'homepage-goal',
@@ -81,20 +80,18 @@
             },
 
             getGoal() {
-                getCurGoal(curMonth).then(res=>{
+				let params = {year:nowYear,month:nowMonth}
+                getCurGoal(params).then(res=>{
                     console.log("get: ",res)
-                    this.goalStatus = 1
-
-                    if(res.status === 400) {
+                    if(res.already_done === 0 & res.target === 0) {
                         this.goalStatus = 0
                         // console.log("need set goal: " + this.goalStatus)
-                    }
+                    } else {
+						this.goalStatus = 1
+					}
 
                     this.bookData[0].read = res.already_done
                     this.bookData[0].totalBook = res.target
-                    // console.log("no need to set goal: " + this.goalStatus)
-                    // console.log("read: " + res.already_done)
-                    // console.log("totalBook: " + res.target)
                 }).catch(error => {
                     console.log(error)
                 });
@@ -102,21 +99,13 @@
 
             setGoal(value = this.textGoal) {
                 if(value === '') {
-                    this.$message.error('Please input something.')
+                    this.$message.error('Please input a goal number.')
                     return
                 }
 
                 let data = {month_goal:{month:nowMonth,year:nowYear ,target:value}}
                 postCurGoal(data).then(res=>{
-                    // console.log("setgoal result: " + res.already_done)
-                    // this.bookData[0].read = res.already_done
                     this.goalStatus = 1
-                    // this.bookData[0].totalBook = res.target
-                    // if(mode===2) {
-                    //     // this.textGoal = ''
-                    //     // this.$message.success("Reset successfully!")
-                    // }
-                    // console.log(this.totalBook, this.read, this.goalStatus)
                     this.$forceUpdate()
                     this.$set(this.bookData[0], "read", res.already_done)
                     this.$set(this.bookData[0], "totalBook", value)

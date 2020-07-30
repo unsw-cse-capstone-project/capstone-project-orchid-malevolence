@@ -75,12 +75,6 @@
         },
 
         methods: {
-            // sortBook() {
-            //     this.books.sort(function(a, b) {
-            //         return Date.parse(b.time) - Date.parse(a.time);
-            //     })
-            // },
-
             // check which collection is now selecting
             currentSel(selVal) {
                 this.value = selVal;
@@ -128,6 +122,9 @@
                     book["categories"] = obj.books[i].categories
                     book["join_date"] = obj.books[i].join_date
                     book["description"] = obj.books[i].description
+                    if(book["description"].length > 200) {
+                      book["description"] = book["description"].slice(0, 200) + "..."
+                    }
                     book["avg_rating"] = parseInt(obj.books[i].avg_rating)
                     this.books.push(book)
                 }

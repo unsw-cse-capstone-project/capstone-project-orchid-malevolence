@@ -68,10 +68,8 @@
 	.right_border{
 		border-right: 1px solid gray;
 	}
-
-
-
 </style>
+
 <template>
 	<div>
 		<div>
