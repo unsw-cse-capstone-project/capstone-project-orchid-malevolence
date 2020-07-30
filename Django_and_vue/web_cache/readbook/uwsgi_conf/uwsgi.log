@@ -57,3 +57,4 @@ thunder lock: enabled
 uWSGI http bound on 0.0.0.0:9000 fd 3
 probably another instance of uWSGI is running on the same address (127.0.0.1:9001).
 bind(): Address already in use [core/socket.c line 769]
+[uwsgi-python-reloader] module/file ./backed/models.py has been modified

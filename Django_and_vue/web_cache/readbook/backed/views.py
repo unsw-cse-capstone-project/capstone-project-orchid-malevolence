@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from account.models import *
 from django.contrib.auth.hashers import make_password,check_password
+import django.dispatch
+from django.dispatch import receiver
+from django.utils import timezone
 
 # Create your views here.
 from rest_framework import viewsets
@@ -11,13 +14,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 
+#
 from .serializers import *
-
-import json
 from backed.pearson import *
 from backed.simple_rec import *
 
 # redis
+# import json
 from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
@@ -25,6 +28,13 @@ con.flushdb()
 # 系统推荐
 # 三个简单推荐
 operation()
+
+##### signals
+goal_add=django.dispatch.Signal(providing_args=['user_id','year','month'])
+goal_del = django.dispatch.Signal(providing_args=['user_id','year','month'])
+
+
+######################## main #######################
 
 # 获取token
 class CustomAuthToken(ObtainAuthToken):
@@ -270,6 +280,7 @@ class AddBookToCollectionAPIView(APIView):
     # 基本测试无问题，跟collection建立会有路由冲突，有待解决
     def post(self,request,format=None):
         print(request.data)
+        time_now=timezone.now()
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
         token_obj=Token.objects.get(key=token[1])
@@ -285,6 +296,7 @@ class AddBookToCollectionAPIView(APIView):
         book_collection_relation.save()
         book_obj.added_times+=1
         book_obj.save()
+        goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"add it success!"},status=HTTP_200_OK)
     
     # 初步测试无问题，找不到也会成功返回。 
@@ -293,9 +305,11 @@ class AddBookToCollectionAPIView(APIView):
         token=token.split()
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
+        time_now=timezone.now()
         book_id = request.data["book_id"]
         collection_id = request.data["collection_id"]
         Collection_Book.objects.filter(collection=collection_id,book=book_id,belongto=user_obj.id).delete()
+        goal_del.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"delete it success"},status=HTTP_200_OK)
 
 
@@ -482,7 +496,7 @@ class MonthlyGoalAPIView(APIView):
                 num=ans.count()
             return Response(data={"target":goal_data.target,"already_done":num},status=HTTP_200_OK)
         else:
-            return Response(data={"target":0,"already_done":0},status=HTTP_400_BAD_REQUEST)   
+            return Response(data={"target":0,"already_done":0},status=HTTP_200_OK)   
 
     # 设定每月目标，在第一次设定时会检查并返回当月已经添加的书籍
     # 修改目标，每次也会重新检查并返回数据
@@ -537,6 +551,7 @@ class MainPageRecAPIView(APIView):
 # user_base recommend
 
 class UserBaseRecAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
         info = request.query_params
         user_id=info['id']
@@ -569,6 +584,15 @@ class UserBaseRecAPIView(APIView):
             return Response(data={"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
 
 
+#
+# class HistoryAPIView(APIView):
+#     permission_classes = (IsAuthenticated,)
+#     def get(self,request,format=None):
+#         info = request.query_params
+#         user_id=info['id']
+
+
+
 # test
 
 class TestAPIView(APIView):
@@ -582,7 +606,30 @@ class TestAPIView(APIView):
         return Response(serializer.data)
 
 
-        
+#######
+#
+@receiver(goal_add,sender=AddBookToCollectionAPIView)
+def goal_add_callback(sender, **kwargs):
+    rec_set=MonthRecord.objects.filter(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month'])
+    if(rec_set.exists()):
+        rec_temp=goal_set[0] 
+        rec_temp.total_nums+=1
+        rec_temp.save()
+    else:
+        rec_obj={}
+        rec_obj['user']=kwargs['user_id']
+        rec_obj['year']=kwargs['year']
+        rec_obj['month']=kwargs['month']
+        rec_obj['total_nums']=1
+        serializer = MonthRecord(data=rec_obj)
+        if(serializer.is_valid()):
+            serializer.save()
+#
+@receiver(goal_del,sender=AddBookToCollectionAPIView)
+def goal_del_callback(sender, **kwargs):
+    rec_set=MonthRecord.objects.get(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month']) 
+    rec_temp.total_nums-=1
+    rec_temp.save()
 
 
         

@@ -57,6 +57,17 @@ class Goal(models.Model):
     class Meta:
         unique_together=('user','year','month')
 
+# month record
+class MonthRecord(models.Model):
+    user = models.ForeignKey(Account,related_name='user_record',on_delete=models.CASCADE)
+    year = models.PositiveIntegerField(default=0)
+    month = models.PositiveIntegerField(default=0)
+    total_nums = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together=('user','year','month')
+
+
 # 
 class Review(models.Model):
     content = models.TextField(null=True)
@@ -90,8 +101,13 @@ class Rating(models.Model):
 
 
 
-# 
+# token_create_when_account_create
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+#goal_accomplish_add_when_book_added_to_collection
+
+
+#goal_accomplish_less_when_book_delete_from_collection

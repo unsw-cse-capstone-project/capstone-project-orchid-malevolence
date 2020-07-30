@@ -34,17 +34,6 @@ class BookSerializer(serializers.ModelSerializer):
         fields = ('__all__')
         extra_kwargs = {'collection':{'required':False}}
     
-    # def avg_rating_edit(self,obj):
-    #     book_id=obj.id
-    #     rating_count_set = Rating.objects.filter(book=book_id)
-    #     avg_rating=0
-    #     count_num = rating_count_set.count()
-    #     if(rating_count_set.exists()):
-    #         for i in rating_count_set:
-    #             avg_rating+=i.rating
-    #         avg_rating=avg_rating/count_num
-    #         return avg_rating
-    #     return avg_rating
 
 
 # collection全部信息，包括有哪些书
@@ -114,6 +103,70 @@ class MonthlyGoalBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = ('__all__')
+
+# 每月记录
+class MonthRecordSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MonthRecord
+        fields = ('__all__')
+
+# 统计记录
+class HistorySerializer(serializers.ModelSerializer):
+    this_year_rec=serializers.SerializerMethodField('this_year_rec_edit',required=False)
+    other_year_rec=serializers.SerializerMethodField('other_year_rec_edit',required=False)
+    class Meta:
+        model = Account
+        field=('id','username','this_year_rec','other_year')
+    
+    def this_year_rec(self,obj):
+        time_now = timezone.now()
+        this_year=time_now.year
+        this_month = int(time_now.month)
+        start_year=obj.join_date.year
+        start_month = obj.join_date.month
+        records={}
+        if(this_year==start_year):
+            for i in range(start_month,this_month+1):
+                records[i]=[0,0]
+        else:
+            for i in range(1,this_month+1):
+                records[i]=[0,0]
+        # (0,0)-->(goal,accomplish)
+        this_year_rec_set=MonthRecord.objects.filter(user=obj.id,year=this_year)
+        if(this_year_rec_set.exists()):
+            for i in this_year_rec_set:
+                records[i.month][1]=i.total_nums
+        this_year_goal_set = Goal.objects.filter(user=obj.id,year=this_year)
+        if(this_year_goal_set.exists()):
+            for i in this_year_goal_set:
+                records[i.month][0]=i.target
+        return {this_year:records}
+    
+    def other_year_rec(self,obj):
+        time_now = timezone.now()
+        this_year=time_now.year
+        start_year=obj.join_date.year
+        records={}
+        if(this_year==start_year):
+            return {"other_year":records}
+        for i in range(start_year,this_year):
+            records[i]=[0,0]
+        other_year_rec_set = MonthRecord.objects.filter(user=obj.id).exclude(year=this_year)
+        if(other_year_rec_set.exists()):
+            for i in other_year_rec_set:
+                records[i.year][1]+=i.total_nums
+        this_year_goal_set = Goal.objects.filter(user=obj.id).exclude(year=this_year)
+        if(this_year_goal_set.exists()):
+            for i in this_year_goal_set:
+                records[i.year][0]+=i.target
+        
+        return {"other_year":records}
+
+
+
+        
+        
 
 
 # 用户对哪些评论点赞了
