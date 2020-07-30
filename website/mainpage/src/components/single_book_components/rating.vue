@@ -1,28 +1,3 @@
-<style lang="less" scoped>
-  span{
-    /*margin-left: 10px;*/
-    font-size: 16px;
-  }
-  .margin_class{
-    margin: 10px 10px;
-  }
-  .line{
-    border: 1px solid gray;
-    width: 95%;
-    margin: auto;
-  }
-  .input_content{
-    width: 95%;
-
-    margin-top: 20px;
-  }
-  .inner_usernamne{
-    display: block;
-  }
-
-
-
-</style>
 
 <template>
   <div>
@@ -194,4 +169,29 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+  span{
+    /*margin-left: 10px;*/
+    font-size: 16px;
+  }
+  .margin_class{
+    margin: 10px 10px;
+  }
+  .line{
+    border: 1px solid gray;
+    width: 95%;
+    margin: auto;
+  }
+  .input_content{
+    width: 95%;
+
+    margin-top: 20px;
+  }
+  .inner_usernamne{
+    display: block;
+  }
+
+
+
+</style>
 

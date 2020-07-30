@@ -1,36 +1,4 @@
-<style lang="less" scoped>
 
-	.book_item {
-		display: inline-block;
-		margin: 20px 20px 20px 5px
-
-	}
-
-	.img-box {
-		width: 15%;
-		height: 180px;
-
-	}
-
-	.text-block {
-		display: inline-block;
-		vertical-align: top;
-
-		width: 65%;
-		word-break: break-all
-	}
-
-	.info {
-		font-size: 14px;
-		opacity: 0.7;
-	}
-
-	p {
-		line-height: 1;
-	}
-
-
-</style>
 <template>
 	<div>
 <!--		current page and display all books, every book show img, average_rating,title,author,publisher,publisher_data, category-->
@@ -155,3 +123,36 @@ export default {
 }
 </script>
 
+<style lang="less" scoped>
+
+	.book_item {
+		display: inline-block;
+		margin: 20px 20px 20px 5px
+
+	}
+
+	.img-box {
+		width: 15%;
+		height: 180px;
+
+	}
+
+	.text-block {
+		display: inline-block;
+		vertical-align: top;
+
+		width: 65%;
+		word-break: break-all
+	}
+
+	.info {
+		font-size: 14px;
+		opacity: 0.7;
+	}
+
+	p {
+		line-height: 1;
+	}
+
+
+</style>
