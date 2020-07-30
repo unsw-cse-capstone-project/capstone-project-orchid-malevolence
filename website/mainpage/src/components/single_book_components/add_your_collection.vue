@@ -9,6 +9,7 @@
 		<div>
 
 		</div>
+<!--		if u login u can add a book into your collection, otherwise not-->
 		<el-button @click="loginfirst()" type="primary" style="margin-left: 16px;">
 			Add to collection
 		</el-button>
@@ -75,10 +76,7 @@ export default {
 			isShow:false,
 			input:'',
 			options:[],
-
 			value: '',
-
-			// label:''
 		}
 	},
 	props:{
@@ -99,8 +97,6 @@ export default {
 					let k=res[i].name
 					this.options.push({id:j,name:k})
 				}
-				// console.log(this.options)
-
 			}).catch(res=>{
 				console.log(res)
 			})
@@ -115,6 +111,7 @@ export default {
 		Close_drawer(){
 			this.drawer=false
 		},
+
 		loginfirst(){
 			if(this.token_log){
 				this.drawer = true;
@@ -124,6 +121,7 @@ export default {
 				return false
 			}
 		},
+		// add a new collection in your account
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
@@ -143,9 +141,6 @@ export default {
 					for (let i=0;i<res.length;i++){
 						let j=res[i].id
 						let k=res[i].name
-						// let val1={id:j}
-						// let val2={name:k}
-						// this.list.push({id:j,name:k})
 						this.list.push(Object.assign([{}],this.options,{
 							id:j,
 							name:k
@@ -153,23 +148,19 @@ export default {
 						this.$nextTick().then(() => {
 							this.options = this.list;
 						});
-						// console.log(this.options)
 
 					}
 
 				})
-				// this.$set(this.options,val1,val2)
-
 
 			}
-			// console.log(this.options)
 
 			this.$message({
 				message: 'Congratulations, You have added a shelf',
 				type: 'success'
 			});
+			// get all collection names in your account
 			getCollectionmultdata().then(res=>{
-				console.log(res)
 				this.options=[]
 
 				for (let i=0;i<res.length;i++){
@@ -177,9 +168,6 @@ export default {
 					let k=res[i].name
 					this.options.push({id:j,name:k})
 				}
-
-				// console.log(this.options)
-
 			}).catch(res=>{
 				console.log(res)
 			})
@@ -187,13 +175,10 @@ export default {
 
 
 		},
-
+		// add a book into the currently choosing collection
 		choose_collection(value){
 
-			// console.log("book_id"+this.bookID,"collection_id"+value)
 			let postvalue={collection_id:value,book_id:this.bookID}
-			// console.log(postvalue)
-
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
 			}).catch(res=>{

@@ -1,6 +1,6 @@
 import {requestWithoutLogin} from './baseline_configuration'
 
-
+// specific request to back-end without login
 export function getSingleBookmultdata1 (query) {
 	return requestWithoutLogin({
 		url: '/api/bookdetail/',

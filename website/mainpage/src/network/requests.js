@@ -1,5 +1,5 @@
 import {request} from './baseline_configuration'
-
+// specific request to back-end after login
 export function getSingleBookmultdata (query) {
 	return request({
 		url: '/api/bookdetail/',
