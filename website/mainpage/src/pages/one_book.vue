@@ -1,3 +1,85 @@
+<style lang="less" scoped>
+	.body{
+		width: 70%;
+		margin: 80px auto;
+		position: relative;
+	}
+	.title{
+		margin: 20px 0;
+	}
+
+	.img-box{
+		width: 20%;
+		height: 250px;
+		display: inline-block;
+
+	}
+	.text-block{
+		display: inline-block;
+		vertical-align: top;
+
+		width: 50%;
+		word-break: break-all
+	}
+	.read_score{
+		padding-left: 10px;
+		display: inline-block;
+		vertical-align: top;
+		border-left: solid 1px gray;
+
+	}
+	.rating{
+		margin: 20px;
+		display: inline-block;
+		vertical-align: top;
+
+		/*font-size: 18px;*/
+	}
+	.btn_add{
+
+		width: 25%;
+		display: inline-block;
+		/*vertical-align: top;*/
+
+
+	}
+	.get_review_box{
+
+		width: 95%;
+		border-top: 2px solid gray;
+		height: 10%;
+
+	}
+
+	.username{
+		color: #3377aa;
+		margin-right: 20px;
+		display: inline-block;
+	}
+	.inner_socre{
+		margin-right: 10px;
+
+		display: inline-block;
+
+	}
+	.inner_data{
+		color: #666666;
+
+		margin-right: 10px;
+
+		display: inline-block;
+
+	}
+	.inner_content{
+		display: block;
+		margin: 10px 0;
+
+	}
+
+
+
+</style>
+
 <template>
 	<div>
 		<Header></Header>
@@ -153,84 +235,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-	.body{
-		width: 70%;
-		margin: 80px auto;
-		position: relative;
-	}
-	.title{
-		margin: 20px 0;
-	}
-
-	.img-box{
-		width: 20%;
-		height: 250px;
-		display: inline-block;
-
-	}
-	.text-block{
-		display: inline-block;
-		vertical-align: top;
-
-		width: 50%;
-		word-break: break-all
-	}
-	.read_score{
-		padding-left: 10px;
-		display: inline-block;
-		vertical-align: top;
-		border-left: solid 1px gray;
-
-	}
-	.rating{
-		margin: 20px;
-		display: inline-block;
-		vertical-align: top;
-
-		/*font-size: 18px;*/
-	}
-	.btn_add{
-
-		width: 25%;
-		display: inline-block;
-		/*vertical-align: top;*/
-
-
-	}
-	.get_review_box{
-
-		width: 95%;
-		border-top: 2px solid gray;
-		height: 10%;
-
-	}
-
-	.username{
-		color: #3377aa;
-		margin-right: 20px;
-		display: inline-block;
-	}
-	.inner_socre{
-		margin-right: 10px;
-
-		display: inline-block;
-
-	}
-	.inner_data{
-		color: #666666;
-
-		margin-right: 10px;
-
-		display: inline-block;
-
-	}
-	.inner_content{
-		display: block;
-		margin: 10px 0;
-
-	}
-
-
-
-</style>

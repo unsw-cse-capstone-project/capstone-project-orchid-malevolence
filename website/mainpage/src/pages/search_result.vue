@@ -1,3 +1,58 @@
+<style lang="less" scoped>
+
+	.body {
+		width: 70%;
+		margin: auto;
+	}
+
+	h2 {
+		height: 30px;
+		margin: 10px 0 20px 0;
+	}
+	.choose{
+		width: 22%;
+		margin-top: 30px;
+		margin-left: 80%;
+		display: inline-block;
+
+
+
+
+	}
+	.book_item {
+		display: inline-block;
+		margin: 20px 20px 20px 5px
+
+	}
+
+	.img-box {
+		width: 15%;
+		height: 180px;
+
+	}
+	.text-block {
+		display: inline-block;
+		vertical-align: top;
+
+		width: 65%;
+		word-break: break-all
+	}
+	.user_result{
+		margin-top: 20px;
+
+	}
+	.user_box{
+		position: absolute;
+		margin-top: 40px;
+		margin-left: 48%;
+
+
+
+	}
+
+
+</style>
+
 <template>
 
 	<div class="box">
@@ -295,57 +350,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-
-	.body {
-		width: 70%;
-		margin: auto;
-	}
-
-	h2 {
-		height: 30px;
-		margin: 10px 0 20px 0;
-	}
-	.choose{
-		width: 22%;
-		margin-top: 30px;
-		margin-left: 80%;
-		display: inline-block;
-
-
-
-
-	}
-	.book_item {
-		display: inline-block;
-		margin: 20px 20px 20px 5px
-
-	}
-
-	.img-box {
-		width: 15%;
-		height: 180px;
-
-	}
-	.text-block {
-		display: inline-block;
-		vertical-align: top;
-
-		width: 65%;
-		word-break: break-all
-	}
-	.user_result{
-		margin-top: 20px;
-
-	}
-	.user_box{
-		position: absolute;
-		margin-top: 40px;
-		margin-left: 48%;
-
-
-
-	}
-
-
-</style>

@@ -1,3 +1,75 @@
+<style lang="less" scoped>
+	.body{
+		width: 80%;
+		margin: auto;
+
+	}
+	.choose_collection{
+		margin-top: 50px;
+		width: 15%;
+
+		vertical-align: top;
+		display: inline-block;
+
+	}
+	.collection_book{
+		width: 70%;
+		height: 90%;
+		margin-left: 5%;
+
+
+
+		vertical-align: top;
+		display: inline-block;
+
+
+
+	}
+	.book_item{
+		display: inline-block;
+		margin: 20px 20px 20px 5px;
+
+
+
+	}
+	.img-box{
+		width: 18%;
+		height: 180px;
+
+	}
+	.text-block{
+		display: inline-block;
+		vertical-align: top;
+
+		width: 52%;
+		word-break: break-all;
+	}
+	.search_model{
+		width: 22%;
+		margin: 20px 25%;
+
+
+	}
+	.collections{
+		margin-top: 10px;
+
+	}
+	.size{
+		font-size: 15px;
+	}
+	p{
+		line-height: 1;
+	}
+	.operate{
+		display: inline-block;
+		vertical-align: top;
+
+	}
+	.right_border{
+		border-right: 1px solid gray;
+	}
+</style>
+
 <template>
 	<div>
 		<div>
@@ -345,74 +417,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-	.body{
-		width: 80%;
-		margin: auto;
-
-	}
-	.choose_collection{
-		margin-top: 50px;
-		width: 15%;
-
-		vertical-align: top;
-		display: inline-block;
-
-	}
-	.collection_book{
-		width: 70%;
-		height: 90%;
-		margin-left: 5%;
-
-
-
-		vertical-align: top;
-		display: inline-block;
-
-
-
-	}
-	.book_item{
-		display: inline-block;
-		margin: 20px 20px 20px 5px;
-
-
-
-	}
-	.img-box{
-		width: 18%;
-		height: 180px;
-
-	}
-	.text-block{
-		display: inline-block;
-		vertical-align: top;
-
-		width: 52%;
-		word-break: break-all;
-	}
-	.search_model{
-		width: 22%;
-		margin: 20px 25%;
-
-
-	}
-	.collections{
-		margin-top: 10px;
-
-	}
-	.size{
-		font-size: 15px;
-	}
-	p{
-		line-height: 1;
-	}
-	.operate{
-		display: inline-block;
-		vertical-align: top;
-
-	}
-	.right_border{
-		border-right: 1px solid gray;
-	}
-</style>
