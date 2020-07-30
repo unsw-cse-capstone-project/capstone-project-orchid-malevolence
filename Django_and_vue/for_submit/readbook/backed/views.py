@@ -25,8 +25,8 @@ from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
 con.flushdb()
-# 系统推荐
-# 三个简单推荐
+
+# recommend
 operation()
 
 ##### signals
@@ -36,30 +36,31 @@ goal_del = django.dispatch.Signal(providing_args=['user_id','year','month'])
 
 ######################## main #######################
 
-# 获取token
+# get token
 class CustomAuthToken(ObtainAuthToken):
-    # 已测试，无问题
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             ob=serializer.validated_data
             user = serializer.validated_data['user']
-            # 登录触发推荐
+            # 
             temp=user_recommend(int(user.id))
+            print(temp)
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
         print(serializer.errors)
         username = request.data['username']
-        # 因为名字是唯一的，所以就直接检查名字存不存在就行，存在就说明密码错了，不存在那就不存在。
+        # 
         counts = Account.objects.filter(username=username).count()
         if counts:
             return Response(data={'msg':"Please Check Your Password!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
         return Response(data={'msg':"User doesn't exist!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
 
-# 注册用户，成功并返回token
+# register if success, return token
 class RegisterAPIView(APIView):
     
-    # 已经多次测试，无问题
+
     def post(self, request, format=None):
         print(request.data)
         res = RegSerializer(data = request.data, context={'request': request})
@@ -79,14 +80,10 @@ class RegisterAPIView(APIView):
         print(res.errors)
         return Response(data={'msg':"Username is exist!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
 
-# 获取用户信息，包含collection，以及collection里面的books
+# get user info, colleciton, book in collection
 class AccountDetailAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 已经无问题
-    # 除了包含用户的基本信息之外
-    # 还有用户的collection
-    # 已经每个collection里面包含的书籍信息
     def get(self, request, format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -107,11 +104,10 @@ class AccountDetailAPIView(APIView):
         user_obj.save()
         return Response(data={"msg":"edit success!"},status=HTTP_200_OK)
 
-# colloection操作，添加，删除，修改名称
+# colloection add, delete, change name
 class CreateCollectionAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 已测试
     def get(self,request, format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -125,9 +121,6 @@ class CreateCollectionAPIView(APIView):
         else:
             return Response(data={"msg":"No Colletions!"},status=HTTP_400_BAD_REQUEST)
         
-
-    # 建立新的collection，都测试过了
-    # 就是跟书籍添加进入collection，会有路由冲突，目前经过调整，阶段性解决。
     def post(self, request, format=None):
         print(request.data)
         token=request.META.get('HTTP_AUTHORIZATION')
@@ -144,7 +137,6 @@ class CreateCollectionAPIView(APIView):
         return Response(status=HTTP_400_BAD_REQUEST)
 
     
-    # 已测试
     def delete(self, request, format=None):
         print('delete')
         token=request.META.get('HTTP_AUTHORIZATION')
@@ -156,7 +148,7 @@ class CreateCollectionAPIView(APIView):
         Collection.objects.filter(id=collection_id,user=user_obj.id).delete()
         return Response(data={'msg':'already delete!'},status=HTTP_200_OK)
     
-    # collection 改名
+    # collection change name
     def put(self,request,format=None):
         print(request.data)
         collect_id = request.data['collection_id']
@@ -171,7 +163,7 @@ class CreateCollectionAPIView(APIView):
             return Response(data={"msg":"no collection id!"},status=HTTP_400_BAD_REQUEST)
 
         
-# 添加书籍进入数据库
+# add book into database
 class AddBookAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     
@@ -219,7 +211,7 @@ class FilterSearchBookAPIView(APIView):
             return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
 
 
-# 搜做书籍
+# search book
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
         print(request.data)
@@ -273,11 +265,10 @@ class SearchBookAPIView(APIView):
             return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
 
 
-# 把书放进collection里面，有待更新
+# add book into collection
 class AddBookToCollectionAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 基本测试无问题，跟collection建立会有路由冲突，有待解决
     def post(self,request,format=None):
         print(request.data)
         time_now=timezone.now()
@@ -299,7 +290,7 @@ class AddBookToCollectionAPIView(APIView):
         goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"add it success!"},status=HTTP_200_OK)
     
-    # 初步测试无问题，找不到也会成功返回。 
+    # 
     def delete(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -313,11 +304,10 @@ class AddBookToCollectionAPIView(APIView):
         return Response(data={"msg":"delete it success"},status=HTTP_200_OK)
 
 
-# 添加评论，目前支持修改
+# add review
 class ReviewAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 初步测试无问题
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -328,7 +318,7 @@ class ReviewAPIView(APIView):
         review_info['user']=user_obj.id
         review_info['book']=book_id
         review_set = Review.objects.filter(user=user_obj.id,book=book_id)
-        # 存在就是修改
+        # 
         if(review_set.exists()):
             review_temp=review_set[0]
             review_temp.content = review_info['content']
@@ -343,7 +333,7 @@ class ReviewAPIView(APIView):
             print(serializer.errors)
             return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
 
-# 给书打分,支持修改分数
+# rating
 class RatingAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -355,7 +345,7 @@ class RatingAPIView(APIView):
         rating_info = request.data['rating_info']
         rating_set=Rating.objects.filter(user=user_obj.id,book=rating_info['book'])
         if(rating_set.exists()):
-            # 如果存在，说明之前打过分数，修改就行了
+            # 
             rating_temp=rating_set[0]
             rating_temp.rating = rating_info['rating']
             rating_temp.save()
@@ -371,7 +361,7 @@ class RatingAPIView(APIView):
             return Response(data={"msg":'update success!'},status=HTTP_200_OK)
 
         else:
-            # 不存在就说明没打过分数，插入数据
+            # 
             rating_info['user']=user_obj.id
             serializer = RatingSerializer(data=rating_info)
             if serializer.is_valid():
@@ -389,11 +379,11 @@ class RatingAPIView(APIView):
             print(serializer.errors)
             return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
 
-# 点赞：包括第一次点赞和取消赞
+# 
 class LikeItAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 初步检测，应该没问题了
+    # 
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -405,27 +395,27 @@ class LikeItAPIView(APIView):
         like_set=LikeIt.objects.filter(review=review_id,user=user_obj.id)
         if(like_set.exists()):
             if(like_info["status"]==-1):
-                # 取消点赞，如果已经被取消，则直接返回
+                # 
                 like_new_info = like_set[0]
                 if(like_new_info.status==0):
-                    return Response(data={"msg":"别折腾了"},status=HTTP_400_BAD_REQUEST)
+                    return Response(data={"msg":"ooooo"},status=HTTP_400_BAD_REQUEST)
                 like_new_info.status=0
                 like_new_info.save()
                 review_new_temp=Review.objects.get(id = review_id)
                 review_new_temp.like_count_num-=1
                 review_new_temp.save()
-                return Response(data={'msg':'点赞取消'},status=HTTP_200_OK)
+                return Response(data={'msg':'cancel'},status=HTTP_200_OK)
             else:
-                # 回复点赞，之前点过，后来取消了，然后又点赞了
+                # 
                 like_new_info = like_set[0]
                 if(like_new_info.status==1):
-                    return Response(data={"msg":"别折腾了"},status=HTTP_400_BAD_REQUEST)
+                    return Response(data={"msg":"ooooo"},status=HTTP_400_BAD_REQUEST)
                 like_new_info.status=1
                 like_new_info.save()
                 review_new_temp=Review.objects.get(id = review_id)
                 review_new_temp.like_count_num+=1
                 review_new_temp.save()
-                return Response(data={"msg":"我又点赞了！"},status=HTTP_200_OK)
+                return Response(data={"msg":"hhhhh！"},status=HTTP_200_OK)
             return Response(data={"msg":"already like it!"},status=HTTP_200_OK)
         else:
             likeit_info = request.data['likeit']
@@ -443,13 +433,13 @@ class LikeItAPIView(APIView):
             print(serializer.errors)
             return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
     
-# 点击某一本书之后，显示的具体信息
-# 和userid还有具体的bookid挂钩
-# 返回的数据包括：
-# 1.user对book的评分
-# 2.book的所有评论，以时间为返回顺序
-# 3.针对每一条评论，赞的数量
-# 4.用户是否对某一条或者多条评论点过赞
+# click book , show extra info
+# 
+# data include：
+# 1.rating
+# 2.rating detail
+# 3.review and other user's review
+# 4.like, like counr, like status
 class BookDetailPageAPIView(APIView):
 
     def get(self,request,format=None):
@@ -476,8 +466,6 @@ class BookDetailPageAPIView(APIView):
 #  
 class MonthlyGoalAPIView(APIView):
     permission_classes = (IsAuthenticated,)
-    # 简单测试无问题
-    # 检查是否已经设定月度目标，没有的话会返回400
     def get(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -498,8 +486,7 @@ class MonthlyGoalAPIView(APIView):
         else:
             return Response(data={"target":0,"already_done":0},status=HTTP_200_OK)   
 
-    # 设定每月目标，在第一次设定时会检查并返回当月已经添加的书籍
-    # 修改目标，每次也会重新检查并返回数据
+
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -551,16 +538,16 @@ class MainPageRecAPIView(APIView):
 # user_base recommend
 
 class UserBaseRecAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
         info = request.query_params
         user_id=info['id']
         if(con.exists('rec_'+str(user_id))):
             print('get from cache')
             temp=con.lrange('rec_'+str(user_id),0,-1)
-            res=[]
+            rec=[]
             for i in temp:
-                res.append(json.loads(i))
+                rec.append(json.loads(i))
             res_rating=[]
             res_add=[]
             temp_1=con.lrange('highrating',0,-1)
@@ -569,7 +556,6 @@ class UserBaseRecAPIView(APIView):
             temp_2=con.lrange('highadded',0,-1)
             for i in temp_2:
                 res_add.append(json.loads(i))
-            # data={"rec":rec,"rating_rec":temp_1,"added_rec":temp_2}
             return Response(data={"rec":rec,"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
         else:
             res_rating=[]

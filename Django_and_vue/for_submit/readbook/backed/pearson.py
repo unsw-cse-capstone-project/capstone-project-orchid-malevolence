@@ -5,8 +5,7 @@ import json
 from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
-
-# pearson-correlation, to calculate the similarity between two user.
+# pearson_correlation similarity
 def pearson_correlation(target, others):
     sum_xy = 0
     sum_x = 0
@@ -71,12 +70,13 @@ def calculate_correlation(target,datas):
     rec_list.sort(key=lambda i:i[1],reverse=True)
     return rec_list[:5]
 
-# input data is user id.
 def user_recommend(user_id):
     temp_set = Rating.objects.filter(user=str(user_id))
     if(temp_set.count()<=2):
+        print("not enough!")
         return 0
     else:
+        print('custome recommend')
         data=Rating.objects.all()
         serializer = RecUserBookSerializer(instance=data,many=True)
 
