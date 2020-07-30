@@ -585,11 +585,14 @@ class UserBaseRecAPIView(APIView):
 
 
 #
-# class HistoryAPIView(APIView):
-#     permission_classes = (IsAuthenticated,)
-#     def get(self,request,format=None):
-#         info = request.query_params
-#         user_id=info['id']
+class HistoryAPIView(APIView):
+    # permission_classes = (IsAuthenticated,)
+    def get(self,request,format=None):
+        info = request.query_params
+        user_id=info['id']
+        user_obj=Account.objects.get(id=user_id)
+        serializer=HistorySerializer(instance=user_obj)
+        return Response(serializer.data)
 
 
 

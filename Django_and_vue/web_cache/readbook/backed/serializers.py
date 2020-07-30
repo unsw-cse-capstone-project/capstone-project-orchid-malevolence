@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
 from account.models import *
 from .models import *
+from django.utils import timezone
 
 # 注册的序列化
 class RegSerializer(serializers.ModelSerializer):
@@ -117,9 +118,9 @@ class HistorySerializer(serializers.ModelSerializer):
     other_year_rec=serializers.SerializerMethodField('other_year_rec_edit',required=False)
     class Meta:
         model = Account
-        field=('id','username','this_year_rec','other_year')
+        fields=['id','username','this_year_rec','other_year_rec']
     
-    def this_year_rec(self,obj):
+    def this_year_rec_edit(self,obj):
         time_now = timezone.now()
         this_year=time_now.year
         this_month = int(time_now.month)
@@ -143,7 +144,7 @@ class HistorySerializer(serializers.ModelSerializer):
                 records[i.month][0]=i.target
         return {this_year:records}
     
-    def other_year_rec(self,obj):
+    def other_year_rec_edit(self,obj):
         time_now = timezone.now()
         this_year=time_now.year
         start_year=obj.join_date.year
