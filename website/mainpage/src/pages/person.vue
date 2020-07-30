@@ -157,7 +157,7 @@ import {getCollectionmultdata} from '../network/requests'
 import {postnewcollection} from '../network/requests'
 import {changecollectioname} from '../network/requests'
 import {delecollection} from '../network/requests'
-import {getCurGoal} from "../network/requests";
+import {getCurGoal} from "../network/requests"
 
 export default {
 	components:{
@@ -200,6 +200,8 @@ export default {
 			},
 			
 			// create an new collection
+			token_log: localStorage.getItem('token'),
+			options2:[],
 			collectionform: {
 				name: ''
 			},
@@ -285,20 +287,30 @@ export default {
 		
 		// create an new collection
 		submit() {
-			this.$refs.collectionformRef.validate(async valid => {
-				if (!valid) { return }
-				postnewcollection(this.collectionform).then(res=>{
-					console.log(res);
-					this.$message.success('Successfully created');
-					this.dialogFormVisible = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err);
-					this.$message.error('Create failure');
+			let value = {name: this.collectionform.name}
+			let exist = false
+			for (let i = 0; i < this.options2.length; i++) {
+				if (value.name === this.options2[i].name) {
+					exist = true
+					this.$message.success(' Name repetition ');
+				}
+			}
+			if (exist === false) {
+				this.$refs.collectionformRef.validate(async valid => {
+					if (!valid) { return }
+					postnewcollection(this.collectionform).then(res=>{
+						console.log(res);
+						this.$message.success('Successfully created');
+						this.dialogFormVisible = false;
+						this.reload();
+					}).catch(err=>{
+						console.log(err);
+						this.$message.error('Create failure');
+					})
 				})
-			})
+			}
 		},
-		
+
 		// reset collection name
 		change() {
 			this.$refs.recollectionFormRef.validate(async valid => {
@@ -450,7 +462,21 @@ export default {
 		console.log(this.activities[0])
 		this.sortBykey(this.activities, 'age')
 		//this.shiyan2.sort('key')
-		console.log(this.activities)
+		//console.log(this.activities)
+		if(this.token_log){
+			getCollectionmultdata().then(res=>{
+				console.log(res)
+		
+				for (let i=0;i<res.length;i++){
+					let j=res[i].id
+					let k=res[i].name
+					this.options2.push({id:j,name:k})
+				}
+			}).catch(res=>{
+				console.log(res)
+			})
+		
+		}
 	}
 }
 </script>
