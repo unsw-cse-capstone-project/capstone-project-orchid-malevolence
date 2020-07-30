@@ -1,4 +1,4 @@
-<!-- TODO: footer -->
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="footer" id="app2">
 		<div class="text">

@@ -1,5 +1,4 @@
 <style lang="less" scoped>
-
 	.body {
 		width: 70%;
 		margin: auto;
@@ -9,16 +8,14 @@
 		height: 30px;
 		margin: 10px 0 20px 0;
 	}
+	
 	.choose{
 		width: 22%;
 		margin-top: 30px;
 		margin-left: 80%;
 		display: inline-block;
-
-
-
-
 	}
+	
 	.book_item {
 		display: inline-block;
 		margin: 20px 20px 20px 5px
@@ -30,31 +27,26 @@
 		height: 180px;
 
 	}
+	
 	.text-block {
 		display: inline-block;
 		vertical-align: top;
-
 		width: 65%;
 		word-break: break-all
 	}
+	
 	.user_result{
 		margin-top: 20px;
-
 	}
+	
 	.user_box{
 		position: absolute;
 		margin-top: 40px;
 		margin-left: 48%;
-
-
-
 	}
-
-
 </style>
 
 <template>
-
 	<div class="box">
 		<div>
 			<Header></Header>
@@ -71,7 +63,6 @@
 
 				<el-select  @change="current_value(value)" class="choose" v-model="value" placeholder=" Choose a collection">
 					<el-option
-
 									v-for="item in options"
 									:key="item.value"
 									:label="item.label"
@@ -82,7 +73,6 @@
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
 					<div class="item_box" v-for="book in book_array" v-bind:key="book.ISBN">
-
 						<div class="book_item img-box">
 							<img :src="book.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(book)">
 						</div>
@@ -106,17 +96,8 @@
 
 				</div>
 			</div>
-
-
-
-
-
 		</div>
-
-
 	</div>
-
-
 </template>
 
 <script>
@@ -124,12 +105,9 @@ import book_list from '../components/search_result_components/book_list'
 import {getSearchResult1, filtersearchbook1,getSearchUserResult1} from '../network/requestsWithoutLogin'
 import Header from '../components/homepage_components/header'
 
-
 export default {
 	name: 'search_result',
-
 	data () {
-
 		return {
 			token_log: localStorage.getItem('token'),
 			search_type: 'Title',
@@ -147,6 +125,7 @@ export default {
 
 		}
 	},
+	
 	components: {
 		// search_model,
 		book_list,

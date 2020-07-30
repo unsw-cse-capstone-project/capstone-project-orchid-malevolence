@@ -30,10 +30,8 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
-# user model
 class Account(AbstractBaseUser):
-    # input m, record as Male
+    # 
     GENDER_CHOICES = (
           ('M', 'Male'),
           ('F', 'Female')

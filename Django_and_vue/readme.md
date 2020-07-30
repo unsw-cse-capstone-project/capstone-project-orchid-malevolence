@@ -21,7 +21,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# Reids
+# Redis
 https://redis.io/download
 please download redis server
 

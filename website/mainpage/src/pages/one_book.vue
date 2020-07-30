@@ -9,7 +9,7 @@
 	}
 
 	.img-box{
-		width: 20%;
+		width: 200px;
 		height: 250px;
 		display: inline-block;
 
@@ -36,19 +36,15 @@
 		/*font-size: 18px;*/
 	}
 	.btn_add{
-
 		width: 25%;
 		display: inline-block;
 		/*vertical-align: top;*/
-
-
 	}
+	
 	.get_review_box{
-
 		width: 95%;
 		border-top: 2px solid gray;
 		height: 10%;
-
 	}
 
 	.username{
@@ -58,7 +54,6 @@
 	}
 	.inner_socre{
 		margin-right: 10px;
-
 		display: inline-block;
 
 	}
@@ -73,7 +68,6 @@
 	.inner_content{
 		display: block;
 		margin: 10px 0;
-
 	}
 
 
@@ -124,18 +118,9 @@
 				<div class="inner_content">
 					<span style="overflow-wrap:break-word;">{{item.content  }}</span>
 				</div>
-
 			</div>
-
-
-
-
 		</div>
-
-
 	</div>
-
-
 </template>
 
 <script>
@@ -147,8 +132,6 @@ import read_score from '../components/single_book_components/read_score'
 import Rating from '../components/single_book_components/rating'
 import add_your_collection from '../components/single_book_components/add_your_collection'
 
-
-
 export default {
 	name: 'one_book',
 	data () {
@@ -156,11 +139,9 @@ export default {
 			token_log: localStorage.getItem('token'),
 			id: null,
 			count: 0,
-			review:[],
-			value:'',
-			book:{
-
-			},
+			review: [],
+			value: '',
+			book: {},
 
 			book_id:null,
 			result:{
@@ -173,8 +154,6 @@ export default {
 
 			},
 			update_cont:0
-
-
 		}
 
 	},
@@ -188,12 +167,10 @@ export default {
 
 	mounted () {
 		this.getData();
-
 	},
 
 
 	methods: {
-
 		// get all info about this book
 		getData () {
 			this.book=this.$route.query
@@ -225,13 +202,9 @@ export default {
 				}).catch(res=>{
 					console.log(res)
 				})
-
 			}
-
 		},
-
 	},
-
 }
 </script>
 
