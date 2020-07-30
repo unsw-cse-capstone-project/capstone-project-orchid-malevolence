@@ -74,14 +74,14 @@ def user_recommend(user_id):
     if(temp_set.count()<=2):
         return 0
     else:
-        data=Collection_Book.objects.all()
+        data=Rating.objects.all()
         serializer = RecUserBookSerializer(instance=data,many=True)
 
         user={}
         for i in serializer.data:
-            if(i['belongto'] not in user):
-                user[i['belongto']]={}
-            user[i['belongto']][i['book']]=float(i['rating'])
+            if(i['user'] not in user):
+                user[i['user']]={}
+            user[i['user']][i['book']]=float(i['rating'])
         
         res=calculate_correlation(user_id,user)
         for i in res:

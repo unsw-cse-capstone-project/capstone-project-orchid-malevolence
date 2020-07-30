@@ -600,13 +600,10 @@ class HistoryAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
-        info=request.query_params
-        print(info)
-        print(info['rating'])
-        nums=info['rating']
-        book_set=Book.objects.filter(title__contains=info['key_word'],avg_rating__gte=nums)
-        serializer=BookSerializer(instance=book_set,many=True)
+        data=Rating.objects.all()
+        serializer = RecUserBookSerializer(instance=data,many=True)
         return Response(serializer.data)
+
 
 
 #######

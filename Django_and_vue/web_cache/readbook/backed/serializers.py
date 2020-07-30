@@ -364,14 +364,9 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
 
 #
 class RecUserBookSerializer(serializers.ModelSerializer):
-    rating=serializers.SerializerMethodField('rating_edit',required=False)
     class Meta:
-        model = Collection_Book
-        fields = ['belongto','book','rating']
-    
-    def rating_edit(self,obj):
-        temp=Rating.objects.get(user=obj.belongto,book=obj.book)
-        return temp.rating
+        model = Rating
+        fields = ['user','book','rating']
 
 
 
