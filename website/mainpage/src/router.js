@@ -81,13 +81,13 @@ const router = new Router({
 })
 
 
-// 路由导航守卫
+// Route navigation guard
 router.beforeEach((to, from, next) => {
     document.title=to.matched[0].meta.title
-    // to 将要访问的路径
-    // from 代表从那个路径跳转过来的
-    // next 是一个函数，表示放行
-    // next() 放行， next('/login') 强制跳转
+    // to The path to be accessed
+    // from That means jump from that path
+    // next It's a function that means release
+    // next() release， next('/login') Forced to jump
     const tokenStr = window.localStorage.getItem('token')
     if (to.path === '/homepage' | to.path === '/login' | to.path === '/register'| to.path==='/one_book' | to.path==='/search_result' | to.path==='/my_bookspage' ) { return next() }
     else if (tokenStr == null) {
