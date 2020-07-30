@@ -33,7 +33,7 @@
 </style>
 <template>
 	<div>
-<!--		current page and total books-->
+<!--		current page and display all books, every book show img, average_rating,title,author,publisher,publisher_data, category-->
 		<div class="info">Page:{{books[real_page-1].page+1}} Totally related books: {{books[real_page-1].total_book}}</div>
 
 
@@ -85,12 +85,8 @@ export default {
 	data () {
 		return {
 			token_log: localStorage.getItem('token'),
-
-
-			// isShow:false,
-
 			real_page: 1,
-			// isShow:true
+
 
 		}
 	},
@@ -113,7 +109,6 @@ export default {
 
 	watch: {
 		books (val) {
-			// console.log(val)
 			this.real_page = 1
 			this.books = val
 		}
@@ -125,7 +120,6 @@ export default {
 
 		getpage (value) {
 			this.real_page = value
-			// console.log('this.real_page ' + this.real_page)
 
 		},
 		isShow () {

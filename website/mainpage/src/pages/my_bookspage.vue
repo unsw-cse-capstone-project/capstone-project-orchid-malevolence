@@ -75,6 +75,10 @@
 		<div>
 			<Header></Header>
 		</div>
+<!--		three part in this page
+				1. u can search a book inside your collection
+				2. show all books from your all collections
+				3. display all books in one collection and u can remove that book in this collection-->
 		<div class="search_model">
 <!--			search a book inside your collection-->
 			<el-input v-model="input" placeholder="Search a book inside your collections">
@@ -84,7 +88,7 @@
 		</div>
 
 		<div class="body">
-<!--			choose a collection-->
+<!--			choose one collection and display books in a collection-->
 			<div class="choose_collection">
 				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false;reload_page()" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
@@ -101,7 +105,7 @@
 			</div>
 
 			<div class="collection_book" >
-<!--				show all books in your collections-->
+<!--				show all books from  your all  collections-->
 				<div v-show="isShow" >
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
@@ -163,8 +167,8 @@
 				</div>
 
 
-						<!-- 分割线，显示当前collection名字 -->
-<!--						主体，显示 图 & 书名-->
+						<!-- show current collection name-->
+<!--						show book info: img, author, title, rating .....-->
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
@@ -209,29 +213,16 @@
 					</div>
 				</div>
 
-
-<!--					</div>-->
 				</div>
 
-
-
 			</div>
-
-
 	</div>
-<!--	</div>-->
-
-
-
-
-
 </template>
 
 <script>
 
 import {getCollectionmultdata,delBookfromCollection} from '../network/requests'
 import Header from '../components/homepage_components/header'
-// import search_inner_collections from '../components/search_result_components/search_inner_collections'
 export default {
 	name: 'my_bookspage',
 	data () {
@@ -244,8 +235,8 @@ export default {
 			isShow:true,
 			search_book:[],
 			show:false,
-			// 所有的collections
-			show2:false,
+
+			show2:false,  // one book info
 			books2: [],       // current collection's books
 			options: [],     // collections' content
 			value: '',       // collection name
@@ -266,38 +257,24 @@ export default {
 	},
 	components: {
 		Header,
-		// search_inner_collections
-
-
-		// homepage_collections
 	},
 	mounted () {
 		getCollectionmultdata().then(res=>{
 
 			this.books=res
 			this.getAllBooks(res)
-			// console.log(this.books)
-			// console.log(this.isShow)
-// 所有的collections
+
+			// all collections
 			this.collections = res
-			// this.value = this.collections[0].name
-			this.getCollectionNames(res)   // 把api返回的collection名字整理出来
-			// this.getCollectionBooks(this.collections[0].id) // default select first collection
-			// console.log(this.options)
-			// console.log(this.value)
-			// console.log(this.books2)
+			this.getCollectionNames(res)   // get all collection name from the api
+
 		}).catch(res=>{
 			console.log(res)})
-		// 所有的collections
 
 	},
 	methods: {
-		del(name,book){ //delete this book from currnt collection
-			// console.log(book)
-			//
-			// console.log(name)
-			// console.log(this.books)
-			// this.value=val.id
+		del(name,book){ //delete this book from current collection
+
 			let len=this.books.length
 
 			for(let i =0;i<len;i++){
@@ -309,14 +286,13 @@ export default {
 
 					}
 
-			// console.log(this.delbookform)
-
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
 				location.reload()
 
 
 		},
+
 		getAllBooks(val){
 			let len=val.length
 			let books_name=[]
@@ -358,12 +334,11 @@ export default {
 				}
 
 			}
-			// console.log(this.search_book)
-			// console.log(this.isShow)
+
 
 
 		},
-		// 所有的collections
+		// get  books from current collection
 		currentSel(selVal) {
 			this.value = selVal;
 			let obj = {}
@@ -412,13 +387,9 @@ export default {
 				book["categories"] = obj.books[i].categories
 				book["avg_rating"] = parseFloat(obj.books[i].avg_rating)
 
-
-				// book["url"] = ''   // TODO: 跳转url
 				this.books2.push(book)
 			}
-			// console.log(book)
 		},
-		//reload page
 		reload_page(){
 			console.log('sss')
 			location.reload()
@@ -426,7 +397,6 @@ export default {
 		},
 
 		jump_one_book(value) {
-			// console.log(value)
 			this.$router.push({
 				name: 'one_book',
 				query: {

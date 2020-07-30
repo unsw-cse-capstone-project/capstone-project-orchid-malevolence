@@ -194,16 +194,13 @@ export default {
 
 	methods: {
 
-
+		// get all info about this book
 		getData () {
 			this.book=this.$route.query
-			// console.log(this.book)
 			let post_value={book_id:this.book.book_id}
 
 			if(this.token_log){
 				getSingleBookmultdata(post_value).then(result => {
-
-					// console.log(result)
 					this.result=result
 					this.result.rate=result.rating_analyse.rating
 					this.result.TotalCount=result.rating_analyse.how_many_user_scored
@@ -211,15 +208,12 @@ export default {
 					this.result.book_id=result.id
 					this.result.review_book=result.review_book
 
-					// console.log(this.result)
-
-
 				}).catch(res=>{
 					console.log(res)
 				})
 			}
 			else{
-
+				//request book info like average score, reviews, totalcount of how many people have read
 				getSingleBookmultdata1(post_value).then(result=>{
 					this.result=result
 					this.result.rate=result.rating_analyse.rating
@@ -228,15 +222,11 @@ export default {
 					this.result.book_id=result.id
 					this.result.review_book=result.review_book
 
-					// console.log(this.result)
-
-
 				}).catch(res=>{
 					console.log(res)
 				})
 
 			}
-
 
 		},
 
