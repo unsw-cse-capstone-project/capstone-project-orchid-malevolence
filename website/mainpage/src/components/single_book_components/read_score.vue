@@ -55,17 +55,9 @@ export default {
 
 	// request method page initial and get average score of this book
 	updated () {
-		// console.log(temp)
-
 			this.average = this.res.averageScore
 			this.book_id = this.res.book_id
 			this.TotalCount = this.res.TotalCount
-
-			// console.log(this.isShow)
-
-			// this.TotalCount=this.res.TotalCount
-
-
 	},
 
 

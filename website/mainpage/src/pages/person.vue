@@ -60,7 +60,6 @@
 									v-for="item in options"
 									:key="item.label"
 									:value="item.value"
-									
 							>
 							</el-option>
 						</el-select>
@@ -70,8 +69,8 @@
 					<div class="collection_add">
 						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
 						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
-							<el-form ref="collectionformRef" :model="collectionform">
-								<el-form-item label="collection name" :label-width="formLabelWidth">
+							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
+								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
 									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -86,8 +85,8 @@
 					<div class="collection_reset">
 						<el-button type="text" @click="dialogFormVisible2 = true" class="collection_change_button">reset collection</el-button>
 						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
-							<el-form ref="recollectionFormRef" :model="recollectionForm">
-								<el-form-item label="reset collection" :label-width="formLabelWidth">
+							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
+								<el-form-item label="reset collection" :label-width="formLabelWidth" prop="new_name">
 									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -100,7 +99,17 @@
 					
 					<!-- delete collection -->
 					<div class="collection_dele">
-						<el-button type="text" @click="delete_button" class="collection_dele_button">delete collection</el-button>
+						<el-popover
+							placement="top"
+							width="200"
+							v-model="visible">
+						<p>Are you sure to delete the collection?</p>
+						<div style="text-align: right; margin: 0">
+							<el-button size="mini" type="text" @click="visible = false">cancel</el-button>
+							<el-button type="text" size="mini" @click="delete_button">confirm</el-button>
+						</div>
+							<el-button type="text" slot="reference" class="collection_dele_button">delete collection</el-button>
+						</el-popover>
 					</div>
 				</div>
 				<!-- Line showing the current collection name -->
@@ -109,8 +118,25 @@
 					<!-- Collection body, display diagram & Title -->
 					<div class="coll_wrap">
 						<div class="coll_content" v-for="item in books" :key="item.imageLink">
-							<img :src="item.imageLink" class="img" alt/>
-							<a href="item.url">{{item.title}}</a>
+<!--							<img :src="item.imageLink" class="img" alt/>-->
+							<el-popover
+									placement="right"
+									width="400"
+									trigger="hover">
+								<div>
+									<b>{{item.title}}</b>
+									<el-rate
+											v-model="item.avg_rating"
+											disabled
+											show-score
+											text-color="#ff9900"
+											score-template="{value}">
+									</el-rate>
+									{{item.description}}
+								</div>
+								<img :src="item.imageLink" class="img" alt slot="reference"/>
+							</el-popover>
+							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
 						</div>
 					</div>
 				</div>
@@ -118,6 +144,9 @@
 			
 			<!-- goal detail in current year -->
 			<el-tab-pane label="history goal">
+				<div class="history_goal_title">
+					Goal details in this year
+				</div>
 				<div class="history_goal">
 					<div>
 						<el-timeline :reverse="reverse">
@@ -144,7 +173,7 @@ import {getCollectionmultdata} from '../network/requests'
 import {postnewcollection} from '../network/requests'
 import {changecollectioname} from '../network/requests'
 import {delecollection} from '../network/requests'
-import {getCurGoal} from "../network/requests";
+import {getCurGoal} from "../network/requests"
 
 export default {
 	components:{
@@ -152,6 +181,21 @@ export default {
 	},
 	inject: ["reload"],
 	data() {
+		// Verify name
+		let name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
+		let new_name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
 		return {
 			//Set the location of the label
 			tabPosition: 'left',
@@ -172,11 +216,20 @@ export default {
 			},
 			
 			// create an new collection
+			token_log: localStorage.getItem('token'),
+			options2:[],
 			collectionform: {
 				name: ''
 			},
 			dialogFormVisible: false,
-			formLabelWidth: '120px',
+			formLabelWidth: '150px',
+			collectionformRules: {
+				// collection name verification
+				name: [
+					{ required: true, validator: name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// reset collection name 
 			recollectionForm: {
@@ -184,12 +237,19 @@ export default {
 				collection_id: ''
 			},
 			dialogFormVisible2: false,
+			recollectionformRules: {
+				// collection name verification
+				new_name: [
+					{ required: true, validator: new_name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// delete collection
 			delecollectionform: {
 				collection_id: ''
 			},
-			
+			visible: false,
 			//Collection body, display diagram & Title
 			books: [],       // current collection's books
 			options: [],     // collections' content
@@ -240,23 +300,52 @@ export default {
 				})
 			})
 		},
-		
-		// create an new collection
-		submit() {
-			this.$refs.collectionformRef.validate(async valid => {
-				if (!valid) { return }
-				postnewcollection(this.collectionform).then(res=>{
-					console.log(res);
-					this.$message.success('Successfully created');
-					this.dialogFormVisible = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err);
-					this.$message.error('Create failure');
-				})
+
+		jump_one_book(value) {
+			// console.log(value)
+			this.$router.push({
+				name: 'one_book',
+				query: {
+					// item:value
+					book_id: value.id,
+					authors: value.authors,
+					title: value.title,
+					ISBN: value.ISBN,
+					publisher: value.publisher,
+					imageLink: value.imageLink,
+					publisher_data:value.publish_date,
+					category:value.categories
+				}
+
 			})
 		},
-		
+
+		// create an new collection
+		submit() {
+			let value = {name: this.collectionform.name}
+			let exist = false
+			for (let i = 0; i < this.options2.length; i++) {
+				if (value.name === this.options2[i].name) {
+					exist = true
+					this.$message.error(' Name repetition ');
+				}
+			}
+			if (exist === false) {
+				this.$refs.collectionformRef.validate(async valid => {
+					if (!valid) { return }
+					postnewcollection(this.collectionform).then(res=>{
+						console.log(res);
+						this.$message.success('Successfully created');
+						this.dialogFormVisible = false;
+						this.reload();
+					}).catch(err=>{
+						console.log(err);
+						this.$message.error('Create failure');
+					})
+				})
+			}
+		},
+
 		// reset collection name
 		change() {
 			this.$refs.recollectionFormRef.validate(async valid => {
@@ -322,9 +411,19 @@ export default {
 			for(let i = 0; i < len; i++) {
 				book = {}
 				book["id"] = obj.books[i].id
+				book["authors"] = obj.books[i].authors
 				book["title"] = obj.books[i].title
 				book["imageLink"] = obj.books[i].imageLink
-				book["url"] = ''   // TODO: 跳转url
+				book["ISBN"] = obj.books[i].ISBN
+				book["publisher"] = obj.books[i].publisher
+				book["publish_date"] = obj.books[i].publish_date
+				book["categories"] = obj.books[i].categories
+				book["join_date"] = obj.books[i].join_date
+				book["description"] = obj.books[i].description
+				if(book["description"].length > 200) {
+					book["description"] = book["description"].slice(0, 200) + "..."
+				}
+				book["avg_rating"] = parseInt(obj.books[i].avg_rating)
 				this.books.push(book)
 			}
 		},
@@ -408,7 +507,21 @@ export default {
 		console.log(this.activities[0])
 		this.sortBykey(this.activities, 'age')
 		//this.shiyan2.sort('key')
-		console.log(this.activities)
+		//console.log(this.activities)
+		if(this.token_log){
+			getCollectionmultdata().then(res=>{
+				console.log(res)
+		
+				for (let i=0;i<res.length;i++){
+					let j=res[i].id
+					let k=res[i].name
+					this.options2.push({id:j,name:k})
+				}
+			}).catch(res=>{
+				console.log(res)
+			})
+		
+		}
 	}
 }
 </script>
@@ -417,6 +530,7 @@ export default {
 	// total
 	body, html{
 		height: 100%;
+		width: 100%;
 		overflow: hidden;
 	}
 	// header: The navigation bar
@@ -428,17 +542,24 @@ export default {
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		background: url(../assets/person2.png) no-repeat fixed;
+		//background: url(../assets/person2.png) no-repeat fixed;
+		background-color: aliceblue;
 		background-size: cover;
 		background-origin: border-box;
-		opacity:0.75;
+		//opacity:0.75;
 		overflow: scroll;
+		text-align: center;
 	}
 	// The outermost tab
 	.content{
 		width: 90%;		
 		margin: auto;
 	}
+
+	.el-button {
+		margin-top: 10px;
+	}
+
 	// Personal information
 	.person_information{
 		margin-left: 60px;
@@ -499,6 +620,11 @@ export default {
 		height: 300px;
 	}
 	// goal detail in current year
+	.history_goal_title{
+		margin-left: 30px;
+		font: 34px bolder;
+		margin-top: 20px;
+	}
 	.history_goal{
 		margin-top: 20px;
 	}

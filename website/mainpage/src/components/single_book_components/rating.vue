@@ -98,8 +98,6 @@
 
 <script>
 import {getSingleBookmultdata,postrating,postReview} from "../../network/requests"
-// import {getSingleBookmultdata1,postrating1,postReview1} from "../../network/requestsWithoutLogin"
-
 export default {
   name: 'rate',
   data () {
@@ -117,7 +115,7 @@ export default {
     }
   },
   props: {
-    bookID: String
+    bookID: String //the arguments bookID received from father page one_book page
   },
   computed:{
 
@@ -131,6 +129,7 @@ export default {
 
     }
     },
+
     submite_review () {
       if(this.token_log){
         let post_review = {
@@ -139,7 +138,6 @@ export default {
             "content": this.textarea2
           }
         }
-        console.log(post_review)
         postReview(post_review).then(res => {
           console.log(res)
         }).catch(res => {
@@ -183,17 +181,12 @@ export default {
         postrating(postvalue).then(res => {
           console.log(res)
         })
-        // console.log(this.bookID)
-
         this.exist = false
 
       }else{
         this.$message({message: 'please login', showClose: true,})
         return false
       }
-
-
-
 
     },
 

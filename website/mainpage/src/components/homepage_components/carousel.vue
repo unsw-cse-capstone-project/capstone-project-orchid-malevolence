@@ -1,3 +1,4 @@
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="block">
         <el-carousel trigger="click" height="900px">

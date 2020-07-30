@@ -1,7 +1,9 @@
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="goal mid" id="app_goal">
         <h3 class="title">{{ goal_title }}</h3>
 
+		<!-- if not set goal yet -->
         <div v-if="this.goalStatus===0">
             <div class="text_part">
                 <p class="sub-title">Set a monthly goal</p>
@@ -17,21 +19,29 @@
                 <el-button type="warning" plain @click="setGoal()" class="set-goal">Set Goal</el-button>
             </div>
         </div>
-
+	
+		<!-- if set goal -->
         <div v-else>
-            <div class="text_part">
+			<!-- if read book less than monthly goal -->
+            <div class="text_part" v-if="Number(bookData[0].totalBook - bookData[0].read) > 0">
                 <p>{{ bookData[0].read }} books complete</p>
                 <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books in the schedule</p>
             </div>
 
-            <el-progress :text-inside="true"
+			<!-- if read book larger than monthly goal -->
+			<div class="text_part" v-else>
+				<p style="color: firebrick">Congratulate! You have complete your monthly goal.</p>
+			</div>
+			
+			<!-- show goal progress by a progress bar -->
+            <el-progress :text-inside="true" :show-text="false"
                          :stroke-width="26"
                          :percentage="bookData[0].read/bookData[0].totalBook * 100"
                          class="process-bar">
             </el-progress>
 
-            <!-- TODO: 弹窗，reset goal -->
-            <el-button type="text" @click="open">Click to reset goal</el-button>
+            <!-- Click to reset goal -->
+            <el-button type="text" @click="open" style="color: lightskyblue">Click to reset goal</el-button>
         </div>
     </div>
 </template>
@@ -39,10 +49,10 @@
 <script>
     import {getCurGoal, postCurGoal} from "../../network/requests";
 
+    /* get date */
     let now = new Date()
     let nowMonth = now.getMonth() + 1
     let nowYear = now.getFullYear()
-    let curMonth = {year:nowYear, month:nowMonth}
 
     export default {
         name: 'homepage-goal',
@@ -53,12 +63,13 @@
                 response: {},
                 target: null,
                 already_done: null,
-                goalStatus: 0,  // 0代表没设置，1代表设置了
+                goalStatus: 0,  // 0: false, 1: true
                 textGoal: '',
             }
         },
 
         methods: {
+			/* enforce user input format, number in range of [0, 1000) */
             open() {
                 this.$prompt('Set a new goal', 'hint', {
                     confirmButtonText: 'Confirm',
@@ -80,47 +91,38 @@
                 });
             },
 
+			/* get current user's monthly goal, if not yet set, change goalStatus to 0, else to 1 */
             getGoal() {
-                getCurGoal(curMonth).then(res=>{
+				let params = {year:nowYear,month:nowMonth}
+                getCurGoal(params).then(res=>{
                     console.log("get: ",res)
-                    this.goalStatus = 1
-
-                    if(res.status === 400) {
+                    if(res.already_done === 0 & res.target === 0) {
                         this.goalStatus = 0
-                        // console.log("need set goal: " + this.goalStatus)
-                    }
+                    } else {
+						this.goalStatus = 1
+					}
 
                     this.bookData[0].read = res.already_done
                     this.bookData[0].totalBook = res.target
-                    // console.log("no need to set goal: " + this.goalStatus)
-                    // console.log("read: " + res.already_done)
-                    // console.log("totalBook: " + res.target)
                 }).catch(error => {
                     console.log(error)
                 });
             },
 
+			/* if no input, pop error window, end function */
             setGoal(value = this.textGoal) {
-                if(value === '') {
-                    this.$message.error('Please input something.')
+				if(value === '') {
+                    this.$message.error('Please input a goal number.')
                     return
                 }
 
+                // if have input, send new data to server
                 let data = {month_goal:{month:nowMonth,year:nowYear ,target:value}}
                 postCurGoal(data).then(res=>{
-                    // console.log("setgoal result: " + res.already_done)
-                    // this.bookData[0].read = res.already_done
                     this.goalStatus = 1
-                    // this.bookData[0].totalBook = res.target
-                    // if(mode===2) {
-                    //     // this.textGoal = ''
-                    //     // this.$message.success("Reset successfully!")
-                    // }
-                    // console.log(this.totalBook, this.read, this.goalStatus)
                     this.$forceUpdate()
                     this.$set(this.bookData[0], "read", res.already_done)
                     this.$set(this.bookData[0], "totalBook", value)
-                    // console.log(this.bookData[0].totalBook, this.bookData[0].read, this.goalStatus)
                 }).catch(error => {
                     console.log(error)
                 });
@@ -128,7 +130,6 @@
         },
 
         created() {
-            // console.log("curMonth:" + curMonth.month)
             this.getGoal()
         },
     }
@@ -142,7 +143,7 @@
         border-style: solid;
         border-radius: 2px;
         border-color: bisque;
-        background-color: darkgrey;
+        background-color: ivory;
         padding-top: 30px;
     }
 

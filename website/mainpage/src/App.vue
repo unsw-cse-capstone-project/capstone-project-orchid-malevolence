@@ -1,17 +1,12 @@
 <template>
     <div id="app">
-
         <router-view v-if="isRouterAlive"/>
     </div>
 </template>
 
 <script>
-    // import HelloWorld from './components/HelloWorld.vue'
     export default {
 
-
-
-// 第二步: 映射组件标签
         components:{
 
         },
@@ -37,9 +32,6 @@
     }
 </script>
 
-<!-- 引入stylus -->
+<!-- The introduction of stylus -->
 <style lang="stylus" rel="stylesheet/stylus">
 </style>
-
-
-<!-- TODO: strict login after registered -->

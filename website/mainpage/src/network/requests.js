@@ -1,5 +1,5 @@
 import {request} from './baseline_configuration'
-
+// specific request to back-end after login
 export function getSingleBookmultdata (query) {
 	return request({
 		url: '/api/bookdetail/',
@@ -21,7 +21,19 @@ export function addCollection (query) {
 		method: 'post',
 		data: query
 	})
+}
 
+export function getAccount() {
+	return request( {
+		url: '/api/account/',
+	})
+}
+
+export function getRecommend(query) {
+	return request( {
+		url: '/api/recommend/',
+		params: query
+	})
 }
 
 export function getperinfodata () {

@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+// baseline_configuration for login request to back-end
 export function request (config) {
 	//create instance of axios
 	const instance = axios.create({
@@ -31,7 +31,7 @@ export function request (config) {
 
 }
 
-
+// baseline_configuration for without login request to back-end
 export function requestWithoutLogin (config) {
 	//create instance of axios
 	const instance = axios.create({

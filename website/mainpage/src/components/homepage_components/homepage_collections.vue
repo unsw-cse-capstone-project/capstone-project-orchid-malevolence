@@ -1,3 +1,4 @@
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="collection">
         <div class="collection-head">
@@ -14,11 +15,12 @@
 
         <!-- get collections base on selection -->
         <div class="collection-body">
-            <!-- 分割线，显示当前collection名字 -->
+            <!-- divider, show collection's name -->
             <el-divider content-position="center">{{value}}</el-divider>
 
-            <!-- collection主体，显示 图 & 书名 -->
+            <!-- main part of collection: with image, title, rating, brief description and jump button -->
             <div class="wrap">
+				<!-- show top-10 recent books -->
                 <div class="content" v-for="item in books" :key="item.imageLink">
                     <el-popover
                             placement="right"
@@ -35,17 +37,13 @@
                             </el-rate>
                             {{item.description}}
                         </div>
-<!--                        <el-button slot="reference">hover 激活</el-button>-->
                         <img :src="item.imageLink" class="img" alt slot="reference"/>
                     </el-popover>
-<!--                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />-->
-<!--                    <a>{{item.title}}</a>-->
+					<!-- click to jump -->
                     <el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
                 </div>
             </div>
-
-            <!-- TODO: 更多书籍button，跳转到 my profile -->
-        </div>
+		</div>
     </div>
 </template>
 
@@ -58,29 +56,13 @@
                 books: [],       // current collection's books
                 options: [],     // collections' content
                 value: '',       // collection name
-                // cur_key: 0,      // collection id
                 collections: [], // result from api package
                 item: '', // one book param
                 visible: false,
-
-                // TODO: connect with backend, get all book images in this collections
-                img_list: [
-                    {
-                        imageLink: require("../../img/test book image/harry.jpg"),
-                        title: 'Harry Porter',
-                        url: ''  // TODO: fill the url
-                    },
-                ],
             }
         },
 
         methods: {
-            // sortBook() {
-            //     this.books.sort(function(a, b) {
-            //         return Date.parse(b.time) - Date.parse(a.time);
-            //     })
-            // },
-
             // check which collection is now selecting
             currentSel(selVal) {
                 this.value = selVal;
@@ -128,13 +110,13 @@
                     book["categories"] = obj.books[i].categories
                     book["join_date"] = obj.books[i].join_date
                     book["description"] = obj.books[i].description
+                    if(book["description"].length > 200) {
+                      book["description"] = book["description"].slice(0, 200) + "..."
+                    }
                     book["avg_rating"] = parseInt(obj.books[i].avg_rating)
                     this.books.push(book)
                 }
-                // this.sortBook()
-                // console.log(this.books.length, typeof this.books)
                 this.books = this.books.slice(0, 10)
-                // console.log(this.books.length)
             },
 
             jump_one_book(value) {
@@ -177,12 +159,12 @@
 <style lang="less" scoped>
     .collection {
         background-color: aliceblue;
-        border-left-style: solid;
+        //border-left-style: solid;
         border-radius: 2px;
         border-color: bisque;
         margin: 0 auto;
         width: 100%;
-        height: 1310px;
+        height: 100%;
     }
 
     .collection-head {

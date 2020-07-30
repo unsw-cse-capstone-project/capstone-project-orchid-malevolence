@@ -1,5 +1,4 @@
 <style lang="less" scoped>
-
 	.body {
 		width: 70%;
 		margin: auto;
@@ -9,16 +8,14 @@
 		height: 30px;
 		margin: 10px 0 20px 0;
 	}
+	
 	.choose{
 		width: 22%;
 		margin-top: 30px;
 		margin-left: 80%;
 		display: inline-block;
-
-
-
-
 	}
+	
 	.book_item {
 		display: inline-block;
 		margin: 20px 20px 20px 5px
@@ -30,32 +27,26 @@
 		height: 180px;
 
 	}
+	
 	.text-block {
 		display: inline-block;
 		vertical-align: top;
-
 		width: 65%;
 		word-break: break-all
 	}
+	
 	.user_result{
 		margin-top: 20px;
-
 	}
+	
 	.user_box{
-		/*display: inline-block;*/
 		position: absolute;
 		margin-top: 40px;
 		margin-left: 48%;
-
-
-
 	}
-
-
 </style>
 
 <template>
-
 	<div class="box">
 		<div>
 			<Header></Header>
@@ -72,7 +63,6 @@
 
 				<el-select  @change="current_value(value)" class="choose" v-model="value" placeholder=" Choose a collection">
 					<el-option
-
 									v-for="item in options"
 									:key="item.value"
 									:label="item.label"
@@ -83,7 +73,6 @@
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
 					<div class="item_box" v-for="book in book_array" v-bind:key="book.ISBN">
-
 						<div class="book_item img-box">
 							<img :src="book.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(book)">
 						</div>
@@ -107,17 +96,8 @@
 
 				</div>
 			</div>
-
-
-
-
-
 		</div>
-
-
 	</div>
-
-
 </template>
 
 <script>
@@ -125,12 +105,9 @@ import book_list from '../components/search_result_components/book_list'
 import {getSearchResult1, filtersearchbook1,getSearchUserResult1} from '../network/requestsWithoutLogin'
 import Header from '../components/homepage_components/header'
 
-
 export default {
 	name: 'search_result',
-
 	data () {
-
 		return {
 			token_log: localStorage.getItem('token'),
 			search_type: 'Title',
@@ -148,6 +125,7 @@ export default {
 
 		}
 	},
+	
 	components: {
 		// search_model,
 		book_list,
@@ -158,7 +136,6 @@ export default {
 
 		//divided the books into pages, every page contains 10 books
 		slite_pages(value) {
-			// console.log(value)
 			let len = value.length
 			for (let j = 0; j < len; j++) {
 				value[j].avg_rating = parseFloat(value[j].avg_rating)
@@ -175,7 +152,6 @@ export default {
 			if (result.length) {
 				list.push({total_book: value.length, page: i, book_li: value.slice(start, (i + 1) * 10)})
 			}
-			// console.log(list)
 			return list
 		},
 		// search based on user get the result
@@ -189,38 +165,29 @@ export default {
 				this.options=[]
 				this.books=[]
 
-				// console.log(res[0].collections[0].name)
 
 				this.value = res[0].collections[0].name
 				for (let i in res){
-					// console.log(res[i].collections)
 
 					let one_collection=res[i].collections
 					for (let j in one_collection){
-						this.options.push({keys:j,name:one_collection[j].name})
-						// console.log(one_collection[j])
-						this.books.push({name:one_collection[j].name,value:one_collection[j].books})
+						this.options.push({keys:j,name:one_collection[j].name}) //get all collections' name
+						this.books.push({name:one_collection[j].name,value:one_collection[j].books}) //get all books based on collection name
 
 					}
 				}
 
-
-				//
-				// console.log(this.options)
-				// console.log(this.books)
-				// console.log(this.value)
 				//show books in current collection
 				let temp=this.books.find(item =>item.name===this.value)
 				this.book_array=temp.value
 				for(let i in this.book_array){
 					this.book_array[i].avg_rating=parseFloat(this.book_array[i].avg_rating)
 				}
-				// console.log(this.book_array)
 			}).catch(res=>{
 
 				console.log(res)})
 		},
-		//when value in selection has changed
+		//when selection options has changed
 		current_value(value){
 			this.value=value
 			let temp=this.books.find(item =>item.name===this.value)
@@ -228,12 +195,7 @@ export default {
 			for(let i in this.book_array){
 				this.book_array[i].avg_rating=parseFloat(this.book_array[i].avg_rating)
 			}
-
-			// console.log(this.book_array)
-
 		},
-
-
 
 		//search result based on title/author/user
 		getResult: function (val) {
@@ -276,16 +238,10 @@ export default {
 							let temp = this.key_word
 							this.key_word = this.search_type + temp + '. There is no related book'
 						} else {
-							// console.log(res)
 							//if get the response, the show the result
-
-
-							//get the resut
 							this.result_list = this.slite_pages(res)
 							this.isShow = true
 						}
-						// console.log(this.result_list)
-						// console.log('from router')
 					}).catch(err => {
 
 						console.log(err)
@@ -300,8 +256,6 @@ export default {
 					this.post_value = {search_type: this.search_type, key_word: this.key_word}
 					this.getUserResult(this.post_value)
 					this.isShowUser=true
-
-
 				}
 				else{
 					this.isShowUser=false
@@ -325,8 +279,6 @@ export default {
 							this.result_list = this.slite_pages(res)
 							this.isShow = true
 						}
-						// console.log(this.result_list)
-						// console.log('from router')
 					}).catch(err => {
 
 						console.log(err)
@@ -336,13 +288,11 @@ export default {
 
 			}
 		},
-		jump_one_book (value) {
-			// console.log(value)
+		jump_one_book (value) {  //jump to book detail page
 			this.$router.push({
 				name: 'one_book',
 
 				query: {
-					// item:value
 					book_id: value.id,
 					authors: value.authors,
 					title: value.title,
@@ -358,7 +308,7 @@ export default {
 
 
 	},
-	//listen to the route, and to check whether it changed
+	//listen to the route, if changed reload the page
 	watch: {
 		'$route' () {
 			this.getResult(this.$route.query)

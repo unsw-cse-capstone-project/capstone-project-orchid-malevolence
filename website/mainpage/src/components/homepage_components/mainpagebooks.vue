@@ -1,6 +1,6 @@
-<!-- TODO: Books位置调整 -->
+<!-- Written by Yangyu GAO -->
 <template>
-    <div>
+    <div id="app1">
         <el-divider content-position="center" class="divider">Everyday Recommendation</el-divider>
         <el-row :gutter="30" type="flex" justify="center">
             <el-col :span="4" v-for="item in books" :key="item.imageLink">
@@ -72,6 +72,10 @@
               let len = res.data.length
               for(let i = 0; i < len; i++) {
                   res.data[i].avg_rating = parseInt(res.data[i].avg_rating)
+                  let des = res.data[i].description
+                  if(des.length > 200) {
+                      res.data[i].description = res.data[i].description.slice(0, 200) + "..."
+                  }
                   this.books.push(res.data[i])
               }
           }).catch(error => {
@@ -105,7 +109,7 @@
     }
 
     .image {
-        margin-top: 13.5px;
+        /*margin-top: 13.5px;*/
         width: 175px;
         height: 265px;
     }

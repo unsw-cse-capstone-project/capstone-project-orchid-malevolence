@@ -1,17 +1,21 @@
-<!-- TODO: Recommendation entrance -->
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="rec">
         <div class="rec-body">
             <strong>New Book Recommendations</strong>
-
-            <!-- TODO: add onclick function -->
-            <el-button type="primary" plain class="rec-button">Recommendation</el-button>
+            <el-button type="primary" plain class="rec-button" @click="jump_rec">Recommendation</el-button>
         </div>
     </div>
 </template>
 
 <script>
-
+	export default {
+		methods: {
+			jump_rec() {
+				this.$router.push('/recommendation')
+			}
+		}
+	}
 </script>
 
 <style lang="less" scoped>
@@ -20,11 +24,14 @@
     }
 
     .rec-body {
+		border-color: bisque;
+		background-color: ivory;
         margin: auto;
+		border-style: solid;
         height: 250px;
         width: 270px;
         border-radius: 2px;
-        background: aqua;
+        //background: aqua;
         padding-top: 50px;
     }
 
