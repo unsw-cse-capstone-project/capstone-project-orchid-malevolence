@@ -2,69 +2,61 @@
 	.body{
 		width: 80%;
 		margin: auto;
-
 	}
+	
 	.choose_collection{
 		margin-top: 50px;
 		width: 15%;
-
 		vertical-align: top;
 		display: inline-block;
-
 	}
+	
 	.collection_book{
 		width: 70%;
 		height: 90%;
 		margin-left: 5%;
-
-
-
 		vertical-align: top;
 		display: inline-block;
-
-
-
 	}
 	.book_item{
 		display: inline-block;
 		margin: 20px 20px 20px 5px;
-
-
-
 	}
+	
 	.img-box{
 		width: 18%;
 		height: 180px;
-
 	}
+	
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-
 		width: 52%;
 		word-break: break-all;
 	}
+	
 	.search_model{
 		width: 22%;
 		margin: 20px 25%;
-
-
 	}
+	
 	.collections{
 		margin-top: 10px;
-
 	}
+	
 	.size{
 		font-size: 15px;
 	}
+	
 	p{
 		line-height: 1;
 	}
+	
 	.operate{
 		display: inline-block;
 		vertical-align: top;
-
 	}
+	
 	.right_border{
 		border-right: 1px solid gray;
 	}
@@ -75,12 +67,12 @@
 		<div>
 			<Header></Header>
 		</div>
-<!--		three part in this page
+			<!-- three part in this page
 				1. u can search a book inside your collection
 				2. show all books from your all collections
 				3. display all books in one collection and u can remove that book in this collection-->
 		<div class="search_model">
-<!--			search a book inside your collection-->
+			<!-- search a book inside your collection-->
 			<el-input v-model="input" placeholder="Search a book inside your collections">
 				<el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_this_book"></el-button>
 			</el-input>
@@ -88,7 +80,7 @@
 		</div>
 
 		<div class="body">
-<!--			choose one collection and display books in a collection-->
+			<!-- choose one collection and display books in a collection-->
 			<div class="choose_collection">
 				<el-button style="width: 100%" @click="isShow=true;show2=false;show=false;reload_page()" size="small">All books</el-button>
 				<p style="margin-top:20px; border-bottom: 1px solid gray"></p>
@@ -105,7 +97,7 @@
 			</div>
 
 			<div class="collection_book" >
-<!--				show all books from  your all  collections-->
+				<!-- show all books from  your all  collections-->
 				<div v-show="isShow" >
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
@@ -138,7 +130,7 @@
 				</div>
 
 
-				<!--			show all books when search in your collections-->
+				<!-- show all books when search in your collections-->
 				<div v-show="show">
 					<el-divider content-position="center" class="divider">search result in your collections</el-divider>
 					<div   v-for="(item,index) in search_book" :key="index">
@@ -167,8 +159,8 @@
 				</div>
 
 
-						<!-- show current collection name-->
-<!--						show book info: img, author, title, rating .....-->
+				<!-- show current collection name-->
+				<!-- show book info: img, author, title, rating .....-->
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
@@ -206,15 +198,10 @@
 							>
 								<el-button slot="reference">Remove this book</el-button>
 							</el-popconfirm>
-
-
 						</div>
-
 					</div>
 				</div>
-
 				</div>
-
 			</div>
 	</div>
 </template>
@@ -235,7 +222,6 @@ export default {
 			isShow:true,
 			search_book:[],
 			show:false,
-
 			show2:false,  // one book info
 			books2: [],       // current collection's books
 			options: [],     // collections' content
@@ -247,12 +233,6 @@ export default {
 				collection_id: '',
 				book_id:''
 			},
-
-
-			// TODO: connect with backend, get all book images in this collections
-
-
-
 		}
 	},
 	components: {
