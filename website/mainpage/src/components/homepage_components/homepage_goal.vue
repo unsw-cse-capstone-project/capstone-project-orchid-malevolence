@@ -1,7 +1,9 @@
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="goal mid" id="app_goal">
         <h3 class="title">{{ goal_title }}</h3>
 
+		<!-- if not set goal yet -->
         <div v-if="this.goalStatus===0">
             <div class="text_part">
                 <p class="sub-title">Set a monthly goal</p>
@@ -17,17 +19,21 @@
                 <el-button type="warning" plain @click="setGoal()" class="set-goal">Set Goal</el-button>
             </div>
         </div>
-
+	
+		<!-- if set goal -->
         <div v-else>
+			<!-- if read book less than monthly goal -->
             <div class="text_part" v-if="Number(bookData[0].totalBook - bookData[0].read) > 0">
                 <p>{{ bookData[0].read }} books complete</p>
                 <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books in the schedule</p>
             </div>
 
+			<!-- if read book larger than monthly goal -->
 			<div class="text_part" v-else>
 				<p style="color: firebrick">Congratulate! You have complete your monthly goal.</p>
 			</div>
-
+			
+			<!-- show goal progress by a progress bar -->
             <el-progress :text-inside="true" :show-text="false"
                          :stroke-width="26"
                          :percentage="bookData[0].read/bookData[0].totalBook * 100"
@@ -43,6 +49,7 @@
 <script>
     import {getCurGoal, postCurGoal} from "../../network/requests";
 
+    /* get date */
     let now = new Date()
     let nowMonth = now.getMonth() + 1
     let nowYear = now.getFullYear()
@@ -56,14 +63,14 @@
                 response: {},
                 target: null,
                 already_done: null,
-                goalStatus: 0,  // 0代表没设置，1代表设置了
+                goalStatus: 0,  // 0: false, 1: true
                 textGoal: '',
             }
         },
 
         methods: {
+			/* enforce user input format, number in range of [0, 1000) */
             open() {
-				// enforce user input format, number in range of [0, 1000)
                 this.$prompt('Set a new goal', 'hint', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
@@ -83,9 +90,9 @@
                     });
                 });
             },
-	
-			//get current user's monthly goal, if not yet set, change goalStatus to 0, else to 1
-	        getGoal() {
+
+			/* get current user's monthly goal, if not yet set, change goalStatus to 0, else to 1 */
+            getGoal() {
 				let params = {year:nowYear,month:nowMonth}
                 getCurGoal(params).then(res=>{
                     console.log("get: ",res)
@@ -102,8 +109,9 @@
                 });
             },
 
+			/* if no input, pop error window, end function */
             setGoal(value = this.textGoal) {
-				if(value === '') {					// if no input, pop error window, end function
+				if(value === '') {
                     this.$message.error('Please input a goal number.')
                     return
                 }

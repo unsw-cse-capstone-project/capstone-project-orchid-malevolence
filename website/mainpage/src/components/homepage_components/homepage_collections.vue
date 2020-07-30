@@ -1,3 +1,4 @@
+<!-- Written by Yangyu GAO -->
 <template>
     <div class="collection">
         <div class="collection-head">
