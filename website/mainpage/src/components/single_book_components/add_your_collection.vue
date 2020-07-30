@@ -125,7 +125,7 @@ export default {
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
-			for (let i = 0; i < this.options.length; i++) {
+			for (let i = 0; i < this.options.length; i++) { //check the added name whether exist the collection list, if exist === false then add the name
 				if (value.name === this.options[i].name) {
 					exist = true
 				}
@@ -159,6 +159,7 @@ export default {
 				});
 
 			}
+			// if already exist in collections ,send message
 			else {
 				this.$message({
 					message: 'collection name already exist',
