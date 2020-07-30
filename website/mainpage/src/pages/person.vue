@@ -470,10 +470,11 @@ export default {
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		background: url(../assets/person2.png) no-repeat fixed;
+		//background: url(../assets/person2.png) no-repeat fixed;
+		background-color: aliceblue;
 		background-size: cover;
 		background-origin: border-box;
-		opacity:0.75;
+		//opacity:0.75;
 		overflow: scroll;
 	}
 	// The outermost tab
