@@ -4,7 +4,7 @@
         <el-menu-item index="1" @click="jump_homepage">
             Home
         </el-menu-item>
-        <el-menu-item index="1" @click="jump_my_books_page" v-if="token_log">
+        <el-menu-item index="6" @click="jump_my_books_page" v-if="token_log">
             My books
         </el-menu-item>
 
@@ -14,7 +14,8 @@
                 <el-option label="Author" value="Authors" ></el-option>
                 <el-option label="User" value="user"></el-option>
             </el-select>
-            <el-select      :disabled="isShow()" class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
+
+			<el-select      :disabled="isShow()" class="select_box1" v-model="score" slot="prepend" placeholder="average score range">
                 <el-option label="all books" value="0" ></el-option>
 
                 <el-option label="4-5" value="4" ></el-option>
@@ -23,23 +24,19 @@
                 <el-option label="2-5" value="2" ></el-option>
                 <el-option label="1-5" value="1" ></el-option>
 
-
-                <!--                    <el-option label="My Book" value="3"></el-option>-->
             </el-select>
-            <el-input placeholder="input contents" v-model="input3" class="input-with-select">
 
+			<el-input placeholder="input contents" v-model="input3" class="input-with-select"></el-input>
 
-            </el-input>
             <el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_search_result"></el-button>
-
         </div>
 
-        <!--    注册跳转    -->
+        <!--  Click to regist  -->
         <el-menu-item index="2" style="float:right" @click="jump_reg" v-if="token_log == null">
             Register
         </el-menu-item>
 
-        <!--    登录跳转    -->
+        <!-- Click to login -->
         <el-menu-item index="3" style="float:right" @click="jump_login" v-if="token_log == null">
             Login
         </el-menu-item>
@@ -96,16 +93,19 @@ export default {
         jump_login() {
             this.$router.push('login')
         },
+
         jump_Profile() {
             this.$router.push('person')
         },
+
         jump_logout() {
+			this.$forceUpdate()
             window.localStorage.clear()
             this.$router.go(0)
         },
+
         jump_my_books_page() {
             this.$router.push('my_bookspage')
-
         },
 
 

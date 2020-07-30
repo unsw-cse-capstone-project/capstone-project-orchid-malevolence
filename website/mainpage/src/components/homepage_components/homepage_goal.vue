@@ -19,19 +19,23 @@
         </div>
 
         <div v-else>
-            <div class="text_part">
+            <div class="text_part" v-if="Number(bookData[0].totalBook - bookData[0].read) > 0">
                 <p>{{ bookData[0].read }} books complete</p>
                 <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books in the schedule</p>
             </div>
 
-            <el-progress :text-inside="true"
+			<div class="text_part" v-else>
+				<p style="color: firebrick">Congratulate! You have complete your monthly goal.</p>
+			</div>
+
+            <el-progress :text-inside="true" :show-text="false"
                          :stroke-width="26"
                          :percentage="bookData[0].read/bookData[0].totalBook * 100"
                          class="process-bar">
             </el-progress>
 
-            <!-- TODO: 弹窗，reset goal -->
-            <el-button type="text" @click="open">Click to reset goal</el-button>
+            <!-- Click to reset goal -->
+            <el-button type="text" @click="open" style="color: lightskyblue">Click to reset goal</el-button>
         </div>
     </div>
 </template>
@@ -59,6 +63,7 @@
 
         methods: {
             open() {
+				// enforce user input format, number in range of [0, 1000)
                 this.$prompt('Set a new goal', 'hint', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
@@ -78,14 +83,14 @@
                     });
                 });
             },
-
-            getGoal() {
+	
+			//get current user's monthly goal, if not yet set, change goalStatus to 0, else to 1
+	        getGoal() {
 				let params = {year:nowYear,month:nowMonth}
                 getCurGoal(params).then(res=>{
                     console.log("get: ",res)
                     if(res.already_done === 0 & res.target === 0) {
                         this.goalStatus = 0
-                        // console.log("need set goal: " + this.goalStatus)
                     } else {
 						this.goalStatus = 1
 					}
@@ -98,18 +103,18 @@
             },
 
             setGoal(value = this.textGoal) {
-                if(value === '') {
+				if(value === '') {					// if no input, pop error window, end function
                     this.$message.error('Please input a goal number.')
                     return
                 }
 
+                // if have input, send new data to server
                 let data = {month_goal:{month:nowMonth,year:nowYear ,target:value}}
                 postCurGoal(data).then(res=>{
                     this.goalStatus = 1
                     this.$forceUpdate()
                     this.$set(this.bookData[0], "read", res.already_done)
                     this.$set(this.bookData[0], "totalBook", value)
-                    // console.log(this.bookData[0].totalBook, this.bookData[0].read, this.goalStatus)
                 }).catch(error => {
                     console.log(error)
                 });
@@ -117,7 +122,6 @@
         },
 
         created() {
-            // console.log("curMonth:" + curMonth.month)
             this.getGoal()
         },
     }
@@ -131,7 +135,7 @@
         border-style: solid;
         border-radius: 2px;
         border-color: bisque;
-        background-color: darkgrey;
+        background-color: ivory;
         padding-top: 30px;
     }
 

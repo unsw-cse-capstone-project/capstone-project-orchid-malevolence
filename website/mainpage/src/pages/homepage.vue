@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+		<!-- header -->
         <div class="header">
             <Header></Header>
         </div>
@@ -7,9 +8,9 @@
         <div class="content">
             <!-- before login -->
             <Carousel v-show="token_log == null"></Carousel>
-            <!--                    <Search></Search>-->
             <CardBook v-show="token_log == null"></CardBook>
 
+			<!-- after login -->
             <div class="after-login">
                 <el-row>
                     <el-col :span="6" v-show="token_log != null">
@@ -30,6 +31,7 @@
             </div>
         </div>
 
+		<!-- Footer -->
         <div class="footer">
             <Footer></Footer>
         </div>
@@ -51,9 +53,11 @@
               token_log: localStorage.getItem('token')
           }
         },
+
         components:{
             Header, Carousel, CardBook, Footer, Goal, Rec, BriefCollections,
         },
+
         name: 'App'
     }
 </script>
@@ -61,6 +65,7 @@
 <style scoped>
     html, body {
         height: 100%;
+		width: 100%;
         margin: 0;
         padding: 0;
     }
@@ -71,37 +76,27 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        min-height: 100%;
-        /*position: relative;*/
-        display: flex;
+        position: absolute;
+		width: 100%;
         flex-direction: column;
         background: aliceblue;
     }
 
     .header {
-        /*box-sizing: border-box;*/
         height: 60px;
     }
 
     .content {
-        /*padding-bottom: 40px;*/
-        /*padding-top: 40px;*/
         flex: 1;
-        height: 100%;
+		min-height: calc(100vh - 60px);
     }
 
     .footer {
         width: 100%;
         height: 60px;
-        bottom: 0;
-        box-sizing: border-box;
     }
 
-    .bg-purple {
-        background: aliceblue;
-    }
     .grid-content {
-        /*border-radius: 4px;*/
         min-height: 36px;
         height: 100%;
     }

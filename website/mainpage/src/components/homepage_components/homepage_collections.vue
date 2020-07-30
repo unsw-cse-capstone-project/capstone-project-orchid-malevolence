@@ -35,17 +35,12 @@
                             </el-rate>
                             {{item.description}}
                         </div>
-<!--                        <el-button slot="reference">hover 激活</el-button>-->
                         <img :src="item.imageLink" class="img" alt slot="reference"/>
                     </el-popover>
-<!--                    <img :src="item.imageLink" class="img" alt @click="jump_one_book(item)" />-->
-<!--                    <a>{{item.title}}</a>-->
                     <el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
                 </div>
             </div>
-
-            <!-- TODO: 更多书籍button，跳转到 my profile -->
-        </div>
+		</div>
     </div>
 </template>
 
@@ -58,19 +53,9 @@
                 books: [],       // current collection's books
                 options: [],     // collections' content
                 value: '',       // collection name
-                // cur_key: 0,      // collection id
                 collections: [], // result from api package
                 item: '', // one book param
                 visible: false,
-
-                // TODO: connect with backend, get all book images in this collections
-                img_list: [
-                    {
-                        imageLink: require("../../img/test book image/harry.jpg"),
-                        title: 'Harry Porter',
-                        url: ''  // TODO: fill the url
-                    },
-                ],
             }
         },
 
@@ -128,10 +113,7 @@
                     book["avg_rating"] = parseInt(obj.books[i].avg_rating)
                     this.books.push(book)
                 }
-                // this.sortBook()
-                // console.log(this.books.length, typeof this.books)
                 this.books = this.books.slice(0, 10)
-                // console.log(this.books.length)
             },
 
             jump_one_book(value) {
@@ -174,12 +156,12 @@
 <style lang="less" scoped>
     .collection {
         background-color: aliceblue;
-        border-left-style: solid;
+        //border-left-style: solid;
         border-radius: 2px;
         border-color: bisque;
         margin: 0 auto;
         width: 100%;
-        height: 1310px;
+        height: 100%;
     }
 
     .collection-head {

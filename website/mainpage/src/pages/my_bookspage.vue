@@ -33,7 +33,7 @@
 
 	}
 	.img-box{
-		width: 20%;
+		//width: 20%;
 		height: 180px;
 
 	}

@@ -1,6 +1,6 @@
 <!-- TODO: Books位置调整 -->
 <template>
-    <div>
+    <div id="app1">
         <el-divider content-position="center" class="divider">Everyday Recommendation</el-divider>
         <el-row :gutter="30" type="flex" justify="center">
             <el-col :span="4" v-for="item in books" :key="item.imageLink">

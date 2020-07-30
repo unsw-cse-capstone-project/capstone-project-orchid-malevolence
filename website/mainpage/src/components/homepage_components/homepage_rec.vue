@@ -26,11 +26,14 @@
     }
 
     .rec-body {
+		border-color: bisque;
+		background-color: ivory;
         margin: auto;
+		border-style: solid;
         height: 250px;
         width: 270px;
         border-radius: 2px;
-        background: aqua;
+        //background: aqua;
         padding-top: 50px;
     }
 
