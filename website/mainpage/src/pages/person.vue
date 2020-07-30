@@ -100,7 +100,17 @@
 					
 					<!-- delete collection -->
 					<div class="collection_dele">
-						<el-button type="text" @click="delete_button" class="collection_dele_button">delete collection</el-button>
+						<el-popover
+							placement="top"
+							width="200"
+							v-model="visible">
+						<p>Are you sure to delete the collection?</p>
+						<div style="text-align: right; margin: 0">
+							<el-button size="mini" type="text" @click="visible = false">cancel</el-button>
+							<el-button type="text" size="mini" @click="delete_button">confirm</el-button>
+						</div>
+							<el-button type="text" slot="reference" class="collection_dele_button">delete collection</el-button>
+						</el-popover>
 					</div>
 				</div>
 				<!-- Line showing the current collection name -->
@@ -189,7 +199,7 @@ export default {
 			delecollectionform: {
 				collection_id: ''
 			},
-			
+			visible: false,
 			//Collection body, display diagram & Title
 			books: [],       // current collection's books
 			options: [],     // collections' content
