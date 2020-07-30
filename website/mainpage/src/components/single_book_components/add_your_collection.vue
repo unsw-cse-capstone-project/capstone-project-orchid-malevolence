@@ -151,14 +151,22 @@ export default {
 
 					}
 
+
 				})
+				this.$message({
+					message: 'Congratulations, You have added a shelf',
+					type: 'success'
+				});
 
 			}
+			else {
+				this.$message({
+					message: 'collection name already exist',
+					type: 'success'
+				});
+			}
 
-			this.$message({
-				message: 'Congratulations, You have added a shelf',
-				type: 'success'
-			});
+
 			// get all collection names in your account
 			getCollectionmultdata().then(res=>{
 				this.options=[]
