@@ -70,8 +70,8 @@
 					<div class="collection_add">
 						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
 						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
-							<el-form ref="collectionformRef" :model="collectionform">
-								<el-form-item label="collection name" :label-width="formLabelWidth">
+							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
+								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
 									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -128,6 +128,9 @@
 			
 			<!-- goal detail in current year -->
 			<el-tab-pane label="history goal">
+				<div class="history_goal_title">
+					Goal details in this year
+				</div>
 				<div class="history_goal">
 					<div>
 						<el-timeline :reverse="reverse">
@@ -162,6 +165,14 @@ export default {
 	},
 	inject: ["reload"],
 	data() {
+		// Verify name
+		let name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
 		return {
 			//Set the location of the label
 			tabPosition: 'left',
@@ -186,7 +197,14 @@ export default {
 				name: ''
 			},
 			dialogFormVisible: false,
-			formLabelWidth: '120px',
+			formLabelWidth: '150px',
+			collectionformRules: {
+				// collection name verification
+				name: [
+					{ required: true, validator: name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// reset collection name 
 			recollectionForm: {
@@ -509,6 +527,11 @@ export default {
 		height: 300px;
 	}
 	// goal detail in current year
+	.history_goal_title{
+		margin-left: 30px;
+		font: 34px bolder;
+		margin-top: 20px;
+	}
 	.history_goal{
 		margin-top: 20px;
 	}
