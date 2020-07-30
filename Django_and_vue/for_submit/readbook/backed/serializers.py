@@ -5,7 +5,7 @@ from account.models import *
 from .models import *
 from django.utils import timezone
 
-# 注册的序列化
+# 
 class RegSerializer(serializers.ModelSerializer):
     checkpass = serializers.CharField(max_length=256, write_only=True)
     # gender = serializers.CharField(max_length=256)
@@ -20,13 +20,13 @@ class RegSerializer(serializers.ModelSerializer):
         del attrs['checkpass']
         return attrs
 
-# 这个用于login验证
+# 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ('username', 'password')
 
-# book全部信息
+# book
 class BookSerializer(serializers.ModelSerializer):
     # collections = CollectionSerializer(many=True,require = False)
     # avg_rating = serializers.SerializerMethodField('avg_rating_edit',required=False)
@@ -37,7 +37,7 @@ class BookSerializer(serializers.ModelSerializer):
     
 
 
-# collection全部信息，包括有哪些书
+# collection
 class CollectionSerializer(serializers.ModelSerializer):
     # books = BookSerializer(many=True, required = False, read_only=True)
     books=serializers.SerializerMethodField('book_list_edit',required=False)
@@ -62,7 +62,7 @@ class CollectionSerializer(serializers.ModelSerializer):
          
 
 
-# 这个用于访问用户账户页面以及添加图书等
+# it will retturn acccount detail and account collections and which books in collecitons
 class AccountDetailSerializer(serializers.ModelSerializer):
     collections = CollectionSerializer(many=True, required = False)
     class Meta:
@@ -77,42 +77,41 @@ class OtherAccountDetailSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['username','collections']
 
-# 评论的信息，
+# review
 class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
         fields = ['id','content','user','book','like_count_num','create_time']
 
-# 点赞信息，
+# like
 class LikeItSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LikeIt
         fields = ('__all__')
 
-# 打分信息
+# rating
 class RatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
         fields = ('__all__')
 
-# 每月目标
-
+# monthgoal
 class MonthlyGoalBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = ('__all__')
 
-# 每月记录
+# monthrecord
 class MonthRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MonthRecord
         fields = ('__all__')
 
-# 统计记录
+# 
 class HistorySerializer(serializers.ModelSerializer):
     this_year_rec=serializers.SerializerMethodField('this_year_rec_edit',required=False)
     other_year_rec=serializers.SerializerMethodField('other_year_rec_edit',required=False)
@@ -165,16 +164,9 @@ class HistorySerializer(serializers.ModelSerializer):
         return {"other_year":records}
 
 
-
-        
-        
-
-
-# 用户对哪些评论点赞了
-
-
+# if user request
 # serializer = DeviceByTypeSerializer(device_type, many=True, context={'request': request})
-# 书籍详细信息（包含打分，评论，点赞，赞数，评论排序按时间来）
+# book info（rating，review，like，like_nums，review order by create time）
 class BookDetailPageSerializer(serializers.ModelSerializer):
     user_rating_review=serializers.SerializerMethodField('user_rating_review_edit',required=False)
     rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
@@ -202,7 +194,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
             return {"user_rating":user_rating, "user_review":user_review}
         else:
             return {"user_rating":user_rating, "user_review":user_review}
-
+    # rating detail count
     def rating_analyse_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
@@ -218,8 +210,6 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         three_percentage=0
         two_percentage=0
         one_percentage=0
-        # 这一步获取了均分和评分人数
-        # 以及各分段人数
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 if(i.rating==5):
@@ -243,8 +233,6 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
     def review_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
-        # 检索所有非当前用户的评论
-        # exclude(user=user_id)
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
             rev_ser = ReviewSerializer(instance=review_set,many=True)
@@ -260,20 +248,20 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
                     res.append(i)
             like_status_set = LikeIt.objects.filter(user=user_id,belongto_book=book_id)
             like_status_list=[]
-            # 获取所有用户点赞的评论的id
+
             if(like_status_set.exists()):
                 for i in like_status_set:
                     if(i['status']==1):
                         like_status_list.append(i['review'])
             
-            # 要让每条评论的obj包含当前用户是否处于点赞状态
-            # 循环遍历列表，还会有个点过赞的列表
+            #
+            # check the like status
             for i in res:
                 i['like_status']=0
                 if(i['id'] in like_status_list):
                     i['like_status']=1
             
-            # 按照时间顺序排列，最新的在上面
+            # order by create time
             res.sort(key=lambda i:i['create_time'],reverse=True)
 
             for i in res:
@@ -285,7 +273,8 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         else:
             return [] 
 
-#
+# if guest request
+# compared with user, guest cannot get the like status
 class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
     rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
     review_book =serializers.SerializerMethodField('review_edit',required=False)
@@ -307,8 +296,6 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         three_percentage=0
         two_percentage=0
         one_percentage=0
-        # 这一步获取了均分和评分人数
-        # 以及各分段人数
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 if(i.rating==5):
@@ -344,12 +331,10 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
                     i['rating']=0
                     res.append(i)
             
-            # 要让每条评论的obj包含当前用户是否处于点赞状态
-            # 循环遍历列表，还会有个点过赞的列表
             for i in res:
                 i['like_status']=0
             
-            # 按照时间顺序排列，最新的在上面
+
             res.sort(key=lambda i:i['create_time'],reverse=True)
 
             for i in res:
@@ -362,7 +347,7 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
             return [] 
 
 
-#
+# transform for recommend
 class RecUserBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating

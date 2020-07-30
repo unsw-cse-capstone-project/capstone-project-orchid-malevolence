@@ -65,6 +65,7 @@
 							</el-option>
 						</el-select>
 					</div>
+
 					<!-- create an new collection -->
 					<div class="collection_add">
 						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
@@ -99,18 +100,34 @@
 					
 					<!-- delete collection -->
 					<div class="collection_dele">
-						<el-button type="text" @click="open" class="collection_dele_button">delete collection</el-button>
+						<el-button type="text" @click="delete_button" class="collection_dele_button">delete collection</el-button>
 					</div>
-					</div>
-					<!-- 分割线，显示当前collection名字 -->
-					<el-divider content-position="center" class="divider">{{value}}</el-divider>
+				</div>
+				<!-- Line showing the current collection name -->
+				<el-divider content-position="center" class="divider">{{value}}</el-divider>
 					
-					<!-- collection主体，显示 图 & 书名 -->
+					<!-- Collection body, display diagram & Title -->
 					<div class="coll_wrap">
 						<div class="coll_content" v-for="item in books" :key="item.imageLink">
 							<img :src="item.imageLink" class="img" alt/>
 							<a href="item.url">{{item.title}}</a>
 						</div>
+					</div>
+				</div>
+			</el-tab-pane>
+			
+			<!-- goal detail in current year -->
+			<el-tab-pane label="history goal">
+				<div class="history_goal">
+					<div>
+						<el-timeline :reverse="reverse">
+							<el-timeline-item
+								v-for="(activity, index) in activities"
+								:key="index"
+								>
+								{{activity.content}}
+							</el-timeline-item>
+						</el-timeline>
 					</div>
 				</div>
 			</el-tab-pane>
@@ -127,7 +144,8 @@ import {getCollectionmultdata} from '../network/requests'
 import {postnewcollection} from '../network/requests'
 import {changecollectioname} from '../network/requests'
 import {delecollection} from '../network/requests'
-// import axios from 'axios'
+import {getCurGoal} from "../network/requests";
+
 export default {
 	components:{
 		Header
@@ -135,11 +153,13 @@ export default {
 	inject: ["reload"],
 	data() {
 		return {
-			// personal information
+			//Set the location of the label
 			tabPosition: 'left',
+			
+			// personal information
 			pickerOptions0: {
 				disabledDate(time) {
-					return time.getTime() > Date.now() - 8.64e6//如果没有后面的-8.64e6就是不可以选择今天的
+					return time.getTime() > Date.now() - 8.64e6 // birthday : only choose dates before today
 				}
 			},
 			PerinfoForm: {
@@ -150,39 +170,64 @@ export default {
 				date_of_birth:'',
 				gender: ''
 			},
-			recollectionForm: {
-				new_name: '',
-				collection_id: ''
-			},
-			//collection_id: '',
-			// collection
-			books: [],       // current collection's books
-			options: [],     // collections' content
-			value: '',       // collection name
-			collections: [], // result from api package\
+			
 			// create an new collection
 			collectionform: {
 				name: ''
 			},
+			dialogFormVisible: false,
+			formLabelWidth: '120px',
 			
+			// reset collection name 
+			recollectionForm: {
+				new_name: '',
+				collection_id: ''
+			},
+			dialogFormVisible2: false,
+			
+			// delete collection
 			delecollectionform: {
 				collection_id: ''
 			},
-			dialogFormVisible: false,
-			dialogFormVisible2: false,
 			
-			formLabelWidth: '120px',
-			// TODO: connect with backend, get all book images in this collections
+			//Collection body, display diagram & Title
+			books: [],       // current collection's books
+			options: [],     // collections' content
+			value: '',       // collection name
+			collections: [], // result from api package
 			img_list: [
 				{
 					imageLink: require("../img/test book image/harry.jpg"),
 					title: 'Harry Porter',
-					url: ''  // TODO: fill the url
+					url: ''  
 				},
-			]
+			],
+			
+			// goal detail in current year
+			addv: '',
+			activities: [
+				{ contents: 'need to add', key: 1 },
+				{ contents: 'need to add', key: 2 },
+				{ contents: 'need to add', key: 3 },
+				{ contents: 'need to add', key: 4 },
+				{ contents: 'need to add', key: 5 },
+				{ contents: 'need to add', key: 6 },
+				{ contents: 'need to add', key: 7 },
+				{ contents: 'need to add', key: 8 },
+				{ contents: 'need to add', key: 9 },
+				{ contents: 'need to add', key: 10 },
+				{ contents: 'need to add', key: 11 },
+				{ contents: 'need to add', key: 12 }
+			],
+			reverse: false, // Specifies the node sort direction. Reverse order
+			goal: {
+				target : '',
+				already_done: ''
+			}
 		}
 	},
 	methods: {
+		// Personal information
 		confirm() {
 			this.$refs.PerinfoFormRef.validate(async valid => {
 				if (!valid) { return }
@@ -193,6 +238,50 @@ export default {
 					console.log(err)
 					this.$message.error('Modify failure');
 				})
+			})
+		},
+		
+		// create an new collection
+		submit() {
+			this.$refs.collectionformRef.validate(async valid => {
+				if (!valid) { return }
+				postnewcollection(this.collectionform).then(res=>{
+					console.log(res);
+					this.$message.success('Successfully created');
+					this.dialogFormVisible = false;
+					this.reload();
+				}).catch(err=>{
+					console.log(err);
+					this.$message.error('Create failure');
+				})
+			})
+		},
+		
+		// reset collection name
+		change() {
+			this.$refs.recollectionFormRef.validate(async valid => {
+				if (!valid) { return }
+				changecollectioname(this.recollectionForm).then(res=>{
+					console.log(res);
+					this.$message.success('Modify successfully');
+					this.dialogFormVisible2 = false;
+					this.reload();
+				}).catch(err=>{
+					console.log(err)
+					this.$message.error('Modify failure');
+				})
+			})
+		},
+		
+		//delete collection
+		delete_button() {
+			delecollection(this.delecollectionform).then(res=>{
+				console.log(res);
+				this.$message.success('delete successfully');
+				this.reload();
+			}).catch(err=>{
+				console.log(err)
+				this.$message.error('delete failure');
 			})
 		},
 		
@@ -228,7 +317,6 @@ export default {
 			obj = this.collections.find((item) => {
 				return item.id === col_id;
 			});
-		
 			let book
 			let len = obj.books.length
 			for(let i = 0; i < len; i++) {
@@ -240,50 +328,47 @@ export default {
 				this.books.push(book)
 			}
 		},
-		// create an new collection
-		submit() {
-			this.$refs.collectionformRef.validate(async valid => {
-				if (!valid) { return }
-				postnewcollection(this.collectionform).then(res=>{
-					console.log(res);
-					this.$message.success('Successfully created');
-					this.dialogFormVisible = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err);
-					this.$message.error('Create failure');
-				})
-			})
-		},
-		// reset collection name
-		change() {
-			this.$refs.recollectionFormRef.validate(async valid => {
-				if (!valid) { return }
-				changecollectioname(this.recollectionForm).then(res=>{
-					console.log(res);
-					this.$message.success('Modify successfully');
-					this.dialogFormVisible2 = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err)
-					this.$message.error('Modify failure');
-				})
+		
+		// sorted by month
+		sortBykey(ary, key) {
+			return ary.sort(function (a, b) {
+				let x = a[key]
+				let y = b[key]
+				console.log(key)
+				return ((x < y) ? -1 : (x > y) ? 1 : 0)
 			})
 		},
 		
-		//delete collection
-		open() {
-			delecollection(this.delecollectionform).then(res=>{
-				console.log(res);
-				this.$message.success('delete successfully');
-				this.reload();
-			}).catch(err=>{
-				console.log(err)
-				this.$message.error('delete failure');
-			})
+		// get current goal
+		getGoal() {
+			//this.activities = []
+			let now = new Date()
+			//let nowMonth = now.getMonth() + 1
+			let nowYear = now.getFullYear()
+			for(let month = 1; month < 13; month++){
+				let curMonth = {year:nowYear, month:month}
+				getCurGoal(curMonth).then(res=>{
+					console.log(res.target)
+					if(typeof(res.target) != undefined){
+						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.target+' books. you have already read '+res.already_done, key:month}
+						//this.shiyan2.push(this.addv)
+						this.activities[month-1] = this.addv
+						//console.log(this.activities)
+					}
+					if(typeof(res.data.target) != undefined){
+						this.addv = {content:'In month:'+month+'. Your goal is to read '+res.data.target+' books. you have already read '+res.data.already_done, key:month}
+						//this.shiyan2.push(this.addv)
+						this.activities[month-1] = this.addv
+					}
+					
+				}).catch(error => {
+					console.log(error)
+				});
+			}
 		}
 	},
 	mounted: function () {
+		// Get personal information in advance
 		this.$refs.PerinfoFormRef.validate(async valid => {
 			if (!valid) { return }
 			getperinfodata().then(result =>{
@@ -298,6 +383,8 @@ export default {
 				console.log(error);
 			})
 		}),
+		
+		// Get collection in advance
 		getCollectionmultdata().then(res=>{
 			//console.log(res)
 			this.collections = res
@@ -311,18 +398,32 @@ export default {
 		.catch(error => {
 			console.log(error)
 		})
+	},
+	
+	// get current goal
+	created() {
+		//this.value3 = nowYear
+		// console.log("curMonth:" + curMonth.month)
+		this.getGoal()
+		console.log(this.activities[0])
+		this.sortBykey(this.activities, 'age')
+		//this.shiyan2.sort('key')
+		console.log(this.activities)
 	}
 }
 </script>
 
 <style lang="less" scoped>
+	// total
 	body, html{
 		height: 100%;
 		overflow: hidden;
 	}
+	// header: The navigation bar
 	.header{
 		margin-bottom: 10px;
 	}
+	// The outermost div
 	.wrap{
 		position: absolute;
 		height: 100%;
@@ -330,17 +431,15 @@ export default {
 		background: url(../assets/person2.png) no-repeat fixed;
 		background-size: cover;
 		background-origin: border-box;
-		opacity:0.85;
+		opacity:0.75;
 		overflow: scroll;
 	}
+	// The outermost tab
 	.content{
-		// height: 10000px;
 		width: 90%;		
-		//border: 1px solid;
 		margin: auto;
-		// overflow: scroll;
 	}
-	// 个人资料
+	// Personal information
 	.person_information{
 		margin-left: 60px;
 	}
@@ -354,10 +453,10 @@ export default {
 	.Per_info{
 		margin-top: 50px;
 	}
-
 	// collection	
+	// Remove the floating
 	.clearfix{
-		*zoom: 1;    /* 开启haslayout *只有在ie6,7下认识这个hack*/
+		*zoom: 1;    
 	}
 	.clearfix:after{
 		content: "";
@@ -368,9 +467,25 @@ export default {
 		margin-top: 10px;
 		float: left;
 	}
+	// create an new collection
+	.collection_add_button{
+		margin-top: 10px;
+		margin-left: 80px;
+	}
 	.collection_add{
 		margin-top: 10px;
 	}
+	// reset collection name
+	.collection_change_button{
+		margin-top: 10px;
+		margin-left: 90px;
+	}
+	// delete collection
+	.collection_dele_button{
+		margin-top: 10px;
+		margin-left: 100px;
+	}
+	// Collection body, display diagram & Title
 	.coll_wrap {
 		margin-top: 30px;
 		display: grid;
@@ -378,24 +493,14 @@ export default {
 	}
 	.coll_content {
 		margin: 10px 30px 30px 15px;
-	}
-	
+		}
 	.img {
 		width: 180px;
 		height: 300px;
 	}
-	// add
-	.collection_add_button{
-		margin-top: 10px;
-		margin-left: 80px;
+	// goal detail in current year
+	.history_goal{
+		margin-top: 20px;
 	}
-	// reset
-	.collection_change_button{
-		margin-top: 10px;
-		margin-left: 90px;
-	}
-	.collection_dele_button{
-		margin-top: 10px;
-		margin-left: 100px;
-	}
+
 </style>

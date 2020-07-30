@@ -45,7 +45,10 @@ const router = new Router({
 		{
 			path: '/person',
 			name: 'person',
-			component: person
+			component: person,
+			meta:{
+				title:'personal information'
+			}
 		},
         {
             path: '/one_book',
@@ -53,7 +56,7 @@ const router = new Router({
             component: one_book,
             meta:{
                 title:'one_book'
-            }
+		}
         },
         {
             path: '/search_result',

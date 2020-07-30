@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+# collection model
 class Collection(models.Model):
     name = models.CharField(max_length=128)
     user = models.ForeignKey(Account,related_name='collections',on_delete=models.CASCADE)
@@ -18,6 +19,7 @@ class Collection(models.Model):
     def __str__(self):
         return '%d: %s' % (self.id,self.name)
 
+# book model: include book's attributes
 class Book(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     title = models.CharField(max_length=128)
@@ -36,7 +38,7 @@ class Book(models.Model):
     def __str__(self):
       return '%s: %s' % (self.id,self.title)
 
-# intermediate model
+# intermediate model, if a book add to collection, this relation will be create
 class Collection_Book(models.Model):
     collection = models.ForeignKey(Collection,on_delete=models.CASCADE)
     book = models.ForeignKey(Book,on_delete=models.CASCADE)
@@ -47,7 +49,10 @@ class Collection_Book(models.Model):
     class Meta:
         unique_together=('collection','book')
         ordering=['create_time']
+
 # set a goal
+# goal model
+# unique limited: user in this year , for each month only have on goal
 class Goal(models.Model):
     user = models.ForeignKey(Account,related_name='user_goal',on_delete=models.CASCADE)
     year = models.PositiveIntegerField(default=0)
@@ -58,6 +63,7 @@ class Goal(models.Model):
         unique_together=('user','year','month')
 
 # month record
+# record how many book add to collection each month
 class MonthRecord(models.Model):
     user = models.ForeignKey(Account,related_name='user_record',on_delete=models.CASCADE)
     year = models.PositiveIntegerField(default=0)
@@ -68,7 +74,7 @@ class MonthRecord(models.Model):
         unique_together=('user','year','month')
 
 
-# 
+# review model
 class Review(models.Model):
     content = models.TextField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -80,6 +86,7 @@ class Review(models.Model):
         unique_together=('user','book')
 
 
+# like model
 class LikeIt(models.Model):
     review = models.ForeignKey(Review,related_name='likeit_review',on_delete=models.CASCADE)
     user = models.ForeignKey(Account,related_name='likeit_user',on_delete=models.CASCADE)
@@ -90,6 +97,7 @@ class LikeIt(models.Model):
     class Meta:
         unique_together=('user','review')
 
+# rating model
 class Rating(models.Model):
     user = models.ForeignKey(Account,related_name='rating_user',on_delete=models.CASCADE)
     book = models.ForeignKey(Book,related_name='rating_book',on_delete=models.CASCADE)
@@ -102,12 +110,10 @@ class Rating(models.Model):
 
 
 # token_create_when_account_create
+# it looks like a trigger, if one user create, it will combine a unique token!
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
-#goal_accomplish_add_when_book_added_to_collection
 
-
-#goal_accomplish_less_when_book_delete_from_collection
