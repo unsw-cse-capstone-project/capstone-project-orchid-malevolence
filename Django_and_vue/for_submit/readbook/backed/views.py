@@ -46,7 +46,6 @@ class CustomAuthToken(ObtainAuthToken):
             user = serializer.validated_data['user']
             # 登录触发推荐
             temp=user_recommend(int(user.id))
-            print(temp)
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
         print(serializer.errors)
@@ -552,16 +551,16 @@ class MainPageRecAPIView(APIView):
 # user_base recommend
 
 class UserBaseRecAPIView(APIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
         info = request.query_params
         user_id=info['id']
         if(con.exists('rec_'+str(user_id))):
             print('get from cache')
             temp=con.lrange('rec_'+str(user_id),0,-1)
-            rec=[]
+            res=[]
             for i in temp:
-                rec.append(json.loads(i))
+                res.append(json.loads(i))
             res_rating=[]
             res_add=[]
             temp_1=con.lrange('highrating',0,-1)
@@ -570,6 +569,7 @@ class UserBaseRecAPIView(APIView):
             temp_2=con.lrange('highadded',0,-1)
             for i in temp_2:
                 res_add.append(json.loads(i))
+            # data={"rec":rec,"rating_rec":temp_1,"added_rec":temp_2}
             return Response(data={"rec":rec,"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
         else:
             res_rating=[]
