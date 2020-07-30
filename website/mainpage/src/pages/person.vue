@@ -86,8 +86,8 @@
 					<div class="collection_reset">
 						<el-button type="text" @click="dialogFormVisible2 = true" class="collection_change_button">reset collection</el-button>
 						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
-							<el-form ref="recollectionFormRef" :model="recollectionForm">
-								<el-form-item label="reset collection" :label-width="formLabelWidth">
+							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
+								<el-form-item label="reset collection" :label-width="formLabelWidth" prop="new_name">
 									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -173,6 +173,13 @@ export default {
 				callback()
 			}
 		}
+		let new_name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
 		return {
 			//Set the location of the label
 			tabPosition: 'left',
@@ -212,6 +219,13 @@ export default {
 				collection_id: ''
 			},
 			dialogFormVisible2: false,
+			recollectionformRules: {
+				// collection name verification
+				new_name: [
+					{ required: true, validator: new_name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// delete collection
 			delecollectionform: {
