@@ -70,8 +70,8 @@
 					<div class="collection_add">
 						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
 						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
-							<el-form ref="collectionformRef" :model="collectionform">
-								<el-form-item label="collection name" :label-width="formLabelWidth">
+							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
+								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
 									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -86,8 +86,8 @@
 					<div class="collection_reset">
 						<el-button type="text" @click="dialogFormVisible2 = true" class="collection_change_button">reset collection</el-button>
 						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
-							<el-form ref="recollectionFormRef" :model="recollectionForm">
-								<el-form-item label="reset collection" :label-width="formLabelWidth">
+							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
+								<el-form-item label="reset collection" :label-width="formLabelWidth" prop="new_name">
 									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -100,7 +100,17 @@
 					
 					<!-- delete collection -->
 					<div class="collection_dele">
-						<el-button type="text" @click="delete_button" class="collection_dele_button">delete collection</el-button>
+						<el-popover
+							placement="top"
+							width="200"
+							v-model="visible">
+						<p>Are you sure to delete the collection?</p>
+						<div style="text-align: right; margin: 0">
+							<el-button size="mini" type="text" @click="visible = false">cancel</el-button>
+							<el-button type="text" size="mini" @click="delete_button">confirm</el-button>
+						</div>
+							<el-button type="text" slot="reference" class="collection_dele_button">delete collection</el-button>
+						</el-popover>
 					</div>
 				</div>
 				<!-- Line showing the current collection name -->
@@ -118,6 +128,9 @@
 			
 			<!-- goal detail in current year -->
 			<el-tab-pane label="history goal">
+				<div class="history_goal_title">
+					Goal details in this year
+				</div>
 				<div class="history_goal">
 					<div>
 						<el-timeline :reverse="reverse">
@@ -152,6 +165,21 @@ export default {
 	},
 	inject: ["reload"],
 	data() {
+		// Verify name
+		let name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
+		let new_name = (rule, value, callback) => {
+			if (value === '') {
+				callback(new Error('Please enter your collection name.'))
+			}else {
+				callback()
+			}
+		}
 		return {
 			//Set the location of the label
 			tabPosition: 'left',
@@ -176,7 +204,14 @@ export default {
 				name: ''
 			},
 			dialogFormVisible: false,
-			formLabelWidth: '120px',
+			formLabelWidth: '150px',
+			collectionformRules: {
+				// collection name verification
+				name: [
+					{ required: true, validator: name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// reset collection name 
 			recollectionForm: {
@@ -184,12 +219,19 @@ export default {
 				collection_id: ''
 			},
 			dialogFormVisible2: false,
+			recollectionformRules: {
+				// collection name verification
+				new_name: [
+					{ required: true, validator: new_name, trigger: 'blur' },
+					{ min: 1, max: 200, message: 'Please enter the collection name', trigger: 'blur' }
+				]
+			},
 			
 			// delete collection
 			delecollectionform: {
 				collection_id: ''
 			},
-			
+			visible: false,
 			//Collection body, display diagram & Title
 			books: [],       // current collection's books
 			options: [],     // collections' content
@@ -428,10 +470,11 @@ export default {
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		background: url(../assets/person2.png) no-repeat fixed;
+		//background: url(../assets/person2.png) no-repeat fixed;
+		background-color: aliceblue;
 		background-size: cover;
 		background-origin: border-box;
-		opacity:0.75;
+		//opacity:0.75;
 		overflow: scroll;
 	}
 	// The outermost tab
@@ -499,6 +542,11 @@ export default {
 		height: 300px;
 	}
 	// goal detail in current year
+	.history_goal_title{
+		margin-left: 30px;
+		font: 34px bolder;
+		margin-top: 20px;
+	}
 	.history_goal{
 		margin-top: 20px;
 	}

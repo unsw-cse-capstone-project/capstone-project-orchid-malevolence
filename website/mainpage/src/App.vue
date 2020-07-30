@@ -9,9 +9,7 @@
     // import HelloWorld from './components/HelloWorld.vue'
     export default {
 
-
-
-// 第二步: 映射组件标签
+// Step 2: Map component labels
         components:{
 
         },
@@ -37,7 +35,7 @@
     }
 </script>
 
-<!-- 引入stylus -->
+<!-- The introduction of stylus -->
 <style lang="stylus" rel="stylesheet/stylus">
 </style>
 
