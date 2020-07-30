@@ -292,7 +292,7 @@ export default {
 			for (let i = 0; i < this.options2.length; i++) {
 				if (value.name === this.options2[i].name) {
 					exist = true
-					this.$message.success(' Name repetition ');
+					this.$message.error(' Name repetition ');
 				}
 			}
 			if (exist === false) {
