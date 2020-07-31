@@ -51,7 +51,7 @@
 
 <script>
 import Header from '../components/homepage_components/header'
-import {getSingleBookmultdata} from '../network/requests'
+// import {getSingleBookmultdata} from '../network/requests'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
 
 import read_score from '../components/single_book_components/read_score'
@@ -103,7 +103,7 @@ export default {
 			let post_value={book_id:this.book.book_id}
 
 			if(this.token_log){
-				getSingleBookmultdata(post_value).then(result => {
+				getSingleBookmultdata1(post_value).then(result => {
 					this.result=result
 					this.result.rate=result.rating_analyse.rating
 					this.result.TotalCount=result.rating_analyse.how_many_user_scored
