@@ -6,11 +6,6 @@ import router from './router'
 import {Message} from 'element-ui'
 import axios from 'axios' ;
 import Vuex from 'vuex' //Introduce state management
-// import 'jquery'
-// import 'popper.js'
-// import 'bootstrap'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import 'bootstrap/dist/js/bootstrap.min.js'
 Vue.prototype.$axios= axios ;
 Vue.use(Vuex) ;
 Vue.prototype.$message = Message
