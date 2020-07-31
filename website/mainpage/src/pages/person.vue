@@ -60,6 +60,7 @@
 									v-for="item in options"
 									:key="item.label"
 									:value="item.value"
+									
 							>
 							</el-option>
 						</el-select>
@@ -118,25 +119,8 @@
 					<!-- Collection body, display diagram & Title -->
 					<div class="coll_wrap">
 						<div class="coll_content" v-for="item in books" :key="item.imageLink">
-<!--							<img :src="item.imageLink" class="img" alt/>-->
-							<el-popover
-									placement="right"
-									width="400"
-									trigger="hover">
-								<div>
-									<b>{{item.title}}</b>
-									<el-rate
-											v-model="item.avg_rating"
-											disabled
-											show-score
-											text-color="#ff9900"
-											score-template="{value}">
-									</el-rate>
-									{{item.description}}
-								</div>
-								<img :src="item.imageLink" class="img" alt slot="reference"/>
-							</el-popover>
-							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
+							<img :src="item.imageLink" class="img" alt/>
+							<a href="item.url">{{item.title}}</a>
 						</div>
 					</div>
 				</div>
@@ -300,26 +284,7 @@ export default {
 				})
 			})
 		},
-
-		jump_one_book(value) {
-			// console.log(value)
-			this.$router.push({
-				name: 'one_book',
-				query: {
-					// item:value
-					book_id: value.id,
-					authors: value.authors,
-					title: value.title,
-					ISBN: value.ISBN,
-					publisher: value.publisher,
-					imageLink: value.imageLink,
-					publisher_data:value.publish_date,
-					category:value.categories
-				}
-
-			})
-		},
-
+		
 		// create an new collection
 		submit() {
 			let value = {name: this.collectionform.name}
@@ -348,18 +313,28 @@ export default {
 
 		// reset collection name
 		change() {
-			this.$refs.recollectionFormRef.validate(async valid => {
-				if (!valid) { return }
-				changecollectioname(this.recollectionForm).then(res=>{
-					console.log(res);
-					this.$message.success('Modify successfully');
-					this.dialogFormVisible2 = false;
-					this.reload();
-				}).catch(err=>{
-					console.log(err)
-					this.$message.error('Modify failure');
+			let value = {new_name: this.recollectionForm.new_name}
+			let reexist = false
+			for (let i = 0; i < this.options2.length; i++) {
+				if (value.new_name === this.options2[i].name) {
+					reexist = true
+					this.$message.error(' Name repetition ');
+				}
+			}
+			if (reexist === false) {
+				this.$refs.recollectionFormRef.validate(async valid => {
+					if (!valid) { return }
+					changecollectioname(this.recollectionForm).then(res=>{
+						console.log(res);
+						this.$message.success('Modify successfully');
+						this.dialogFormVisible2 = false;
+						this.reload();
+					}).catch(err=>{
+						console.log(err)
+						this.$message.error('Modify failure');
+					})
 				})
-			})
+			}
 		},
 		
 		//delete collection
@@ -411,19 +386,9 @@ export default {
 			for(let i = 0; i < len; i++) {
 				book = {}
 				book["id"] = obj.books[i].id
-				book["authors"] = obj.books[i].authors
 				book["title"] = obj.books[i].title
 				book["imageLink"] = obj.books[i].imageLink
-				book["ISBN"] = obj.books[i].ISBN
-				book["publisher"] = obj.books[i].publisher
-				book["publish_date"] = obj.books[i].publish_date
-				book["categories"] = obj.books[i].categories
-				book["join_date"] = obj.books[i].join_date
-				book["description"] = obj.books[i].description
-				if(book["description"].length > 200) {
-					book["description"] = book["description"].slice(0, 200) + "..."
-				}
-				book["avg_rating"] = parseInt(obj.books[i].avg_rating)
+				book["url"] = ''   // TODO: 跳转url
 				this.books.push(book)
 			}
 		},
@@ -530,7 +495,6 @@ export default {
 	// total
 	body, html{
 		height: 100%;
-		width: 100%;
 		overflow: hidden;
 	}
 	// header: The navigation bar
@@ -548,18 +512,12 @@ export default {
 		background-origin: border-box;
 		//opacity:0.75;
 		overflow: scroll;
-		text-align: center;
 	}
 	// The outermost tab
 	.content{
 		width: 90%;		
 		margin: auto;
 	}
-
-	.el-button {
-		margin-top: 10px;
-	}
-
 	// Personal information
 	.person_information{
 		margin-left: 60px;

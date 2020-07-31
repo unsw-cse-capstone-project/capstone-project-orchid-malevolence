@@ -1,18 +1,4 @@
-<style lang="less" scoped>
 
-	.read_score {
-		position: absolute;
-		float: right;
-
-
-	}
-
-	span {
-		display: block;
-		font-size: 12px;
-		margin: 10px 0;
-	}
-</style>
 <template>
 	<div class="read_score">
 		<span style="font-size: 18px">Website average rating</span>
@@ -65,5 +51,19 @@ export default {
 
 
 </script>
+<style lang="less" scoped>
 
+	.read_score {
+		position: absolute;
+		float: right;
+
+
+	}
+
+	span {
+		display: block;
+		font-size: 12px;
+		margin: 10px 0;
+	}
+</style>
 

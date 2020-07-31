@@ -1,9 +1,4 @@
-<style lang="less" scoped>
-	.all_margin{
-		margin: 10px 10px;
-	}
 
-</style>
 <template>
 	<div class="add">
 		<div>
@@ -202,3 +197,9 @@ export default {
 }
 </script>
 
+<style lang="less" scoped>
+	.all_margin{
+		margin: 10px 10px;
+	}
+
+</style>
