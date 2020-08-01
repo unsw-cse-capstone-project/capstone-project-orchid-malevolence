@@ -361,7 +361,6 @@ export default {
 	}
 
 	.img-box{
-		width: 18%;
 		height: 180px;
 	}
 
