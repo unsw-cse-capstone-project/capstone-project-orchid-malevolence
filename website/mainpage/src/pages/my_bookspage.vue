@@ -206,16 +206,13 @@ export default {
 
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
-				// location.reload()
-
-
+				location.reload()
 		},
 
 		getAllBooks(val){
 			let len=val.length
 			let books_name=[]
 			for (let i=0;i<len;i++){
-				// console.log(val[i])
 				let new_len=val[i].books.length
 				let books=val[i].books
 
@@ -231,8 +228,6 @@ export default {
 					}
 				}
 			}
-			// console.log(books_name)
-			// console.log(this.all_books)
 		},
 		jump_this_book(){
 			this.search_book=[]
@@ -243,7 +238,6 @@ export default {
 
 			let len=this.all_books.length
 			for(let i=0;i<len;i++){
-				// console.log(this.all_books[i])
 				let title=this.all_books[i].title.toLowerCase()
 				let input=this.input.toLowerCase()
 					if ( title.indexOf(input)!==-1  ){
@@ -252,9 +246,6 @@ export default {
 				}
 
 			}
-
-
-
 		},
 		// get  books from current collection
 		currentSel(selVal) {
@@ -274,7 +265,7 @@ export default {
 			const len = res.length
 			let option
 			for(let i = 0; i < len; i++) {
-				// 提取collections' name
+				// get all collections' name
 				option = {}
 				option["key"] = res[i].id
 				option["value"] = res[i].name
@@ -310,7 +301,6 @@ export default {
 			}
 		},
 		reload_page(){
-			console.log('sss')
 			location.reload()
 
 		},

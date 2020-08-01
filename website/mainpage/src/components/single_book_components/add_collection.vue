@@ -45,8 +45,6 @@
 </template>
 
 <script>
-// import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
-
 import {Add2Collection, addCollection, getCollectionmultdata} from '../../network/requests'
 
 export default {
@@ -74,9 +72,6 @@ export default {
 	created () {
 		if(this.token_log){
 			getCollectionmultdata().then(res=>{
-				console.log(res)
-				console.log(this.book_name)
-
 				for (let i=0;i<res.length;i++){
 					let j=res[i].id
 					let k=res[i].name
@@ -84,13 +79,11 @@ export default {
 					let len=res[i].books.length
 					// check the book in collection or not
 					for(let j=0;j<len;j++){
-						console.log(books[j].id)
 						if (this.book_name===books[j].id){
 							this.flag=true
 							break
 						}
 					}
-					console.log(k)
 					//if that book already in collection u cannot choose it
 					if (this.flag===true){
 						this.options.push({id:j,name:k, disabled: true}) //get all name of collections
@@ -173,9 +166,7 @@ export default {
 
 		// add a book into the currently choosing collection
 		add_to_collection(value){
-			console.log(value)
 			let postvalue={collection_id:value,book_id:this.bookID}
-			console.log(postvalue)
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
 				this.dialogVisible=false

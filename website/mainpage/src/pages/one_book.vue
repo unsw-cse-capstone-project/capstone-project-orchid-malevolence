@@ -5,6 +5,7 @@
 		<Header></Header>
 
 		<div class="body">
+
 			<div class="title"><h3 style="word-break: break-all">{{book.title}}</h3></div>
 
 			<div class="img-box" >
@@ -24,15 +25,15 @@
 				<read_score :res="result"></read_score>
 			</div>
 			<div class="btn_add">
+				<!--component add to collection-->
 				<add_collection :bookID="result.book_id" :book_name="book.book_id" ></add_collection>
-<!--				<add_your_collection :bookID="result.book_id" ></add_your_collection>-->
 			</div>
 
 			<div class="rating">
+				<!--component rating and commit-->
 				<rating_commit :bookID="result.book_id" ></rating_commit>
-<!--				<rating :bookID="result.book_id"></rating>-->
 			</div>
-
+			<!--show all reviews-->
 			<h3 style="margin:10px 0">Reviews:</h3>
 			<div v-for="item in this.result.review_book" class="get_review_box" v-bind:key="item.id">
 				<span class="username">{{item.user}}</span>
@@ -53,12 +54,8 @@
 
 <script>
 import Header from '../components/homepage_components/header'
-// import {getSingleBookmultdata} from '../network/requests'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
-
 import read_score from '../components/single_book_components/read_score'
-// import Rating from '../components/single_book_components/rating'
-// import add_your_collection from '../components/single_book_components/add_your_collection'
 import add_collection from '../components/single_book_components/add_collection'
 import rating_commit from '../components/single_book_components/rating_commit'
 export default {
@@ -89,11 +86,8 @@ export default {
 	components: {
 		Header,
 		read_score,
-		// Rating,
-		// add_your_collection,
 		rating_commit,
 		add_collection,
-		// get_r  eviews
 	},
 
 	mounted () {
@@ -105,7 +99,6 @@ export default {
 		// get all info about this book
 		getData () {
 			this.book=this.$route.query
-			console.log(this.book)
 			let post_value={book_id:this.book.book_id}
 
 			if(this.token_log){
