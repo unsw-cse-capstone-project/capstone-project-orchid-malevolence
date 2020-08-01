@@ -1,23 +1,13 @@
-
 <template>
-	<div class="add">
-		<div>
+	<div>
+		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-edit">Add to collection</el-button>
+		<!--		pop up a dialog-->
+		<el-dialog
+						title="Add this book to your collection"
+						:visible.sync="dialogVisible"
+						width="30%">
 
-		</div>
-<!--		if u login u can add a book into your collection, otherwise not-->
-		<el-button @click="loginfirst()" type="primary" style="margin-left: 16px;">
-			Add to collection
-		</el-button>
-
-		<el-drawer
-						:wrapperClosable=this.wrapperClosable
-						title="I am title"
-
-						:visible.sync="drawer"
-						:with-header="false">
-			<h3 class="all_margin">Add to your collection</h3>
-
-			<span class="all_margin">Add to: </span>
+			<!--choose one of your collections-->
 			<el-select  class="all_margin" v-model="value"  placeholder="please choose one"  >
 				<el-option
 
@@ -29,46 +19,44 @@
 
 
 			</el-select>
-
-			<el-button  type="primary" @click="choose_collection(value)" >Confirm</el-button>
-
-
-			<p style="border-bottom: solid 1px gray;width: 93%; margin: 15px auto" ></p>
+			<!--	add a new collection Button-add -->
 			<div class="all_margin" >
-				<span>Add a Shelf:</span>
-				<el-button @click="isShow=!isShow" style="margin-left: 20px; font-size: 15px;" type="primary" icon="el-icon-circle-plus-outline"></el-button>
-
+				<span>want to add a new collection:</span>
+				<el-button @click="isShow=!isShow" style="margin-left: 20px; font-size: 10px;" type="primary" icon="el-icon-circle-plus-outline"></el-button>
 			</div>
+			<!--	add a new collection click button-add and show below -->
 			<div class="all_margin" v-show="isShow">
 				<span>Name:</span>
 				<el-input   style="width: 40%; margin: 0 15px"  v-model="input" placeholder="please add a shelf"></el-input>
-
 				<el-button type="primary" :plain="true" @click="add_new_shelf" >Add</el-button>
-
 
 			</div>
 
-
-
-
-		</el-drawer>
+			<!-- close the dialog-->
+			<span slot="footer">
+        <el-button @click="dialogVisible = false">cancel</el-button>
+				<!--	submit the action if click submit-->
+        <el-button type="primary" @click="add_to_collection(value)">submit</el-button>
+      </span>
+		</el-dialog>
 
 	</div>
-
 </template>
 
 <script>
-import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
+// import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
+
+import {Add2Collection, addCollection, getCollectionmultdata} from '../../network/requests'
+
 export default {
-	name: 'add_your_collection',
+	name: 'add_collection',
 	data () {
 		return {
 			token_log: localStorage.getItem('token'),
-
-			wrapperClosable:true,
-			drawer: false,
-			img:[],
+			dialogVisible:false,
 			isShow:false,
+
+			img:[],
 			input:'',
 			options:[],
 			value: '',
@@ -80,47 +68,28 @@ export default {
 	components:{
 
 	},
-
-
 	created () {
 		if(this.token_log){
 			getCollectionmultdata().then(res=>{
 				console.log(res)
-
 				for (let i=0;i<res.length;i++){
 					let j=res[i].id
 					let k=res[i].name
-					this.options.push({id:j,name:k})
+					this.options.push({id:j,name:k}) //get all name of collections
 				}
 			}).catch(res=>{
 				console.log(res)
 			})
 
 		}
-
-
-
 	},
-
-	methods: {
-		Close_drawer(){
-			this.drawer=false
-		},
-
-		loginfirst(){
-			if(this.token_log){
-				this.drawer = true;
-
-			}else{
-				this.$message({message: 'please login', showClose: true,})
-				return false
-			}
-		},
-		// add a new collection in your account
+	methods:{
+		//add a new collection
 		add_new_shelf () {
 			let value = {name: this.input}
 			let exist = false
-			for (let i = 0; i < this.options.length; i++) { //check the added name whether exist the collection list, if exist === false then add the name
+			for (let i = 0; i < this.options.length; i++) {
+				//check the added name whether exist the collection list, if exist === false then add the name
 				if (value.name === this.options[i].name) {
 					exist = true
 				}
@@ -131,6 +100,7 @@ export default {
 				}).catch(res => {
 					console.log(res)
 				})
+				// refresh the options
 				getCollectionmultdata().then(res => {
 					this.list=[]
 					for (let i=0;i<res.length;i++){
@@ -154,7 +124,7 @@ export default {
 				});
 
 			}
-			// if already exist in collections ,send message
+			// if collection name already exist in collections ,send message
 			else {
 				this.$message({
 					message: 'collection name already exist',
@@ -166,7 +136,6 @@ export default {
 			// get all collection names in your account
 			getCollectionmultdata().then(res=>{
 				this.options=[]
-
 				for (let i=0;i<res.length;i++){
 					let j=res[i].id
 					let k=res[i].name
@@ -175,32 +144,36 @@ export default {
 			}).catch(res=>{
 				console.log(res)
 			})
-
-
-
 		},
-		// add a book into the currently choosing collection
-		choose_collection(value){
-			console.log(value)
 
+		// add a book into the currently choosing collection
+		add_to_collection(value){
+			console.log(value)
 			let postvalue={collection_id:value,book_id:this.bookID}
+			console.log(postvalue)
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
 			}).catch(res=>{
 				console.log(res)
 			})
-			this.drawer=false
-
 		}
-	},
-
-
+	}
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 	.all_margin{
-		margin: 10px 10px;
+		/*margin: 10px 10px;*/
+		padding: 10px 10px;
 	}
+	/deep/ .el-dialog__body{
+		padding: 0 10px;
+		color: #606266;
+		font-size: 14px;
+		word-break: break-all;
+	}
+	/deep/ .el-dialog__footer{
+		margin-top: 40px;
 
+	}
 </style>

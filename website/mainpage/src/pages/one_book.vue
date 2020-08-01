@@ -24,11 +24,13 @@
 				<read_score :res="result"></read_score>
 			</div>
 			<div class="btn_add">
-				<add_your_collection :bookID="result.book_id" ></add_your_collection>
+				<add_collection :bookID="result.book_id" ></add_collection>
+<!--				<add_your_collection :bookID="result.book_id" ></add_your_collection>-->
 			</div>
 
 			<div class="rating">
-				<rating :bookID="result.book_id"></rating>
+				<rating_commit :bookID="result.book_id"></rating_commit>
+<!--				<rating :bookID="result.book_id"></rating>-->
 			</div>
 
 			<h3 style="margin:10px 0">Reviews:</h3>
@@ -51,13 +53,14 @@
 
 <script>
 import Header from '../components/homepage_components/header'
-import {getSingleBookmultdata} from '../network/requests'
+// import {getSingleBookmultdata} from '../network/requests'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
 
 import read_score from '../components/single_book_components/read_score'
-import Rating from '../components/single_book_components/rating'
-import add_your_collection from '../components/single_book_components/add_your_collection'
-
+// import Rating from '../components/single_book_components/rating'
+// import add_your_collection from '../components/single_book_components/add_your_collection'
+import add_collection from '../components/single_book_components/add_collection'
+import rating_commit from '../components/single_book_components/rating_commit'
 export default {
 	name: 'one_book',
 	data () {
@@ -86,9 +89,11 @@ export default {
 	components: {
 		Header,
 		read_score,
-		Rating,
-		add_your_collection,
-		// get_reviews
+		// Rating,
+		// add_your_collection,
+		rating_commit,
+		add_collection,
+		// get_r  eviews
 	},
 
 	mounted () {
@@ -103,7 +108,7 @@ export default {
 			let post_value={book_id:this.book.book_id}
 
 			if(this.token_log){
-				getSingleBookmultdata(post_value).then(result => {
+				getSingleBookmultdata1(post_value).then(result => {
 					this.result=result
 					this.result.rate=result.rating_analyse.rating
 					this.result.TotalCount=result.rating_analyse.how_many_user_scored
@@ -165,16 +170,18 @@ export default {
 
 	}
 	.rating{
-		margin: 20px;
+		margin: 15px 5px;
 		display: inline-block;
 		vertical-align: top;
+
 
 		/*font-size: 18px;*/
 	}
 	.btn_add{
-		width: 25%;
+		width: 20%;
 		display: inline-block;
-		/*vertical-align: top;*/
+		vertical-align: top;
+		margin-top: 120px;
 	}
 
 	.get_review_box{
