@@ -30,8 +30,8 @@ con.flushdb()
 operation()
 
 ##### signals
-goal_add=django.dispatch.Signal(providing_args=['user_id','year','month'])
-goal_del = django.dispatch.Signal(providing_args=['user_id','year','month'])
+# goal_add=django.dispatch.Signal(providing_args=['user_id','year','month'])
+# goal_del = django.dispatch.Signal(providing_args=['user_id','year','month'])
 
 
 ######################## main #######################
@@ -297,7 +297,7 @@ class AddBookToCollectionAPIView(APIView):
         book_collection_relation.save()
         book_obj.added_times+=1
         book_obj.save()
-        goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
+        # goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"add it success!"},status=HTTP_200_OK)
     
     # 初步测试无问题，找不到也会成功返回。 
@@ -310,7 +310,7 @@ class AddBookToCollectionAPIView(APIView):
         book_id = request.data["book_id"]
         collection_id = request.data["collection_id"]
         Collection_Book.objects.filter(collection=collection_id,book=book_id,belongto=user_obj.id).delete()
-        goal_del.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
+        # goal_del.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"delete it success"},status=HTTP_200_OK)
 
 
@@ -600,6 +600,7 @@ class HistoryAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
+        print("111111")
         data=Rating.objects.all()
         serializer = RecUserBookSerializer(instance=data,many=True)
         return Response(serializer.data)
@@ -608,28 +609,29 @@ class TestAPIView(APIView):
 
 #######
 #
-@receiver(goal_add,sender=AddBookToCollectionAPIView)
-def goal_add_callback(sender, **kwargs):
-    rec_set=MonthRecord.objects.filter(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month'])
-    if(rec_set.exists()):
-        rec_temp=goal_set[0] 
-        rec_temp.total_nums+=1
-        rec_temp.save()
-    else:
-        rec_obj={}
-        rec_obj['user']=kwargs['user_id']
-        rec_obj['year']=kwargs['year']
-        rec_obj['month']=kwargs['month']
-        rec_obj['total_nums']=1
-        serializer = MonthRecord(data=rec_obj)
-        if(serializer.is_valid()):
-            serializer.save()
+# @receiver(goal_add,sender=AddBookToCollectionAPIView)
+# def goal_add_callback(sender, **kwargs):
+#     rec_set=MonthRecord.objects.filter(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month'])
+#     if(rec_set.exists()):
+#         rec_temp=rec_set[0] 
+#         rec_temp.total_nums+=1
+#         rec_temp.save()
+#     else:
+#         rec_obj={}
+#         rec_obj['user']=kwargs['user_id']
+#         rec_obj['year']=kwargs['year']
+#         rec_obj['month']=kwargs['month']
+#         rec_obj['total_nums']=1
+#         serializer = MonthRecordSerializer(data=rec_obj)
+#         if(serializer.is_valid()):
+#             serializer.save()
 #
-@receiver(goal_del,sender=AddBookToCollectionAPIView)
-def goal_del_callback(sender, **kwargs):
-    rec_set=MonthRecord.objects.get(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month']) 
-    rec_temp.total_nums-=1
-    rec_temp.save()
+# @receiver(goal_del,sender=AddBookToCollectionAPIView)
+# def goal_del_callback(sender, **kwargs):
+#     rec_set=MonthRecord.objects.get(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month']) 
+#     rec_temp=rec_set[0]
+#     rec_temp.total_nums-=1
+#     rec_temp.save()
 
 
         
