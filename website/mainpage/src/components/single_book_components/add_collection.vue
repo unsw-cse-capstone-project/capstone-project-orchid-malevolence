@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-edit">Add to collection</el-button>
+		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-circle-plus-outline">Add to collection</el-button>
 		<!--		pop up a dialog-->
 		<el-dialog
 						title="Add this book to your collection"
@@ -14,7 +14,8 @@
 								v-for="item in options"
 								:key="item.id"
 								:label="item.name"
-								:value="item.id">
+								:value="item.id"
+								:disabled="item.disabled">
 				</el-option>
 
 
@@ -55,6 +56,7 @@ export default {
 			token_log: localStorage.getItem('token'),
 			dialogVisible:false,
 			isShow:false,
+			flag:false,
 
 			img:[],
 			input:'',
@@ -63,7 +65,8 @@ export default {
 		}
 	},
 	props:{
-		bookID: String
+		bookID: String,
+		book_name:String
 	},
 	components:{
 
@@ -72,10 +75,32 @@ export default {
 		if(this.token_log){
 			getCollectionmultdata().then(res=>{
 				console.log(res)
+				console.log(this.book_name)
+
 				for (let i=0;i<res.length;i++){
 					let j=res[i].id
 					let k=res[i].name
-					this.options.push({id:j,name:k}) //get all name of collections
+					let books=res[i].books
+					let len=res[i].books.length
+					// check the book in collection or not
+					for(let j=0;j<len;j++){
+						console.log(books[j].id)
+						if (this.book_name===books[j].id){
+							this.flag=true
+							break
+						}
+					}
+					console.log(k)
+					//if that book already in collection u cannot choose it
+					if (this.flag===true){
+						this.options.push({id:j,name:k, disabled: true}) //get all name of collections
+					}
+					//otherwise u can choose it
+					else{
+						this.options.push({id:j,name:k, disabled: false}) //get all name of collections
+					}
+					//reset the flag
+					this.flag=false
 				}
 			}).catch(res=>{
 				console.log(res)
@@ -153,6 +178,7 @@ export default {
 			console.log(postvalue)
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
+				this.dialogVisible=false
 			}).catch(res=>{
 				console.log(res)
 			})
@@ -163,7 +189,6 @@ export default {
 
 <style scoped>
 	.all_margin{
-		/*margin: 10px 10px;*/
 		padding: 10px 10px;
 	}
 	/deep/ .el-dialog__body{

@@ -108,7 +108,6 @@ export default {
         },
 
         jump_my_books_page() {
-			this.activeIndex2 = 6
             this.$router.push('my_bookspage')
         },
 		

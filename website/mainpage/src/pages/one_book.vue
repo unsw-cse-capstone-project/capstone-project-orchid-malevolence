@@ -24,12 +24,12 @@
 				<read_score :res="result"></read_score>
 			</div>
 			<div class="btn_add">
-				<add_collection :bookID="result.book_id" ></add_collection>
+				<add_collection :bookID="result.book_id" :book_name="book.book_id" ></add_collection>
 <!--				<add_your_collection :bookID="result.book_id" ></add_your_collection>-->
 			</div>
 
 			<div class="rating">
-				<rating_commit :bookID="result.book_id"></rating_commit>
+				<rating_commit :bookID="result.book_id" ></rating_commit>
 <!--				<rating :bookID="result.book_id"></rating>-->
 			</div>
 
@@ -105,6 +105,7 @@ export default {
 		// get all info about this book
 		getData () {
 			this.book=this.$route.query
+			console.log(this.book)
 			let post_value={book_id:this.book.book_id}
 
 			if(this.token_log){
