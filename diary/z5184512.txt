@@ -21,3 +21,6 @@ In this week, we have finished the retrospective A and talk it in lab. And I als
 
 Week8
 In this week, we have show the demo B to tutor. In this week I finsihed the the most part of the search page and build a new page called My books pgae, which can search any book in my collection and aslo delete the book in this collection. In next week, we will finish almost all part of this website, and we will focus on the left works
+
+week9 
+In this week, we have submitted the retrospective B, we will continous optimizing the css structure. For me I have changed some function for have a better css layout like rating and add book to collection.
