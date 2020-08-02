@@ -9,6 +9,17 @@
 						text-color="#ff9900"
 						score-template="{value}">
 		</el-rate>
+
+		<ul>
+			<li>5 star</li>
+			<li>4 star</li>
+			<li>3 star</li>
+			<li>2 star</li>
+			<li>1 star</li>
+		</ul>
+
+
+
 		<span> {{res.TotalCount}} people have read this book</span>
 
 	</div>
@@ -41,9 +52,10 @@ export default {
 
 	// request method page initial and get average score of this book
 	updated () {
-			this.average = this.res.averageScore
-			this.book_id = this.res.book_id
-			this.TotalCount = this.res.TotalCount
+		console.log(this.res)
+		this.average = this.res.averageScore
+		this.book_id = this.res.book_id
+		this.TotalCount = this.res.TotalCount
 	},
 
 
@@ -64,6 +76,12 @@ export default {
 		display: block;
 		font-size: 12px;
 		margin: 10px 0;
+	}
+	li{
+		list-style: none;
+	}
+	ul{
+		padding: 0;
 	}
 </style>
 

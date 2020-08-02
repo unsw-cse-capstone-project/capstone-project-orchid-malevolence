@@ -242,7 +242,7 @@ export default {
 		width: 20%;
 		display: inline-block;
 		vertical-align: top;
-		margin-top: 120px;
+		margin-top: 200px;
 	}
 
 	.get_review_box{
