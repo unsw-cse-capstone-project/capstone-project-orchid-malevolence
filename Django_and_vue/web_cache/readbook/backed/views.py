@@ -404,6 +404,7 @@ class LikeItAPIView(APIView):
         like_info = request.data['likeit']
 
         like_set=LikeIt.objects.filter(review=review_id,user=user_obj.id)
+        print("iiii")
         if(like_set.exists()):
             if(like_info["status"]==-1):
                 # 取消点赞，如果已经被取消，则直接返回
@@ -429,6 +430,7 @@ class LikeItAPIView(APIView):
                 return Response(data={"msg":"我又点赞了！"},status=HTTP_200_OK)
             return Response(data={"msg":"already like it!"},status=HTTP_200_OK)
         else:
+            print('create new!')
             likeit_info = request.data['likeit']
             likeit_info['user']=user_obj.id
             likeit_info['review']=review_id
@@ -437,6 +439,7 @@ class LikeItAPIView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 if serializer.data['status']==1:
+                    print("likeit")
                     review_temp=Review.objects.get(id=review_id)
                     review_temp.like_count_num+=1
                     review_temp.save()
@@ -600,9 +603,9 @@ class HistoryAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
-        print("111111")
-        data=Rating.objects.all()
-        serializer = RecUserBookSerializer(instance=data,many=True)
+        user_id=request.query_params['id']
+        like_set=LikeIt.objects.filter(user=user_id)
+        serializer=LikeItSerializer(instance=like_set[0])
         return Response(serializer.data)
 
 

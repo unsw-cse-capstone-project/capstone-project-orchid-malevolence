@@ -263,9 +263,10 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
             # 获取所有用户点赞的评论的id
             if(like_status_set.exists()):
                 for i in like_status_set:
-                    if(i['status']==1):
-                        like_status_list.append(i['review'])
+                    if(i.status==True):
+                        like_status_list.append(i.review.id)
             
+            print(like_status_list)
             # 要让每条评论的obj包含当前用户是否处于点赞状态
             # 循环遍历列表，还会有个点过赞的列表
             for i in res:
