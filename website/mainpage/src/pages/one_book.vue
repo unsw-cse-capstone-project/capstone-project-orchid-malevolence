@@ -161,11 +161,12 @@ export default {
 			this.currentIndex=index //change the image or not based on like or not
 			this.postvlaue.book_id=this.result.book_id //post book_id of this review
 			this.postvlaue.review_id=value.id  //post review_id of this book
-			if (!value.like_status){
+
+			if (!value.like_status){ //if not click like before
 				value.like_status=1
 				this.postvlaue.likeit.status=1
 
-			}else{
+			}else{   //if have already click like
 				value.like_status=0
 				this.currentIndex=-1
 				this.postvlaue.likeit.status=-1
@@ -182,7 +183,6 @@ export default {
 				else{
 					if (value.like_status===1){
 						value.like_count_num+=1
-
 					}else{
 						value.like_count_num-=1
 
