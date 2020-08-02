@@ -389,4 +389,8 @@ export default {
 	.right_border{
 		border-right: 1px solid gray;
 	}
+	/deep/ .el-divider__text{
+		font-size: 25px;
+	}
+
 </style>
