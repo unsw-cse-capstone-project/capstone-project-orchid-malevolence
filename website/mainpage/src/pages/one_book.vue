@@ -115,26 +115,29 @@ export default {
 		//sort the commit
 		sort_commit(value){
 			console.log(value)
-			let len=value.review_book.length
+			let newValue=[]
+			newValue.push(value)
+			// console.log(newValue)
+
+			let len=newValue[0].review_book.length
 			// console.log(len)
-			// let thisReview=this.result.review_book
 			let temp={}
 			let maxIndex=0
-			for(let i in value.review_book){
+			for(let i in newValue[0].review_book){
 				maxIndex=parseInt(i)
 				// console.log(i)
-				// console.log(value.review_book[i])
 				for (let j =parseInt(i)+1;j<len;j++){
-					if (value.review_book[maxIndex].like_count_num<value.review_book[j].like_count_num){
+					if (newValue[0].review_book[maxIndex].like_count_num<newValue[0].review_book[j].like_count_num){
 						maxIndex=j
 					}
 					// console.log(value.review_book[j])
 				}
-				temp=value.review_book[i]
-				value.review_book[i]=value.review_book[maxIndex]
-				value.review_book[maxIndex]=temp
-
+				temp=newValue[0].review_book[i]
+				newValue[0].review_book[i]=newValue[0].review_book[maxIndex]
+				newValue[0].review_book[maxIndex]=temp
+			//
 			}
+			// this.result.review_book=newValue
 			console.log(value)
 		},
 		// get all info about this book
@@ -151,7 +154,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 					console.log(result)
 
 
@@ -167,7 +170,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 					console.log(result)
 
 
