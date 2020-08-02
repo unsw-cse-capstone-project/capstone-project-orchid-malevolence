@@ -35,7 +35,7 @@
 			</div>
 			<!--show all reviews-->
 			<h3 style="margin:10px 0">Reviews:</h3>
-			<div v-for="item in this.result.review_book" class="get_review_box" v-bind:key="item.id">
+			<div v-for="(item,index) in this.result.review_book" class="get_review_box" v-bind:key="item.id">
 				<span class="username">{{item.user}}</span>
 					<el-rate class="inner_socre"
 							v-model="item.rating"
@@ -45,7 +45,11 @@
 			</el-rate>
 				<span class="inner_data">{{item.create_time}}</span>
 				<div class="inner_content">
-					<span style="overflow-wrap:break-word;">{{item.content  }}</span>
+					<span style="overflow-wrap:break-word;">{{item.content}}</span>
+					<span class="number">{{item.like_count_num}} {{item.like_status}}</span>
+<!--					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="index===currentIndex? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">-->
+					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="item.like_status===1? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">
+
 				</div>
 			</div>
 		</div>
@@ -55,6 +59,7 @@
 <script>
 import Header from '../components/homepage_components/header'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
+import {postLikeIt} from '../network/requests'
 import read_score from '../components/single_book_components/read_score'
 import add_collection from '../components/single_book_components/add_collection'
 import rating_commit from '../components/single_book_components/rating_commit'
@@ -64,11 +69,20 @@ export default {
 		return {
 			token_log: localStorage.getItem('token'),
 			id: null,
-			count: 0,
+			currentIndex:0, //for loop in reviews, get the current index
 			review: [],
 			value: '',
 			book: {},
-
+			postvlaue:{  //post value of like it
+				// "review_id":value.id,
+				"review_id":String,
+				// "book_id":this.result.book_id,
+				"book_id":String,
+				"likeit":{
+					"status":null
+				}
+			},
+			isActive:true,
 			book_id:null,
 			result:{
 				rate:Number,
@@ -100,35 +114,88 @@ export default {
 		getData () {
 			this.book=this.$route.query
 			let post_value={book_id:this.book.book_id}
+			getSingleBookmultdata1(post_value).then(result => {
+				this.result=result
+				this.result.rate=result.rating_analyse.rating
+				this.result.TotalCount=result.rating_analyse.how_many_user_scored
+				this.result.averageScore=result.rating_analyse.average_rating
+				this.result.book_id=result.id
+				this.result.review_book=result.review_book
+				console.log(this.result.review_book)
 
-			if(this.token_log){
-				getSingleBookmultdata1(post_value).then(result => {
-					this.result=result
-					this.result.rate=result.rating_analyse.rating
-					this.result.TotalCount=result.rating_analyse.how_many_user_scored
-					this.result.averageScore=result.rating_analyse.average_rating
-					this.result.book_id=result.id
-					this.result.review_book=result.review_book
-
-				}).catch(res=>{
-					console.log(res)
-				})
-			}
-			else{
-				//request book info like average score, reviews, totalcount of how many people have read
-				getSingleBookmultdata1(post_value).then(result=>{
-					this.result=result
-					this.result.rate=result.rating_analyse.rating
-					this.result.TotalCount=result.rating_analyse.how_many_user_scored
-					this.result.averageScore=result.rating_analyse.average_rating
-					this.result.book_id=result.id
-					this.result.review_book=result.review_book
-
-				}).catch(res=>{
-					console.log(res)
-				})
-			}
+			}).catch(res=>{
+				console.log(res)
+			})
+			//
+			// if(this.token_log){
+			// 	getSingleBookmultdata1(post_value).then(result => {
+			// 		this.result=result
+			// 		this.result.rate=result.rating_analyse.rating
+			// 		this.result.TotalCount=result.rating_analyse.how_many_user_scored
+			// 		this.result.averageScore=result.rating_analyse.average_rating
+			// 		this.result.book_id=result.id
+			// 		this.result.review_book=result.review_book
+			//
+			// 	}).catch(res=>{
+			// 		console.log(res)
+			// 	})
+			// }
+			// else{
+			// 	//request book info like average score, reviews, totalcount of how many people have read
+			// 	getSingleBookmultdata1(post_value).then(result=>{
+			// 		this.result=result
+			// 		this.result.rate=result.rating_analyse.rating
+			// 		this.result.TotalCount=result.rating_analyse.how_many_user_scored
+			// 		this.result.averageScore=result.rating_analyse.average_rating
+			// 		this.result.book_id=result.id
+			// 		this.result.review_book=result.review_book
+			//
+			// 	}).catch(res=>{
+			// 		console.log(res)
+			// 	})
+			// }
 		},
+		//agree the the review or not
+		changeNumber(value,index){
+
+			this.currentIndex=index //change the image or not based on like or not
+			this.postvlaue.book_id=this.result.book_id //post book_id of this review
+			this.postvlaue.review_id=value.id  //post review_id of this book
+			if (!value.like_status){
+				value.like_status=1
+				this.postvlaue.likeit.status=1
+
+			}else{
+				value.like_status=0
+				this.currentIndex=-1
+				this.postvlaue.likeit.status=-1
+			}
+			console.log(value.like_status)
+			postLikeIt(this.postvlaue).then(res=>{
+				if(res.status===400){
+					// value.like_count_num-=1
+					this.$message({
+						message: 'You have already like it',
+						type: 'warning'
+					});
+				}
+				else{
+					if (value.like_status===1){
+						value.like_count_num+=1
+
+					}else{
+						value.like_count_num-=1
+
+					}
+					console.log('ss')
+				}
+				console.log(res)
+			}).catch(res=>{
+				console.log(res)
+
+			})
+
+		}
 	},
 }
 </script>
@@ -205,6 +272,25 @@ export default {
 	.inner_content{
 		display: block;
 		margin: 10px 0;
+	}
+	.agree_img{
+		display:inline-block ;
+		float: right;
+		right: 30px;
+		top: 10px;
+		width: 20px;
+		height: 20px;
+	}
+	.number{
+		display:inline-block;
+		float: right;
+		margin-left: 5px;
+		right:10px;
+		top:10px
+	}
+	.active{
+		color: pink;
+		/*background-color: pink;*/
 	}
 
 

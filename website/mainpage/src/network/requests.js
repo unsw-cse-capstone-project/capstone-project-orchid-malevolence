@@ -159,3 +159,12 @@ export function delBookfromCollection (data) {
 		data: data
 	})
 }
+
+export function postLikeIt (query) {
+	return request({
+		url: '/api/likeit/',
+		method: 'post',
+		data: query
+	})
+
+}
