@@ -24,7 +24,7 @@
 
 			<span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">cancel</el-button>
-        <el-button type="primary" @click="submite_ratingandreview()">submit</el-button>
+        <el-button type="primary" @click="submite_ratingandreview">submit</el-button>
       </span>
 		</el-dialog>
 
@@ -48,8 +48,11 @@ export default {
 		}
 	},
 	props: {
-		bookID: String //the arguments bookID received from father page one_book page
+		bookID: String, //the arguments bookID received from father page one_book page
+		book_name:String
 	},
+
+	// this.dialogVisible = false
 	methods: {
 		isShowDialog(){
 			if (this.token_log){
