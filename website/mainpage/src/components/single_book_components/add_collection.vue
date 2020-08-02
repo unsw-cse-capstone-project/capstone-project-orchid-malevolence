@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-edit">Add to collection</el-button>
+		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-circle-plus-outline">Add to collection</el-button>
 		<!--		pop up a dialog-->
 		<el-dialog
 						title="Add this book to your collection"
@@ -14,7 +14,8 @@
 								v-for="item in options"
 								:key="item.id"
 								:label="item.name"
-								:value="item.id">
+								:value="item.id"
+								:disabled="item.disabled">
 				</el-option>
 
 
@@ -44,8 +45,6 @@
 </template>
 
 <script>
-// import {addCollection,getCollectionmultdata,Add2Collection} from "../../network/requests"
-
 import {Add2Collection, addCollection, getCollectionmultdata} from '../../network/requests'
 
 export default {
@@ -55,6 +54,7 @@ export default {
 			token_log: localStorage.getItem('token'),
 			dialogVisible:false,
 			isShow:false,
+			flag:false,
 
 			img:[],
 			input:'',
@@ -63,7 +63,8 @@ export default {
 		}
 	},
 	props:{
-		bookID: String
+		bookID: String,
+		book_name:String
 	},
 	components:{
 
@@ -71,11 +72,28 @@ export default {
 	created () {
 		if(this.token_log){
 			getCollectionmultdata().then(res=>{
-				console.log(res)
 				for (let i=0;i<res.length;i++){
 					let j=res[i].id
 					let k=res[i].name
-					this.options.push({id:j,name:k}) //get all name of collections
+					let books=res[i].books
+					let len=res[i].books.length
+					// check the book in collection or not
+					for(let j=0;j<len;j++){
+						if (this.book_name===books[j].id){
+							this.flag=true
+							break
+						}
+					}
+					//if that book already in collection u cannot choose it
+					if (this.flag===true){
+						this.options.push({id:j,name:k, disabled: true}) //get all name of collections
+					}
+					//otherwise u can choose it
+					else{
+						this.options.push({id:j,name:k, disabled: false}) //get all name of collections
+					}
+					//reset the flag
+					this.flag=false
 				}
 			}).catch(res=>{
 				console.log(res)
@@ -148,11 +166,10 @@ export default {
 
 		// add a book into the currently choosing collection
 		add_to_collection(value){
-			console.log(value)
 			let postvalue={collection_id:value,book_id:this.bookID}
-			console.log(postvalue)
 			Add2Collection(postvalue).then(res=>{
 				console.log(res)
+				this.dialogVisible=false
 			}).catch(res=>{
 				console.log(res)
 			})
@@ -163,7 +180,6 @@ export default {
 
 <style scoped>
 	.all_margin{
-		/*margin: 10px 10px;*/
 		padding: 10px 10px;
 	}
 	/deep/ .el-dialog__body{

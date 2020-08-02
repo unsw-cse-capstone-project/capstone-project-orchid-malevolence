@@ -45,7 +45,7 @@
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
 						</div>
 
-						<div class="book_item text-block">
+						<div class="text-block">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
 							<el-rate
 											v-model="item.avg_rating"
@@ -75,7 +75,7 @@
 						<div class="book_item img-box" >
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt=""  @click="jump_one_book(item)">
 						</div>
-						<div class="book_item text-block">
+						<div class="text-block">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
 							<el-rate
 											v-model="item.avg_rating"
@@ -107,7 +107,7 @@
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
 						</div>
-						<div class="book_item text-block right_border">
+						<div class="text-block right_border">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
 							<el-rate
 											v-model="item.avg_rating"
@@ -207,15 +207,12 @@ export default {
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
 				location.reload()
-
-
 		},
 
 		getAllBooks(val){
 			let len=val.length
 			let books_name=[]
 			for (let i=0;i<len;i++){
-				// console.log(val[i])
 				let new_len=val[i].books.length
 				let books=val[i].books
 
@@ -231,8 +228,6 @@ export default {
 					}
 				}
 			}
-			// console.log(books_name)
-			// console.log(this.all_books)
 		},
 		jump_this_book(){
 			this.search_book=[]
@@ -243,7 +238,6 @@ export default {
 
 			let len=this.all_books.length
 			for(let i=0;i<len;i++){
-				// console.log(this.all_books[i])
 				let title=this.all_books[i].title.toLowerCase()
 				let input=this.input.toLowerCase()
 					if ( title.indexOf(input)!==-1  ){
@@ -252,13 +246,11 @@ export default {
 				}
 
 			}
-
-
-
 		},
 		// get  books from current collection
 		currentSel(selVal) {
 			this.value = selVal;
+			console.log(typeof this.value)
 			let obj = {}
 			obj = this.options.find((item)=>{
 				return item.value === selVal;
@@ -273,7 +265,7 @@ export default {
 			const len = res.length
 			let option
 			for(let i = 0; i < len; i++) {
-				// 提取collections' name
+				// get all collections' name
 				option = {}
 				option["key"] = res[i].id
 				option["value"] = res[i].name
@@ -309,7 +301,6 @@ export default {
 			}
 		},
 		reload_page(){
-			console.log('sss')
 			location.reload()
 
 		},
@@ -358,10 +349,12 @@ export default {
 	.book_item{
 		display: inline-block;
 		margin: 20px 20px 20px 5px;
+
 	}
 
 	.img-box{
-		height: 180px;
+		width: 150px;
+		height: 200px;
 	}
 
 	.text-block{

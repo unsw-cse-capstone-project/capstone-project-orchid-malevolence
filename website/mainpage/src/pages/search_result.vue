@@ -9,7 +9,7 @@
 		<div class="body">
 			<h2 v-show="isShow">Search {{key_word}}</h2>
 			<book_list v-if="isShow" :books="result_list"></book_list>
-<!--			show all books in every collections for a user-->
+			<!--show all books in every collections for a user-->
 			<div v-show="isShowUser">
 				<div  class="user_box">
 					user: {{this.key_word}}
