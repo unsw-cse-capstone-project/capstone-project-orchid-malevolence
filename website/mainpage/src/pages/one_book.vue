@@ -135,27 +135,6 @@ export default {
 			}
 
 		},
-		// sort_commit(value){
-		// 	console.log(value)
-
-			// let len=value[0].review_book.length
-			// let temp={}
-			// let maxIndex=0
-			// console.log(newValue[0].review_book)
-			// for(let i in newValue[0].review_book){
-			// 	maxIndex=parseInt(i)
-			// 	for (let j =parseInt(i)+1;j<len;j++){
-			// 		if (newValue[0].review_book[maxIndex].like_count_num<newValue[0].review_book[j].like_count_num){
-			// 			maxIndex=j
-			// 		}
-			// 	}
-			// 	temp=newValue[0].review_book[i]
-			// 	newValue[0].review_book[i]=newValue[0].review_book[maxIndex]
-			// 	newValue[0].review_book[maxIndex]=temp
-			// 	//
-			// }
-
-		// },
 		// get all info about this book
 		getData () {
 			this.book = this.$route.query
