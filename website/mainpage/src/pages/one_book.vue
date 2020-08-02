@@ -116,6 +116,7 @@ export default {
 		getData () {
 			this.book = this.$route.query
 			let post_value = {book_id: this.book.book_id}
+
 			// if user has login
 			if (this.token_log) {
 				getSingleBookmultdata(post_value).then(result => {
@@ -125,7 +126,29 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
+					console.log(this.result.review_book)
+					let len=this.result.review_book.length
+					console.log(len)
+					// let thisReview=this.result.review_book
+					let temp={}
+					let maxIndex=0
+					for(let i in this.result.review_book){
+						maxIndex=parseInt(i)
+						console.log(i)
+						console.log(this.result.review_book[i])
+						for (let j =parseInt(i)+1;j<len;j++){
+							if (this.result.review_book[maxIndex].like_count_num<this.result.review_book[j].like_count_num){
+								maxIndex=j
+							}
+							console.log(this.result.review_book[j])
+							// if ()
+						}
+						temp=this.result.review_book[i]
+						this.result.review_book[i]=this.result.review_book[maxIndex]
+						this.result.review_book[maxIndex]=temp
 
+					}
+					console.log(this.result.review_book)
 				}).catch(res => {
 					console.log(res)
 				})
@@ -143,6 +166,8 @@ export default {
 					console.log(res)
 				})
 			}
+
+
 		},
 		//agree the the review or not
 		changeNumber (value, index) {

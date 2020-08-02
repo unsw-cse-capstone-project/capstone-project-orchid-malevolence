@@ -1,7 +1,7 @@
 
 <template>
 	<div class="read_score">
-		<span style="font-size: 14px">Website average rating</span>
+		<span class="span1" style="font-size: 14px">Website average rating</span>
 		<span class="score">{{average}}</span>
 		<el-rate
 						class="rate"
@@ -21,7 +21,7 @@
 
 
 
-		<span> {{res.TotalCount}} people have read this book</span>
+		<span class="span3"> {{res.TotalCount}} people have read this book</span>
 
 	</div>
 
@@ -59,11 +59,11 @@ export default {
 		this.average = this.res.averageScore
 		this.book_id = this.res.book_id
 		this.TotalCount = this.res.TotalCount
-		this.rating_list.five=this.res.rating_analyse.five*100
-		this.rating_list.four=this.res.rating_analyse.four*100
-		this.rating_list.three=this.res.rating_analyse.three*100
-		this.rating_list.two=this.res.rating_analyse.two*100
-		this.rating_list.one=this.res.rating_analyse.one*100
+		this.rating_list.five=parseFloat((this.res.rating_analyse.five*100).toFixed(1))
+		this.rating_list.four=parseFloat((this.res.rating_analyse.four*100).toFixed(1))
+		this.rating_list.three=parseFloat((this.res.rating_analyse.three*100).toFixed(1))
+		this.rating_list.two=parseFloat((this.res.rating_analyse.two*100).toFixed(1))
+		this.rating_list.one=parseFloat((this.res.rating_analyse.one*100).toFixed(1))
 		console.log(this.rating_list)
 
 	},
@@ -78,15 +78,13 @@ export default {
 	.read_score {
 		position: absolute;
 		float: right;
-		width: 220px;
-
+		width: 260px;
 
 	}
 
 	span {
 		display: block;
 		font-size: 12px;
-		margin: 5px 0;
 	}
 	li{
 		list-style: none;
@@ -116,6 +114,16 @@ export default {
 	.rate{
 		display: inline-block;
 		/*vertical-align: top;*/
+
+	}
+	/deep/ .el-progress-bar{
+		width: 90%;
+	}
+	.span1{
+		margin-bottom: 5px;
+	}
+	.span3{
+		font-size: 14px;
 
 	}
 </style>

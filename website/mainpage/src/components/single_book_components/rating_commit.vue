@@ -19,7 +19,7 @@
 									:colors="colors">
 					</el-rate>
 
-				<el-input class="commit" type="textarea" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Commit this book" v-model="textarea1">
+				<el-input class="commit" type="textarea" @keyup.enter.native="submite_ratingandreview" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Commit this book" v-model="textarea1">
 				</el-input>
 
 			<span slot="footer" class="dialog-footer">

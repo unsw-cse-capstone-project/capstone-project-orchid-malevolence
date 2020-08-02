@@ -11,7 +11,7 @@
 				3. display all books in one collection and u can remove that book in this collection-->
 		<div class="search_model">
 			<!-- search a book inside your collection-->
-			<el-input v-model="input" placeholder="Search a book inside your collections">
+			<el-input v-model="input" placeholder="Search a book inside your collections" @keyup.enter.native="jump_this_book">
 				<el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_this_book"></el-button>
 			</el-input>
 

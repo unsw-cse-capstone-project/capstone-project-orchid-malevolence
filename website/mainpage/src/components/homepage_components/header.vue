@@ -27,7 +27,7 @@
                 <el-option label="1-5 stars" value="1" ></el-option>
             </el-select>
 
-			<el-input placeholder="input contents" v-model="input3" class="input-with-select"></el-input>
+			<el-input placeholder="input contents" v-model="input3" class="input-with-select"  @keyup.enter.native="jump_search_result"></el-input>
 
             <el-button  style="display: inline-block" slot="append" icon="el-icon-search" @click="jump_search_result"></el-button>
         </div>

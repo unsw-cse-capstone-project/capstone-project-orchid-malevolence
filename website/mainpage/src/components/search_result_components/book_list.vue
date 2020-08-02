@@ -12,7 +12,7 @@
 					<img :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)">
 				</div>
 
-				<div class="book_item text-block">
+				<div class="info-box text-block">
 					<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
 					<el-rate
 									v-model="item.avg_rating"
@@ -130,20 +130,22 @@ export default {
 		margin: 20px 20px 20px 5px
 
 	}
-
-	.img-box {
-		width: 15%;
-		height: 180px;
-
+	.img-box{
+		width: 150px;
+		height: 200px;
 	}
 
-	.text-block {
+	.text-block{
 		display: inline-block;
 		vertical-align: top;
-
-		width: 65%;
-		word-break: break-all
+		width: 52%;
+		word-break: break-all;
 	}
+	.info-box{
+		display: inline-block;
+		margin: 0 20px 20px 5px
+	}
+
 
 	.info {
 		font-size: 14px;
