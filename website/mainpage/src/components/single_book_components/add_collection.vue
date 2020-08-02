@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-circle-plus-outline">Add to collection</el-button>
+		<el-button type="primary" @click="isShowDialog" icon="el-icon-circle-plus-outline">Add to collection</el-button>
 		<!--		pop up a dialog-->
 		<el-dialog
 						title="Add this book to your collection"
@@ -102,6 +102,13 @@ export default {
 		}
 	},
 	methods:{
+		isShowDialog(){
+			if (this.token_log){
+				this.dialogVisible=true
+			}else{
+				this.$message({message: 'please login: ', type: 'warning',showClose: true,})
+			}
+		},
 		//add a new collection
 		add_new_shelf () {
 			let value = {name: this.input}

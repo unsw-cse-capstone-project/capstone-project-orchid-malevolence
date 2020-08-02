@@ -46,7 +46,7 @@
 				<span class="inner_data">{{item.create_time}}</span>
 				<div class="inner_content">
 					<span style="overflow-wrap:break-word;">{{item.content}}</span>
-					<span class="number">{{item.like_count_num}} {{item.like_status}}</span>
+					<span class="number">{{item.like_count_num}}</span>
 <!--					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="index===currentIndex? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">-->
 					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="item.like_status===1? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">
 
@@ -59,6 +59,8 @@
 <script>
 import Header from '../components/homepage_components/header'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
+import {getSingleBookmultdata} from '../network/requests'
+
 import {postLikeIt} from '../network/requests'
 import read_score from '../components/single_book_components/read_score'
 import add_collection from '../components/single_book_components/add_collection'
@@ -69,31 +71,31 @@ export default {
 		return {
 			token_log: localStorage.getItem('token'),
 			id: null,
-			currentIndex:0, //for loop in reviews, get the current index
+			currentIndex: 0, //for loop in reviews, get the current index
 			review: [],
 			value: '',
 			book: {},
-			postvlaue:{  //post value of like it
+			postvlaue: {  //post value of like it
 				// "review_id":value.id,
-				"review_id":String,
+				"review_id": String,
 				// "book_id":this.result.book_id,
-				"book_id":String,
-				"likeit":{
-					"status":null
+				"book_id": String,
+				"likeit": {
+					"status": null
 				}
 			},
-			isActive:true,
-			book_id:null,
-			result:{
-				rate:Number,
-				TotalCount:Number,
-				averageScore:Number,
-				book_id:"",
+			isActive: true,
+			book_id: null,
+			result: {
+				rate: Number,
+				TotalCount: Number,
+				averageScore: Number,
+				book_id: "",
 
-				review_book:[]
+				review_book: []
 
 			},
-			update_cont:0
+			update_cont: 0
 		}
 
 	},
@@ -112,91 +114,74 @@ export default {
 	methods: {
 		// get all info about this book
 		getData () {
-			this.book=this.$route.query
-			let post_value={book_id:this.book.book_id}
-			getSingleBookmultdata1(post_value).then(result => {
-				this.result=result
-				this.result.rate=result.rating_analyse.rating
-				this.result.TotalCount=result.rating_analyse.how_many_user_scored
-				this.result.averageScore=result.rating_analyse.average_rating
-				this.result.book_id=result.id
-				this.result.review_book=result.review_book
-				console.log(this.result.review_book)
+			this.book = this.$route.query
+			let post_value = {book_id: this.book.book_id}
+			// if user has login
+			if (this.token_log) {
+				getSingleBookmultdata(post_value).then(result => {
+					this.result = result
+					this.result.rate = result.rating_analyse.rating
+					this.result.TotalCount = result.rating_analyse.how_many_user_scored
+					this.result.averageScore = result.rating_analyse.average_rating
+					this.result.book_id = result.id
+					this.result.review_book = result.review_book
 
-			}).catch(res=>{
-				console.log(res)
-			})
-			//
-			// if(this.token_log){
-			// 	getSingleBookmultdata1(post_value).then(result => {
-			// 		this.result=result
-			// 		this.result.rate=result.rating_analyse.rating
-			// 		this.result.TotalCount=result.rating_analyse.how_many_user_scored
-			// 		this.result.averageScore=result.rating_analyse.average_rating
-			// 		this.result.book_id=result.id
-			// 		this.result.review_book=result.review_book
-			//
-			// 	}).catch(res=>{
-			// 		console.log(res)
-			// 	})
-			// }
-			// else{
-			// 	//request book info like average score, reviews, totalcount of how many people have read
-			// 	getSingleBookmultdata1(post_value).then(result=>{
-			// 		this.result=result
-			// 		this.result.rate=result.rating_analyse.rating
-			// 		this.result.TotalCount=result.rating_analyse.how_many_user_scored
-			// 		this.result.averageScore=result.rating_analyse.average_rating
-			// 		this.result.book_id=result.id
-			// 		this.result.review_book=result.review_book
-			//
-			// 	}).catch(res=>{
-			// 		console.log(res)
-			// 	})
-			// }
+				}).catch(res => {
+					console.log(res)
+				})
+			} else {
+				//request book info like average score, reviews, totalcount of how many people have read
+				getSingleBookmultdata1(post_value).then(result => {
+					this.result = result
+					this.result.rate = result.rating_analyse.rating
+					this.result.TotalCount = result.rating_analyse.how_many_user_scored
+					this.result.averageScore = result.rating_analyse.average_rating
+					this.result.book_id = result.id
+					this.result.review_book = result.review_book
+
+				}).catch(res => {
+					console.log(res)
+				})
+			}
 		},
 		//agree the the review or not
-		changeNumber(value,index){
-
-			this.currentIndex=index //change the image or not based on like or not
-			this.postvlaue.book_id=this.result.book_id //post book_id of this review
-			this.postvlaue.review_id=value.id  //post review_id of this book
-
-			if (!value.like_status){ //if not click like before
-				value.like_status=1
-				this.postvlaue.likeit.status=1
-
-			}else{   //if have already click like
-				value.like_status=0
-				this.currentIndex=-1
-				this.postvlaue.likeit.status=-1
-			}
+		changeNumber (value, index) {
 			console.log(value.like_status)
-			postLikeIt(this.postvlaue).then(res=>{
-				if(res.status===400){
-					// value.like_count_num-=1
-					this.$message({
-						message: 'You have already like it',
-						type: 'warning'
-					});
-				}
-				else{
-					if (value.like_status===1){
-						value.like_count_num+=1
-					}else{
-						value.like_count_num-=1
+			if(this.token_log){
+				this.currentIndex = index //change the image or not based on like or not
+				this.postvlaue.book_id = this.result.book_id //post book_id of this review
+				this.postvlaue.review_id = value.id  //post review_id of this book
 
+				if (!value.like_status) { //if not click like before
+					value.like_status = 1
+					this.postvlaue.likeit.status = 1
+
+				} else {   //if have already click like
+					value.like_status = 0
+					this.currentIndex = -1
+					this.postvlaue.likeit.status = -1
+				}
+				postLikeIt(this.postvlaue).then(res => {
+					if (value.like_status === 1) {
+						value.like_count_num += 1
+					} else {
+						value.like_count_num -= 1
 					}
-					console.log('ss')
-				}
-				console.log(res)
-			}).catch(res=>{
-				console.log(res)
+					console.log(res)
+				}).catch(res => {
+					console.log(res)
+				})
 
-			})
+			}
+			else{
+				this.$message({message: 'please login: ', type: 'warning',showClose: true,})
 
-		}
-	},
+			}
+
+
+
+		},
+	}
 }
 </script>
 
@@ -242,7 +227,7 @@ export default {
 		width: 20%;
 		display: inline-block;
 		vertical-align: top;
-		margin-top: 200px;
+		margin-top: 220px;
 	}
 
 	.get_review_box{
@@ -263,9 +248,7 @@ export default {
 	}
 	.inner_data{
 		color: #666666;
-
 		margin-right: 10px;
-
 		display: inline-block;
 
 	}
@@ -290,7 +273,6 @@ export default {
 	}
 	.active{
 		color: pink;
-		/*background-color: pink;*/
 	}
 
 

@@ -1,7 +1,7 @@
 
 <template>
 	<div>
-		<el-button type="primary" @click="dialogVisible = true" icon="el-icon-edit">rating and commit</el-button>
+		<el-button type="primary" @click="isShowDialog" icon="el-icon-edit">rating and commit</el-button>
 
 		<el-dialog
 						title="rating and commit"
@@ -51,6 +51,16 @@ export default {
 		bookID: String //the arguments bookID received from father page one_book page
 	},
 	methods: {
+		isShowDialog(){
+			if (this.token_log){
+				this.dialogVisible=true
+
+			}else{
+				this.$message({message: 'please login: ', type: 'warning',showClose: true,})
+
+			}
+
+		},
 		submite_ratingandreview () {
 
 			if (this.token_log) {
