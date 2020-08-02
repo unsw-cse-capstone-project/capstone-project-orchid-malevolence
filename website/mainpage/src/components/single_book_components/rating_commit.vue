@@ -19,7 +19,7 @@
 									:colors="colors">
 					</el-rate>
 
-				<el-input class="commit" type="textarea" @keyup.enter.native="submite_ratingandreview" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Commit this book" v-model="textarea1">
+				<el-input class="commit" type="textarea"  @keyup.enter.native="submite_ratingandreview" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Commit this book" v-model="textarea1">
 				</el-input>
 
 			<span slot="footer" class="dialog-footer">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {getSingleBookmultdata, postrating, postReview} from '../../network/requests'
+import {postrating, postReview} from '../../network/requests'
 
 export default {
 	name: 'rating_commit',
@@ -42,7 +42,7 @@ export default {
 			username: localStorage.getItem('username'),
 			dialogVisible: false,
 			// wrapperClosable:true,
-			textarea1: '',
+			textarea1: "",
 			value: 0,
 			colors: ['#99A9BF', '#F7BA2A', '#FF9900']
 		}
@@ -67,6 +67,10 @@ export default {
 		submite_ratingandreview () {
 
 			if (this.token_log) {
+				if (this.textarea1===""){
+					this.$message({message: 'please write your commit: ', type: 'warning',showClose: true,})
+					return
+				}
 
 				let postvalue = {
 					'rating_info': {
@@ -78,6 +82,7 @@ export default {
 				postrating(postvalue).then(res => {
 					console.log(res)
 				})
+
 				let post_review = {
 					'book_id': this.bookID,
 					'review': {
@@ -89,19 +94,10 @@ export default {
 				}).catch(res => {
 					console.log(res)
 				})
-				let get_book_value = {
-					'book_id': this.bookID,
-
-				}
-				getSingleBookmultdata(get_book_value).then(res => {
-					console.log(res)
-					location.reload()
-
-				}).catch(res => {
-					console.log(res)
-				})
 
 			}
+			location.reload()
+
 			this.dialogVisible = false
 
 

@@ -44,7 +44,7 @@
 							score-template="{value}">
 			</el-rate>
 				<span class="inner_data">{{item.create_time}}</span>
-				<div class="inner_content">
+				<div v-show="isShow" class="inner_content">
 					<span style="overflow-wrap:break-word;">{{item.content}}</span>
 					<span class="number">{{item.like_count_num}}</span>
 <!--					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="index===currentIndex? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">-->
@@ -84,6 +84,7 @@ export default {
 					"status": null
 				}
 			},
+			isShow:true,// if review content is empty, then become false
 			isActive: true,
 			book_id: null,
 			result: {
@@ -112,34 +113,49 @@ export default {
 
 
 	methods: {
-		//sort the commit
+		// sort the commit
 		sort_commit(value){
-			console.log(value)
 			let newValue=[]
 			newValue.push(value)
-			// console.log(newValue)
-
 			let len=newValue[0].review_book.length
-			// console.log(len)
 			let temp={}
 			let maxIndex=0
+			console.log(newValue[0].review_book)
 			for(let i in newValue[0].review_book){
 				maxIndex=parseInt(i)
-				// console.log(i)
 				for (let j =parseInt(i)+1;j<len;j++){
 					if (newValue[0].review_book[maxIndex].like_count_num<newValue[0].review_book[j].like_count_num){
 						maxIndex=j
 					}
-					// console.log(value.review_book[j])
 				}
 				temp=newValue[0].review_book[i]
 				newValue[0].review_book[i]=newValue[0].review_book[maxIndex]
 				newValue[0].review_book[maxIndex]=temp
 			//
 			}
-			// this.result.review_book=newValue
-			console.log(value)
+
 		},
+		// sort_commit(value){
+		// 	console.log(value)
+
+			// let len=value[0].review_book.length
+			// let temp={}
+			// let maxIndex=0
+			// console.log(newValue[0].review_book)
+			// for(let i in newValue[0].review_book){
+			// 	maxIndex=parseInt(i)
+			// 	for (let j =parseInt(i)+1;j<len;j++){
+			// 		if (newValue[0].review_book[maxIndex].like_count_num<newValue[0].review_book[j].like_count_num){
+			// 			maxIndex=j
+			// 		}
+			// 	}
+			// 	temp=newValue[0].review_book[i]
+			// 	newValue[0].review_book[i]=newValue[0].review_book[maxIndex]
+			// 	newValue[0].review_book[maxIndex]=temp
+			// 	//
+			// }
+
+		// },
 		// get all info about this book
 		getData () {
 			this.book = this.$route.query
@@ -154,7 +170,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 					console.log(result)
 
 
@@ -170,7 +186,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 					console.log(result)
 
 
