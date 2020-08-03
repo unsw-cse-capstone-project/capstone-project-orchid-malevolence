@@ -133,7 +133,7 @@ export default {
 				this.result = res
 				this.result.rate = res.rating_analyse.rating
 				this.result.TotalCount = res.rating_analyse.how_many_user_scored
-				// this.result.averageScore = parseFloat(res.rating_analyse.average_rating)
+				this.result.averageScore = res.rating_analyse.average_rating
 				this.result.book_id = res.id
 				this.result.review_book = res.review_book
 				console.log(typeof averagescore)

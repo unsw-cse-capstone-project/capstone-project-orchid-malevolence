@@ -2,7 +2,8 @@
 <template>
 	<div>
 <!--		current page and display all books, every book show img, average_rating,title,author,publisher,publisher_data, category-->
-		<div class="info">Page:{{books[real_page-1].page+1}} Totally related books: {{books[real_page-1].total_book}}</div>
+		<div class="info" style="margin-bottom: 10px">Totally related books: {{books[real_page-1].total_book}}</div>
+		<div class="info">Current page: {{books[real_page-1].page+1}}.</div>
 
 
 		<div class="all_book" v-for="item in books[real_page-1].book_li" :key="item.ISBN">
@@ -138,7 +139,7 @@ export default {
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		width: 52%;
+		width: 68%;
 		word-break: break-all;
 	}
 	.info-box{

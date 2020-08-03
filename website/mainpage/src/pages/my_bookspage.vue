@@ -390,7 +390,7 @@ export default {
 		border-right: 1px solid gray;
 	}
 	/deep/ .el-divider__text{
-		font-size: 25px;
+		font-size: 20px;
 	}
 
 </style>

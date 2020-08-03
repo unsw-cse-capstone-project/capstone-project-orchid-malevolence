@@ -145,7 +145,8 @@ export default {
 				})
 				this.$message({
 					message: 'Congratulations, You have added a shelf',
-					type: 'success'
+					type: 'success',
+					showClose: true,
 				});
 
 			}
@@ -153,7 +154,8 @@ export default {
 			else {
 				this.$message({
 					message: 'collection name already exist',
-					type: 'success'
+					type: 'success',
+					showClose: true,
 				});
 			}
 
