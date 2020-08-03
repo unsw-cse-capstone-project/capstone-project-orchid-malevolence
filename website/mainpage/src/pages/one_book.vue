@@ -31,7 +31,7 @@
 
 			<div class="rating">
 				<!--component rating and commit-->
-				<rating_commit :bookID="result.book_id" ></rating_commit>
+				<rating_commit @val="receive_from_rating" :bookID="result.book_id" ></rating_commit>
 			</div>
 			<!--show all reviews-->
 			<h3 style="margin:10px 0">Reviews:</h3>
@@ -113,6 +113,25 @@ export default {
 
 
 	methods: {
+		receive_from_rating(){
+			let post_value = {book_id: this.book.book_id}
+			getSingleBookmultdata(post_value).then(result => {
+				console.log(result)
+
+				this.result = result
+				this.result.rate = result.rating_analyse.rating
+				this.result.TotalCount = result.rating_analyse.how_many_user_scored
+				this.result.averageScore = result.rating_analyse.average_rating
+				this.result.book_id = result.id
+				this.result.review_book = result.review_book
+				this.sort_commit(this.result)
+			}).catch(res => {
+				console.log(res)
+			})
+
+
+
+		},
 		// sort the commit
 		sort_commit(value){
 			let newValue=[]

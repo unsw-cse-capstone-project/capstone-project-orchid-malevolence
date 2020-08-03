@@ -8,7 +8,7 @@
 						v-model="average"
 						disabled
 						text-color="#ff9900"
-						score-template="{value}">
+						score-template="{average}">
 		</el-rate>
 
 		<ul>
@@ -29,7 +29,6 @@
 
 <script>
 
-
 export default {
 	name: 'read_score',
 	data () {
@@ -39,10 +38,19 @@ export default {
 			number: Number(0),
 			book_id: String,
 			value: 0,
+			receive_from_rating:0,
 			TotalCount: '',
 			isShow: true,
-			rating_list:{},
+			rating_list:{
+				five:0,
+				four:0,
+				three:0,
+				two:0,
+				one:0,
+
+			},
 			count:100,
+
 
 
 		}
@@ -51,6 +59,7 @@ export default {
 		res: Object,
 		default: {}
 	},
+
 
 
 	// request method page initial and get average score of this book
