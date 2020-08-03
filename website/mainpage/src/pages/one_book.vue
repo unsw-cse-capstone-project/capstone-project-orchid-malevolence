@@ -116,14 +116,15 @@ export default {
 		receive_from_rating(){
 			let post_value = {book_id: this.book.book_id}
 			getSingleBookmultdata(post_value).then(result => {
+				console.log(result)
+
 				this.result = result
 				this.result.rate = result.rating_analyse.rating
 				this.result.TotalCount = result.rating_analyse.how_many_user_scored
 				this.result.averageScore = result.rating_analyse.average_rating
 				this.result.book_id = result.id
 				this.result.review_book = result.review_book
-				this.sort_commit(this.result)
-				console.log(this.result)
+				// this.sort_commit(this.result)
 			}).catch(res => {
 				console.log(res)
 			})
@@ -167,7 +168,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 					console.log(result)
 
 
@@ -183,7 +184,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 					console.log(result)
 
 
