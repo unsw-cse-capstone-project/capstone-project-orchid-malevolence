@@ -59,16 +59,16 @@ methods: {
 			url: 'http://127.0.0.1:8000/api/login/',
 			data: this.loginForm
 		}).then(res => {
-			if(res.status === 400){
-				this.$message.error('fail to login')
-			}else if(res.status === 200){
-				// console.log(this.loginForm.username);
 				window.localStorage.setItem('username',this.loginForm.username)
 				window.localStorage.setItem('token', res.data.token)
-				this.$message.success('login successfully')
+				this.$message.success(this.loginForm.username+' login successfully')
 				this.$router.push('/')
-			}
-		})
+			}).catch(err=>{
+				console.log(err);
+				this.$message.error('Incorrect username or password')
+			})
+
+		//})
 		}
 		})
 	}

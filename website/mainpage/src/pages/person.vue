@@ -7,7 +7,7 @@
 	<div class="content">
 		<el-tabs :tab-position="tabPosition" style="height: 100%;">	
 			<!-- Collection -->
-			<el-tab-pane label="collection">
+			<el-tab-pane label="Collection">
 				<div class="collection" >
 					<div class="clearfix">
 					<!-- select -->
@@ -85,10 +85,10 @@
 			</el-tab-pane>
 			
 			<!-- Personal information -->
-			<el-tab-pane label="Personal information">
+			<el-tab-pane label="Personal Information">
 				<div class="person_information">
 					<div class="Per_info_title">
-						Personal information
+						Personal Information
 					</div>
 					
 					<div class="Per_info">
@@ -127,7 +127,7 @@
 			</el-tab-pane>
 			
 			<!-- goal detail in current year -->
-			<el-tab-pane label="history goal">
+			<el-tab-pane label="History Goal">
 				<div class="history_goal_title">
 					Goal details in this year
 				</div>
