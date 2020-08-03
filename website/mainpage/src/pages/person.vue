@@ -26,7 +26,7 @@
 			
 					<!-- create an new collection -->
 					<div class="collection_add">
-						<el-button @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
+						<el-button @click="dialogFormVisible = true" class="collection_add_button">Create an new collection</el-button>
 						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
 							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
 								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
@@ -42,7 +42,7 @@
 					
 					<!-- reset collection name -->
 					<div class="collection_reset">
-						<el-button  @click="dialogFormVisible2 = true" class="collection_change_button">rename collection</el-button>
+						<el-button  @click="dialogFormVisible2 = true" class="collection_change_button">Rename collection</el-button>
 						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
 							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
 								<el-form-item label="rename collection" :label-width="formLabelWidth" prop="new_name">
@@ -67,7 +67,7 @@
 							<el-button size="mini" @click="visible = false">cancel</el-button>
 							<el-button size="mini" @click="delete_button">confirm</el-button>
 						</div>
-							<el-button slot="reference" class="collection_dele_button">delete collection</el-button>
+							<el-button slot="reference" class="collection_dele_button">Delete collection</el-button>
 						</el-popover>
 					</div>
 				</div>
