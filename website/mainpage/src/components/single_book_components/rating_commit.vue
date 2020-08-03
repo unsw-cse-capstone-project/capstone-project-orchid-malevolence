@@ -67,10 +67,10 @@ export default {
 		submite_ratingandreview () {
 
 			if (this.token_log) {
-				if (this.textarea1===""){
-					this.$message({message: 'please write your commit: ', type: 'warning',showClose: true,})
-					return
-				}
+				// if (this.textarea1===""){
+				// 	this.$message({message: 'please write your commit: ', type: 'warning',showClose: true,})
+				// 	return
+				// }
 
 				let postvalue = {
 					'rating_info': {
@@ -89,11 +89,14 @@ export default {
 						'content': this.textarea1
 					}
 				}
-				postReview(post_review).then(res => {
-					console.log(res)
-				}).catch(res => {
-					console.log(res)
-				})
+				if (this.textarea1!==""){
+					postReview(post_review).then(res => {
+						console.log(res)
+					}).catch(res => {
+						console.log(res)
+					})
+				}
+
 
 			}
 			location.reload()
