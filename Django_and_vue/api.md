@@ -429,13 +429,8 @@ request data:
         "content":"2 years later, this still tech me so much! I recommand this book significantly!"
     }
 }
-空评论也可以：必须要加上空字符串的双引号！！！
-{
-    "book_id":"h56ansk4Sabc",
-    "review":{
-        "content":""
-    }
-}
+空评论现在不可以了！！！我在后端已经加了长度限制了。
+
 ```
 
 no key data in response, check the status.

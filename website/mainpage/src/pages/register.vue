@@ -122,7 +122,31 @@
 				}else if(res.status == 200){
 					console.log(res.data.msg);
 					this.$message.success('Registered successfully');
-					this.$router.push('/login');
+					this.$refs.RegisterFormRef.validate(async valid => {
+					if(!valid){
+						return
+					}
+					if (this.RegisterForm.username === '' || this.RegisterForm.password === '') {
+						this.$message.warning('The account or password cannot be empty')
+					} else {
+					this.$axios({
+						method: 'post',
+						url: 'http://127.0.0.1:8000/api/login/',
+						data: this.RegisterForm
+					}).then(res => {
+						if(res.status === 400){
+							this.$message.error('fail to login')
+						}else if(res.status === 200){
+							// console.log(this.loginForm.username);
+							window.localStorage.setItem('username',this.RegisterForm.username)
+							window.localStorage.setItem('token', res.data.token)
+							this.$message.success('login successfully')
+							this.$router.push('/')
+						}
+					})
+					}
+					})
+					//this.$router.push('/person');
 				}
 			})
 			})

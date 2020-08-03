@@ -31,7 +31,7 @@
 							<img :src="book.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(book)">
 						</div>
 
-						<div class="book_item text-block">
+						<div class="info-box text-block">
 							<div><h5 style="word-break: break-all">{{book.title}}</h5></div>
 							<el-rate
 											v-model="book.avg_rating"
@@ -185,7 +185,7 @@ export default {
 				// console.log(this.post_value)
 				getSearchResult1(this.post_value).then(res => {
 						if (res.status === 400) {
-							this.$message({message: 'cannot search: ' + this.key_word, showClose: true,})
+							this.$message({message: 'no book satisfied the search condition: ' + this.key_word, showClose: true,})
 							this.isShow = false
 							this.isShowUser=false
 
@@ -217,7 +217,7 @@ export default {
 					this.post_value = {search_type: this.search_type, key_word: this.key_word, filter_rating: this.score}
 					filtersearchbook1(this.post_value).then(res => {
 						if (res.status === 400) {
-							this.$message({message: 'cannot search: ' + this.key_word, showClose: true,})
+							this.$message({message: 'no book satisfied the search condition: ' + this.key_word, showClose: true,})
 
 							this.isShow = false
 							this.isShowUser=false
@@ -306,18 +306,16 @@ export default {
 		margin: 20px 20px 20px 5px
 
 	}
-
-	.img-box {
-		width: 15%;
-		height: 180px;
-
+	.img-box{
+		width: 150px;
+		height: 200px;
 	}
 
-	.text-block {
+	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		width: 65%;
-		word-break: break-all
+		width: 52%;
+		word-break: break-all;
 	}
 
 	.user_result{
@@ -328,5 +326,12 @@ export default {
 		position: absolute;
 		margin-top: 40px;
 		margin-left: 48%;
+	}
+	.info-box{
+		display: inline-block;
+		margin: 0 20px 20px 5px
+	}
+	p{
+		line-height: 1;
 	}
 </style>

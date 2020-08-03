@@ -120,7 +120,7 @@
 					<div class="coll_wrap">
 						<div class="coll_content" v-for="item in books" :key="item.imageLink">
 							<img :src="item.imageLink" class="img" alt/>
-							<a href="item.url">{{item.title}}</a>
+							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
 						</div>
 					</div>
 				</div>
@@ -386,13 +386,37 @@ export default {
 			for(let i = 0; i < len; i++) {
 				book = {}
 				book["id"] = obj.books[i].id
+				book["authors"] = obj.books[i].authors
 				book["title"] = obj.books[i].title
 				book["imageLink"] = obj.books[i].imageLink
-				book["url"] = ''   // TODO: 跳转url
+				book["ISBN"] = obj.books[i].ISBN
+				book["publisher"] = obj.books[i].publisher
+				book["publish_date"] = obj.books[i].publish_date
+				book["categories"] = obj.books[i].categories
+				book["join_date"] = obj.books[i].join_date
+				book["description"] = obj.books[i].description
+				book["avg_rating"] = parseInt(obj.books[i].avg_rating)
 				this.books.push(book)
 			}
 		},
-		
+		// jump to book detail
+		jump_one_book(value) {
+			// console.log(value)
+			this.$router.push({
+				name: 'one_book',
+				query: {
+					// item:value
+					book_id: value.id,
+					authors: value.authors,
+					title: value.title,
+					ISBN: value.ISBN,
+					publisher: value.publisher,
+					imageLink: value.imageLink,
+					publisher_data:value.publish_date,
+					category:value.categories
+				}
+			})
+		},
 		// sorted by month
 		sortBykey(ary, key) {
 			return ary.sort(function (a, b) {
@@ -432,7 +456,11 @@ export default {
 		}
 	},
 	mounted: function () {
-		// Get personal information in advance
+		// let now = new Date()
+		// //let nowMonth = now.getMonth() + 1
+		// let nowtime = now.toLocaleDateString()
+		// // Get personal information in advance
+		// console.log(nowtime)
 		this.$refs.PerinfoFormRef.validate(async valid => {
 			if (!valid) { return }
 			getperinfodata().then(result =>{
@@ -466,13 +494,9 @@ export default {
 	
 	// get current goal
 	created() {
-		//this.value3 = nowYear
-		// console.log("curMonth:" + curMonth.month)
 		this.getGoal()
 		console.log(this.activities[0])
 		this.sortBykey(this.activities, 'age')
-		//this.shiyan2.sort('key')
-		//console.log(this.activities)
 		if(this.token_log){
 			getCollectionmultdata().then(res=>{
 				console.log(res)
@@ -511,7 +535,7 @@ export default {
 		background-size: cover;
 		background-origin: border-box;
 		//opacity:0.75;
-		overflow: scroll;
+		overflow-y: auto;
 	}
 	// The outermost tab
 	.content{

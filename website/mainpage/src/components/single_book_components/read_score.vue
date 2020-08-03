@@ -1,15 +1,27 @@
 
 <template>
 	<div class="read_score">
-		<span style="font-size: 18px">Website average rating</span>
+		<span class="span1" style="font-size: 14px">Website average rating</span>
+		<span class="score">{{average}}</span>
 		<el-rate
+						class="rate"
 						v-model="average"
 						disabled
-						show-score
 						text-color="#ff9900"
 						score-template="{value}">
 		</el-rate>
-		<span> {{res.TotalCount}} people have read this book</span>
+
+		<ul>
+			<li>5 star<el-progress class="percentage"  :percentage="this.rating_list.five"></el-progress></li>
+			<li>4 star<el-progress class="percentage"  :percentage="this.rating_list.four"></el-progress></li>
+			<li>3 star<el-progress class="percentage"  :percentage="this.rating_list.three"></el-progress></li>
+			<li>2 star<el-progress class="percentage"  :percentage="this.rating_list.two"></el-progress></li>
+			<li>1 star<el-progress class="percentage"  :percentage="this.rating_list.one"></el-progress></li>
+		</ul>
+
+
+
+		<span class="span3"> {{res.TotalCount}} people have read this book</span>
 
 	</div>
 
@@ -28,7 +40,9 @@ export default {
 			book_id: String,
 			value: 0,
 			TotalCount: '',
-			isShow: true
+			isShow: true,
+			rating_list:{},
+			count:100,
 
 
 		}
@@ -41,9 +55,17 @@ export default {
 
 	// request method page initial and get average score of this book
 	updated () {
-			this.average = this.res.averageScore
-			this.book_id = this.res.book_id
-			this.TotalCount = this.res.TotalCount
+		// console.log(this.res)
+		this.average = this.res.averageScore
+		this.book_id = this.res.book_id
+		this.TotalCount = this.res.TotalCount
+		this.rating_list.five=parseFloat((this.res.rating_analyse.five*100).toFixed(1))
+		this.rating_list.four=parseFloat((this.res.rating_analyse.four*100).toFixed(1))
+		this.rating_list.three=parseFloat((this.res.rating_analyse.three*100).toFixed(1))
+		this.rating_list.two=parseFloat((this.res.rating_analyse.two*100).toFixed(1))
+		this.rating_list.one=parseFloat((this.res.rating_analyse.one*100).toFixed(1))
+		// console.log(this.rating_list)
+
 	},
 
 
@@ -56,14 +78,53 @@ export default {
 	.read_score {
 		position: absolute;
 		float: right;
-
+		width: 260px;
 
 	}
 
 	span {
 		display: block;
 		font-size: 12px;
-		margin: 10px 0;
+	}
+	li{
+		list-style: none;
+		color: gray;
+	}
+	ul{
+		padding: 0;
+		color: gray;
+	}
+	.percentage{
+		width: 70%;
+		display: inline-block;
+		margin-left: 10px;
+	}
+	/deep/ .el-rate__text{
+		font-size: 20px;
+	}
+	.score{
+		display: inline-block;
+		margin: 0 5px 0 0;
+		/*margin-right: 10px;*/
+		font-size: 18px;
+		color: #F7BA2A;
+		vertical-align: top;
+
+	}
+	.rate{
+		display: inline-block;
+		/*vertical-align: top;*/
+
+	}
+	/deep/ .el-progress-bar{
+		width: 90%;
+	}
+	.span1{
+		margin-bottom: 5px;
+	}
+	.span3{
+		font-size: 14px;
+
 	}
 </style>
 
