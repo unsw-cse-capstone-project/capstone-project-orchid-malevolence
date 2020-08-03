@@ -5,7 +5,85 @@
 	</div>
 	
 	<div class="content">
-		<el-tabs :tab-position="tabPosition" style="height: 100%;">
+		<el-tabs :tab-position="tabPosition" style="height: 100%;">	
+			<!-- Collection -->
+			<el-tab-pane label="collection">
+				<div class="collection" >
+					<div class="clearfix">
+					<!-- select -->
+					<div class="collection_head">
+						<el-select v-model="value" placeholder="please select a collection"
+									@change="currentSel(value)">
+							<el-option
+									v-for="item in options"
+									:key="item.label"
+									:value="item.value"
+									
+							>
+							</el-option>
+						</el-select>
+					</div>
+			
+					<!-- create an new collection -->
+					<div class="collection_add">
+						<el-button @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
+						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
+							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
+								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
+									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
+								</el-form-item>
+							</el-form>
+							<div slot="footer" class="dialog-footer">
+								<el-button @click="dialogFormVisible = false">cancel</el-button>
+								<el-button type="primary" @click="submit">confirm</el-button>
+							</div>
+						</el-dialog>
+					</div>
+					
+					<!-- reset collection name -->
+					<div class="collection_reset">
+						<el-button  @click="dialogFormVisible2 = true" class="collection_change_button">rename collection</el-button>
+						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
+							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
+								<el-form-item label="rename collection" :label-width="formLabelWidth" prop="new_name">
+									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
+								</el-form-item>
+							</el-form>
+							<div slot="footer" class="dialog-footer">
+								<el-button @click="dialogFormVisible2 = false">cancel</el-button>
+								<el-button type="primary" @click="change">confirm</el-button>
+							</div>
+						</el-dialog>
+					</div>
+					
+					<!-- delete collection -->
+					<div class="collection_dele">
+						<el-popover
+							placement="top"
+							width="230"
+							v-model="visible">
+						<p>Are you sure to delete the collection?</p>
+						<div style="text-align: right; margin: 0">
+							<el-button size="mini" @click="visible = false">cancel</el-button>
+							<el-button size="mini" @click="delete_button">confirm</el-button>
+						</div>
+							<el-button slot="reference" class="collection_dele_button">delete collection</el-button>
+						</el-popover>
+					</div>
+				</div>
+				<!-- Line showing the current collection name -->
+				<el-divider content-position="center">{{value}}</el-divider>
+					
+					<!-- Collection body, display diagram & Title -->
+					<div class="coll_wrap">
+						<div class="coll_content" v-for="item in books" :key="item.imageLink">
+							<img :src="item.imageLink" class="img" alt/>
+							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
+						</div>
+					</div>
+				</div>
+			</el-tab-pane>
+			
 			<!-- Personal information -->
 			<el-tab-pane label="Personal information">
 				<div class="person_information">
@@ -44,84 +122,6 @@
 								<el-button type="primary" @click="confirm">confirm</el-button>
 							</el-form-item>
 						</el-form>
-					</div>
-				</div>
-			</el-tab-pane>
-			
-			<!-- Collection -->
-			<el-tab-pane label="collection">
-				<div class="collection" >
-					<div class="clearfix">
-					<!-- select -->
-					<div class="collection_head">
-						<el-select v-model="value" placeholder="please select a collection"
-									@change="currentSel(value)">
-							<el-option
-									v-for="item in options"
-									:key="item.label"
-									:value="item.value"
-									
-							>
-							</el-option>
-						</el-select>
-					</div>
-
-					<!-- create an new collection -->
-					<div class="collection_add">
-						<el-button type="text" @click="dialogFormVisible = true" class="collection_add_button">create an new collection</el-button>
-						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
-							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
-								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
-									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
-								</el-form-item>
-							</el-form>
-							<div slot="footer" class="dialog-footer">
-								<el-button @click="dialogFormVisible = false">cancel</el-button>
-								<el-button type="primary" @click="submit">confirm</el-button>
-							</div>
-						</el-dialog>
-					</div>
-					
-					<!-- reset collection name -->
-					<div class="collection_reset">
-						<el-button type="text" @click="dialogFormVisible2 = true" class="collection_change_button">reset collection</el-button>
-						<el-dialog title="reset collection" :visible.sync="dialogFormVisible2">
-							<el-form ref="recollectionFormRef" :model="recollectionForm" :rules="recollectionformRules">
-								<el-form-item label="reset collection" :label-width="formLabelWidth" prop="new_name">
-									<el-input v-model="recollectionForm.new_name" autocomplete="off"></el-input>
-								</el-form-item>
-							</el-form>
-							<div slot="footer" class="dialog-footer">
-								<el-button @click="dialogFormVisible2 = false">cancel</el-button>
-								<el-button type="primary" @click="change">confirm</el-button>
-							</div>
-						</el-dialog>
-					</div>
-					
-					<!-- delete collection -->
-					<div class="collection_dele">
-						<el-popover
-							placement="top"
-							width="200"
-							v-model="visible">
-						<p>Are you sure to delete the collection?</p>
-						<div style="text-align: right; margin: 0">
-							<el-button size="mini" type="text" @click="visible = false">cancel</el-button>
-							<el-button type="text" size="mini" @click="delete_button">confirm</el-button>
-						</div>
-							<el-button type="text" slot="reference" class="collection_dele_button">delete collection</el-button>
-						</el-popover>
-					</div>
-				</div>
-				<!-- Line showing the current collection name -->
-				<el-divider content-position="center" class="divider">{{value}}</el-divider>
-					
-					<!-- Collection body, display diagram & Title -->
-					<div class="coll_wrap">
-						<div class="coll_content" v-for="item in books" :key="item.imageLink">
-							<img :src="item.imageLink" class="img" alt/>
-							<el-button class="book-detail" @click="jump_one_book(item)">More Details</el-button>
-						</div>
 					</div>
 				</div>
 			</el-tab-pane>
@@ -566,7 +566,12 @@ export default {
 		display: block;
 		clear: both;
 	}
-	.collection_head, .collection_add,.collection_reset, .collection_dele {
+	.collection_head{
+		margin-left: 10px;
+		margin-top: 20px;
+		float: left;
+	}
+	.collection_add,.collection_reset, .collection_dele {
 		margin-top: 10px;
 		float: left;
 	}
@@ -577,6 +582,10 @@ export default {
 	}
 	.collection_add{
 		margin-top: 10px;
+	}
+	.el-divider__text {
+		font-size: 30px;
+		background-color: aliceblue;
 	}
 	// reset collection name
 	.collection_change_button{
