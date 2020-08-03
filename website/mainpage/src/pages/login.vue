@@ -1,4 +1,9 @@
 <template>
+<div class="wrap">
+	<div class="header">
+		<Header></Header>
+	</div>
+	
 	<div class="wrap_login">
 		<el-form ref="loginFormRef" :model="loginForm" :label-position="labelPosition" label-width="80px" class="register_form">
 			<!-- Header font -->
@@ -22,10 +27,15 @@
 			</div>
 		</el-form>
 	</div>
+</div>
 </template>
 
 <script>
+import Header from '../components/homepage_components/header.vue'
 export default {
+components:{
+	Header
+},
 data () {
 	return {
 		labelPosition: 'left',
@@ -71,13 +81,22 @@ body, html{
 	height: 100%;
 	overflow: hidden;
 }
-.wrap_login{
+.wrap{
 	position: absolute;
-	// background-color: deeppink;
+	height: 100%;
+	width: 100%;
 	background: url(../assets/background_login.jpg) no-repeat fixed;
 	background-size: cover;
 	background-origin: border-box;
-	height: 100%;
+}
+.header{
+	margin-bottom: 10px;
+}
+.wrap_login{
+	position: absolute;
+	// background-color: deeppink;
+	
+	height: 90%;
 	width: 100%;
 }
 // The layout of the login list

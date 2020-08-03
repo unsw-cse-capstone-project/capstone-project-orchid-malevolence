@@ -326,23 +326,29 @@ class ReviewAPIView(APIView):
         user_obj = token_obj.user
         book_id = request.data['book_id']
         review_info = request.data['review']
-        review_info['user']=user_obj.id
-        review_info['book']=book_id
-        review_set = Review.objects.filter(user=user_obj.id,book=book_id)
-        # 存在就是修改
-        if(review_set.exists()):
-            review_temp=review_set[0]
-            review_temp.content = review_info['content']
-            review_temp.save()
-            return Response(data={'msg':'update review success'},status=HTTP_200_OK)
+        if(len(review_info['content'])<=5):
+            return Response(data={"msg":"review is too short"},status=HTTP_400_BAD_REQUEST)
         else:
-            serializer = ReviewSerializer(data=review_info)
-            if serializer.is_valid():
-                serializer.save()
-                print('ready to save')
-                return Response(data={'msg':'add review success'},status=HTTP_200_OK)
-            print(serializer.errors)
-            return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
+            try:
+                # 尝试获取，如果有review_id,就是修改！
+                review_id=request.data["review_id"]
+                review_temp=Review.objects.get(id=review_id)
+                review_temp.content=review_info['content']
+                review_temp.save()
+                return Response(data={"msg":"update success!"},status=HTTP_200_OK)
+            except:
+                # 没有就是新的评论
+                review_info['user']=user_obj.id
+                review_info['book']=book_id
+                serializer = ReviewSerializer(data=review_info)
+                if serializer.is_valid():
+                    serializer.save()
+                    print('ready to save')
+                    return Response(data={'msg':'add review success'},status=HTTP_200_OK)
+                print(serializer.errors)
+                return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
+            # 存在就是修改
+
 
 # 给书打分,支持修改分数
 class RatingAPIView(APIView):

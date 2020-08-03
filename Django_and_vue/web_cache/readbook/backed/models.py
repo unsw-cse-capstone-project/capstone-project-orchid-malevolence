@@ -76,8 +76,8 @@ class Review(models.Model):
     book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
     like_count_num = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        unique_together=('user','book')
+    # class Meta:
+    #     unique_together=('user','book')
 
 
 class LikeIt(models.Model):

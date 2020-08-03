@@ -247,17 +247,33 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         # exclude(user=user_id)
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
+            # 评论的主体
             rev_ser = ReviewSerializer(instance=review_set,many=True)
             res=[]
             for i in rev_ser.data:
+                res.append(i)
+            # 因为现在用户可以多评论了，所以需要单独搜索一个用户的集合
+            review_user_info=[]
+            for i in res:
+                if(i['user'] not in review_user_info):
+                    review_user_info.append(i)
+            # 提前赋值为0
+            for i in res:
+                i['rating']=0
+
+            user_rating_dict={}
+            for i in review_user_info:
                 rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
                 if(rating_temp_set.exists()):
-                    rating_temp=rating_temp_set[0]
-                    i['rating']=rating_temp.rating
-                    res.append(i)
-                else:
-                    i['rating']=0
-                    res.append(i)
+                    for j in rating_temp_set:
+                        user_rating_dict[i['user']]=j.rating
+            
+            if(user_rating_dict!={}):
+                for i in res:
+                    # 给每一条评论加上分数。
+                    if(i['user'] in user_rating_dict.keys()):
+                        i['rating']=user_rating_dict[i['user']]
+
             like_status_set = LikeIt.objects.filter(user=user_id,belongto_book=book_id)
             like_status_list=[]
             # 获取所有用户点赞的评论的id
@@ -333,17 +349,33 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         book_id = obj.id
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
+            # 评论的主体
             rev_ser = ReviewSerializer(instance=review_set,many=True)
             res=[]
             for i in rev_ser.data:
+                res.append(i)
+            # 因为现在用户可以多评论了，所以需要单独搜索一个用户的集合
+            review_user_info=[]
+            for i in res:
+                if(i['user'] not in review_user_info):
+                    review_user_info.append(i)
+            
+                        # 提前赋值为0
+            for i in res:
+                i['rating']=0
+
+            user_rating_dict={}
+            for i in review_user_info:
                 rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
                 if(rating_temp_set.exists()):
-                    rating_temp=rating_temp_set[0]
-                    i['rating']=rating_temp.rating
-                    res.append(i)
-                else:
-                    i['rating']=0
-                    res.append(i)
+                    for j in rating_temp_set:
+                        user_rating_dict[i['user']]=j.rating
+            
+            if(user_rating_dict!={}):
+                for i in res:
+                    # 给每一条评论加上分数。
+                    if(i['user'] in user_rating_dict.keys()):
+                        i['rating']=user_rating_dict[i['user']]
             
             # 要让每条评论的obj包含当前用户是否处于点赞状态
             # 循环遍历列表，还会有个点过赞的列表

@@ -32,4 +32,7 @@ week 8
 Update some apis and insert more data into database. Add redis as cache. Use uWSGI to replace default django web server.
 Next week, more test!
 
+week 9
+fix some error, add limition of some input data
+
 
