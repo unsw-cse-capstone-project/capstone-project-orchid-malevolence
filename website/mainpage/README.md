@@ -5,6 +5,11 @@
 npm install
 ```
 
+### cd to my-project
+```
+cd /capstone-project-orchid-malevolence/website/mainpage/ 
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
