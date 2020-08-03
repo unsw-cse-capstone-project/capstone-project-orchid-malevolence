@@ -5,10 +5,10 @@
 		<div>
 			<Header></Header>
 		</div>
-			<!-- three part in this page
-				1. u can search a book inside your collection
-				2. show all books from your all collections
-				3. display all books in one collection and u can remove that book in this collection-->
+		<!-- three part in this page
+			1. u can search a book inside your collection
+			2. show all books from your all collections
+			3. display all books in one collection and u can remove that book in this collection-->
 		<div class="search_model">
 			<!-- search a book inside your collection-->
 			<el-input v-model="input" placeholder="Search a book inside your collections" @keyup.enter.native="jump_this_book">
@@ -40,7 +40,7 @@
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
 
-					<div class="item_box" v-for="item in all_books" :key="item.ISBN">
+					<div  v-for="item in all_books" :key="item.ISBN">
 						<div class="book_item img-box" >
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
 						</div>
@@ -102,7 +102,7 @@
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
-					<div style="border-bottom: 1px solid gray" v-for="item in books2" :key="item.imageLink" >
+					<div  v-for="item in books2" :key="item.imageLink" >
 
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
@@ -121,34 +121,26 @@
 								<div><p>Publisher: {{item.publisher}}</p></div>
 								<div><p>publish_date: {{item.publish_date}}</p></div>
 								<div><p>category: {{item.categories}}</p></div>
-								<div>
-<!--									<div class="operate book_item">-->
-
-
-<!--									</div>-->
-								</div>
-
 
 							</div>
 						</div>
-						<el-popconfirm
-										confirmButtonText='confirm'
-										cancelButtonText='cancel'
-										icon="el-icon-info"
-										iconColor="red"
-										title="Confirm to delete this book from current collection"
-										@onConfirm="del(value,item)"
+						<div class="operate book_item">
+							<el-popconfirm
+											confirmButtonText='confirm'
+											cancelButtonText='cancel'
+											icon="el-icon-info"
+											iconColor="red"
+											title="Confirm to delete this book from current collection"
+											@onConfirm="del(value,item)"
 
-						>
-							<p>Remove this book</p>
-							<el-button slot="reference">Remove this book</el-button>
-
-						</el-popconfirm>
-
+							>
+								<el-button slot="reference">Remove this book</el-button>
+							</el-popconfirm>
+						</div>
 					</div>
 				</div>
-				</div>
 			</div>
+		</div>
 	</div>
 </template>
 
@@ -210,11 +202,11 @@ export default {
 					this.delbookform.book_id=book.id
 				}
 
-					}
+			}
 
 			delBookfromCollection(this.delbookform).then(res=>{
 				console.log(res)})
-				location.reload()
+			location.reload()
 		},
 
 		getAllBooks(val){
@@ -248,7 +240,7 @@ export default {
 			for(let i=0;i<len;i++){
 				let title=this.all_books[i].title.toLowerCase()
 				let input=this.input.toLowerCase()
-					if ( title.indexOf(input)!==-1  ){
+				if ( title.indexOf(input)!==-1  ){
 					this.search_book.push(this.all_books[i])
 
 				}
@@ -368,7 +360,7 @@ export default {
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		width: 70%;
+		width: 52%;
 		word-break: break-all;
 	}
 
@@ -394,12 +386,11 @@ export default {
 		vertical-align: top;
 	}
 
+	.right_border{
+		border-right: 1px solid gray;
+	}
 	/deep/ .el-divider__text{
 		font-size: 25px;
 	}
-	.el-button{
-		margin-bottom: 10px;
-	}
-
 
 </style>
