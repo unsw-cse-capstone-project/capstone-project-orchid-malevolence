@@ -124,7 +124,7 @@ export default {
 				this.result.averageScore = result.rating_analyse.average_rating
 				this.result.book_id = result.id
 				this.result.review_book = result.review_book
-				// this.sort_commit(this.result)
+				this.sort_commit(this.result)
 			}).catch(res => {
 				console.log(res)
 			})
@@ -168,7 +168,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 					console.log(result)
 
 
@@ -184,7 +184,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 					console.log(result)
 
 
