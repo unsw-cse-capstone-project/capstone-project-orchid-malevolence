@@ -5,7 +5,7 @@
 npm install
 ```
 
-### cd to
+### cd to my-project
 ```
 cd /capstone-project-orchid-malevolence/website/mainpage/ 
 ```
