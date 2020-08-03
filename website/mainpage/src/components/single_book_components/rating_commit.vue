@@ -1,10 +1,24 @@
 
 <template>
 	<div>
-		<el-button type="primary" @click="isShowDialog" icon="el-icon-edit">rating and commit</el-button>
+		<span style="display: inline-block; margin-right: 10px">Rating</span>
+		<el-rate v-show="isShow"
+						@change="submit_rating(value)"
+						v-model="value"
+						:colors="colors">
+		</el-rate>
+		<el-rate v-show="!isShow"
+						v-model="value1"
+						disabled
+						show-score
+						text-color="#ff9900"
+						score-template="{value}">
+		</el-rate>
+		<span v-show="isShow" style="display: inline-block; margin-right: 10px">{{value1}}</span>
+		<el-button type="primary" @click="isShowDialog" icon="el-icon-edit">comment</el-button>
 
 		<el-dialog
-						title="rating and commit"
+						title="comment"
 						:visible.sync="dialogVisible"
 						width="30%">
 
@@ -19,7 +33,7 @@
 									:colors="colors">
 					</el-rate>
 
-				<el-input class="commit" type="textarea"  @keyup.enter.native="submite_ratingandreview" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Commit this book" v-model="textarea1">
+				<el-input class="comment" type="textarea"  @keyup.enter.native="submite_ratingandreview" :autosize="{ minRows: 7, maxRows: 10}" placeholder="Comment this book" v-model="textarea1">
 				</el-input>
 
 			<span slot="footer" class="dialog-footer">
@@ -33,7 +47,6 @@
 
 <script>
 import {postrating, postReview} from '../../network/requests'
-
 export default {
 	name: 'rating_commit',
 	data () {
@@ -43,7 +56,9 @@ export default {
 			dialogVisible: false,
 			// wrapperClosable:true,
 			textarea1: "",
+			isShow:true,
 			value: 0,
+			value1:0,
 			colors: ['#99A9BF', '#F7BA2A', '#FF9900']
 		}
 	},
@@ -64,6 +79,25 @@ export default {
 			}
 
 		},
+		submit_rating(value){
+			this.isShow=false
+
+			let postvalue = {
+				'rating_info': {
+					'book': this.bookID,
+					'rating': value
+				}
+			}
+
+			postrating(postvalue).then(res => {
+				console.log(res)
+			})
+			this.$emit('val',value)
+			this.value1=value
+
+			// location.reload()
+
+		},
 		submite_ratingandreview () {
 
 			if (this.token_log) {
@@ -71,17 +105,6 @@ export default {
 				// 	this.$message({message: 'please write your commit: ', type: 'warning',showClose: true,})
 				// 	return
 				// }
-
-				let postvalue = {
-					'rating_info': {
-						'book': this.bookID,
-						'rating': this.value
-					}
-				}
-
-				postrating(postvalue).then(res => {
-					console.log(res)
-				})
 
 				let post_review = {
 					'book_id': this.bookID,
@@ -96,10 +119,8 @@ export default {
 						console.log(res)
 					})
 				}
-
-
 			}
-			location.reload()
+
 
 			this.dialogVisible = false
 
@@ -118,8 +139,11 @@ export default {
 		font-size: 14px;
 		word-break: break-all;
 	}
-	.commit {
+	.comment {
 		margin-top: 20px;
+	}
+	.el-rate{
+		display: inline-block;
 	}
 
 

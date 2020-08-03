@@ -5,7 +5,7 @@
 		<span class="score">{{average}}</span>
 		<el-rate
 						class="rate"
-						v-model="average"
+						v-model="value"
 						disabled
 						text-color="#ff9900"
 						score-template="{value}">
@@ -29,7 +29,6 @@
 
 <script>
 
-
 export default {
 	name: 'read_score',
 	data () {
@@ -39,6 +38,7 @@ export default {
 			number: Number(0),
 			book_id: String,
 			value: 0,
+			receive_from_rating:0,
 			TotalCount: '',
 			isShow: true,
 			rating_list:{},
@@ -51,11 +51,19 @@ export default {
 		res: Object,
 		default: {}
 	},
+	// watch:{
+	// 	receive_from_rating:function () {
+	// 		console.log('ss')
+	//
+	// 	}
+	// },
+
+
 
 
 	// request method page initial and get average score of this book
 	updated () {
-		// console.log(this.res)
+		console.log(this.res)
 		this.average = this.res.averageScore
 		this.book_id = this.res.book_id
 		this.TotalCount = this.res.TotalCount
@@ -64,7 +72,7 @@ export default {
 		this.rating_list.three=parseFloat((this.res.rating_analyse.three*100).toFixed(1))
 		this.rating_list.two=parseFloat((this.res.rating_analyse.two*100).toFixed(1))
 		this.rating_list.one=parseFloat((this.res.rating_analyse.one*100).toFixed(1))
-		// console.log(this.rating_list)
+		console.log(this.rating_list)
 
 	},
 

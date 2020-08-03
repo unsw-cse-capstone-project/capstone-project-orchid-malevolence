@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-button type="primary" @click="isShowDialog" icon="el-icon-circle-plus-outline">Add to collection</el-button>
+		<el-button style="display: inline-block" type="primary" @click="isShowDialog" icon="el-icon-circle-plus-outline">Add to collection</el-button>
 		<!--		pop up a dialog-->
 		<el-dialog
 						title="Add this book to your collection"
