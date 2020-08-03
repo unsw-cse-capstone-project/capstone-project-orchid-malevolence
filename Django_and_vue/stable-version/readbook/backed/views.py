@@ -344,7 +344,7 @@ class ReviewAPIView(APIView):
                 if serializer.is_valid():
                     serializer.save()
                     print('ready to save')
-                    return Response(data={'msg':'add review success'},status=HTTP_200_OK)
+                    return Response(data={'msg':serializer.data},status=HTTP_200_OK)
                 print(serializer.errors)
                 return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
             # 存在就是修改
