@@ -415,8 +415,8 @@ request需要包含：书的id以及规定格式的评论内容。
 目前支持评论的修改.
 
 ~目前每个用户对于一本图书只能有一条评论!~
+现在用户可以进行多次评论了，每条评论都会有用户的评分信息。
 
-修改评论类似，重新发一遍就行。review->contetn 可以为空，发送空字符串就行 !""!.
 
 can not support edit and delet!
 request data:
@@ -430,6 +430,16 @@ request data:
     }
 }
 空评论现在不可以了！！！我在后端已经加了长度限制了。
+如果想修改某一条已经发表过的评论：
+额外单独添加review id
+{
+    "book_id":"zz1ahsqUgXwC",
+    "review_id":6,
+    "review":{
+        "content":"5 years later, this book is very interesting! wow!"
+    }
+}
+返回信息为update success！
 
 ```
 
