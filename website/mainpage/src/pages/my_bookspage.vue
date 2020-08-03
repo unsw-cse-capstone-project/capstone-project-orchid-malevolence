@@ -40,7 +40,7 @@
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
 
-					<div  v-for="item in all_books" :key="item.ISBN">
+					<div class="item_box" v-for="item in all_books" :key="item.ISBN">
 						<div class="book_item img-box" >
 							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
 						</div>
@@ -102,7 +102,7 @@
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
-					<div  v-for="item in books2" :key="item.imageLink" >
+					<div style="border-bottom: 1px solid gray" v-for="item in books2" :key="item.imageLink" >
 
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
@@ -121,22 +121,30 @@
 								<div><p>Publisher: {{item.publisher}}</p></div>
 								<div><p>publish_date: {{item.publish_date}}</p></div>
 								<div><p>category: {{item.categories}}</p></div>
+								<div>
+<!--									<div class="operate book_item">-->
+
+
+<!--									</div>-->
+								</div>
+
 
 							</div>
 						</div>
-						<div class="operate book_item">
-							<el-popconfirm
-											confirmButtonText='confirm'
-											cancelButtonText='cancel'
-											icon="el-icon-info"
-											iconColor="red"
-											title="Confirm to delete this book from current collection"
-											@onConfirm="del(value,item)"
+						<el-popconfirm
+										confirmButtonText='confirm'
+										cancelButtonText='cancel'
+										icon="el-icon-info"
+										iconColor="red"
+										title="Confirm to delete this book from current collection"
+										@onConfirm="del(value,item)"
 
-							>
-								<el-button slot="reference">Remove this book</el-button>
-							</el-popconfirm>
-						</div>
+						>
+							<p>Remove this book</p>
+							<el-button slot="reference">Remove this book</el-button>
+
+						</el-popconfirm>
+
 					</div>
 				</div>
 				</div>
@@ -360,7 +368,7 @@ export default {
 	.text-block{
 		display: inline-block;
 		vertical-align: top;
-		width: 52%;
+		width: 70%;
 		word-break: break-all;
 	}
 
@@ -386,11 +394,12 @@ export default {
 		vertical-align: top;
 	}
 
-	.right_border{
-		border-right: 1px solid gray;
-	}
 	/deep/ .el-divider__text{
 		font-size: 25px;
 	}
+	.el-button{
+		margin-bottom: 10px;
+	}
+
 
 </style>

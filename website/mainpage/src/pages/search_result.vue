@@ -83,7 +83,7 @@ export default {
 	components: {
 		// search_model,
 		book_list,
-		Header
+		Header,
 
 	},
 	methods: {

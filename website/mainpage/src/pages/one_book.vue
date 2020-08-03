@@ -15,9 +15,9 @@
 			<div class="book_item text-block">
 				<div><p>Author: {{book.authors}}</p></div>
 				<div><p>Publisher: {{book.publisher}}</p></div>
-				<div><p>publish_date: {{book.publisher_data}}</p></div>
+				<div><p>Publish date: {{book.publisher_data}}</p></div>
 				<div><p>ISBN: {{book.ISBN}}</p></div>
-				<div><p>categories: {{book.category}}</p></div>
+				<div><p>Categories: {{book.category}}</p></div>
 
 			</div>
 
@@ -115,16 +115,30 @@ export default {
 	methods: {
 		receive_from_rating(){
 			let post_value = {book_id: this.book.book_id}
-			getSingleBookmultdata(post_value).then(result => {
-				console.log(result)
+			getSingleBookmultdata(post_value).then(res => {
+				// let that=this
 
-				this.result = result
-				this.result.rate = result.rating_analyse.rating
-				this.result.TotalCount = result.rating_analyse.how_many_user_scored
-				this.result.averageScore = result.rating_analyse.average_rating
-				this.result.book_id = result.id
-				this.result.review_book = result.review_book
-				this.sort_commit(this.result)
+				console.log(res)
+				let rating_list=res.rating_analyse
+				let count=rating_list.how_many_user_scored
+				let five=rating_list.five*count*5
+				let four=rating_list.four*count*4
+				let three=rating_list.three*count*3
+				let two=rating_list.two*count*2
+				let one=rating_list.one*count*1
+				let averagescore=(five+four+three+two+one)/count
+				console.log(averagescore)
+				// this.result.TotalCount=count
+
+				this.result = res
+				this.result.rate = res.rating_analyse.rating
+				this.result.TotalCount = res.rating_analyse.how_many_user_scored
+				this.result.averageScore = res.rating_analyse.average_rating
+				this.result.book_id = res.id
+				this.result.review_book = res.review_book
+				this.result.averageScore=averagescore
+
+				// that.sort_commit(that.result)
 			}).catch(res => {
 				console.log(res)
 			})

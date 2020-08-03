@@ -67,6 +67,7 @@ export default {
 		},
 		submit_rating(value){
 			if (this.token_log){
+
 				this.isShow=false
 
 				let postvalue = {

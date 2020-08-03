@@ -155,6 +155,9 @@ export default {
 	p {
 		line-height: 1;
 	}
+	.el-pagination{
+		margin:40px 0 100px 0;
+	}
 
 
 </style>
