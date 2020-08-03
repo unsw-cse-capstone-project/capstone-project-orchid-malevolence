@@ -73,7 +73,7 @@ export default {
 			id: null,
 			currentIndex: 0, //for loop in reviews, get the current index
 			review: [],
-			value: '',
+			value: Number,
 			book: {},
 			postvlaue: {  //post value of like it
 				// "review_id":value.id,
@@ -133,10 +133,12 @@ export default {
 				this.result = res
 				this.result.rate = res.rating_analyse.rating
 				this.result.TotalCount = res.rating_analyse.how_many_user_scored
-				this.result.averageScore = res.rating_analyse.average_rating
+				// this.result.averageScore = parseFloat(res.rating_analyse.average_rating)
 				this.result.book_id = res.id
 				this.result.review_book = res.review_book
-				this.result.averageScore=averagescore
+				console.log(typeof averagescore)
+
+				this.result.averageScore=parseFloat(averagescore.toFixed(1))
 
 				// that.sort_commit(that.result)
 			}).catch(res => {
@@ -147,9 +149,9 @@ export default {
 
 		},
 		// sort the commit
-		sort_commit(value){
+		sort_commit(val){
 			let newValue=[]
-			newValue.push(value)
+			newValue.push(val)
 			let len=newValue[0].review_book.length
 			let temp={}
 			let maxIndex=0
@@ -182,6 +184,8 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
+					console.log(this.result.review_book)
+
 					this.sort_commit(this.result)
 					console.log(result)
 
@@ -210,27 +214,27 @@ export default {
 
 		},
 		//agree the the review or not
-		changeNumber (value, index) {
-			console.log(value.like_status)
+		changeNumber (val, index) {
+			console.log(val.like_status)
 			if(this.token_log){
 				this.currentIndex = index //change the image or not based on like or not
 				this.postvlaue.book_id = this.result.book_id //post book_id of this review
-				this.postvlaue.review_id = value.id  //post review_id of this book
+				this.postvlaue.review_id = val.id  //post review_id of this book
 
-				if (!value.like_status) { //if not click like before
-					value.like_status = 1
+				if (!val.like_status) { //if not click like before
+					val.like_status = 1
 					this.postvlaue.likeit.status = 1
 
 				} else {   //if have already click like
-					value.like_status = 0
+					val.like_status = 0
 					this.currentIndex = -1
 					this.postvlaue.likeit.status = -1
 				}
 				postLikeIt(this.postvlaue).then(res => {
-					if (value.like_status === 1) {
-						value.like_count_num += 1
+					if (val.like_status === 1) {
+						val.like_count_num += 1
 					} else {
-						value.like_count_num -= 1
+						val.like_count_num -= 1
 					}
 					console.log(res)
 				}).catch(res => {

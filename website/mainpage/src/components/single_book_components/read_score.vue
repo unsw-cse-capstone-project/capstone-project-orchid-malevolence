@@ -73,7 +73,7 @@ export default {
 		this.rating_list.three=parseFloat((this.res.rating_analyse.three*100).toFixed(1))
 		this.rating_list.two=parseFloat((this.res.rating_analyse.two*100).toFixed(1))
 		this.rating_list.one=parseFloat((this.res.rating_analyse.one*100).toFixed(1))
-		// console.log(this.rating_list)
+		console.log(this.res)
 
 	},
 
