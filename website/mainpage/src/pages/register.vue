@@ -154,8 +154,9 @@
 	}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" scoped>
+<!-- Add "scoped" attribu
+te to limit CSS to this component only -->
+<style lang="less">
 body, html{
 	height: 100%;
 	overflow: hidden;
@@ -164,7 +165,7 @@ body, html{
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background: url(../assets/background_register.jpg) no-repeat fixed;
+	background: url(../assets/register_img.jpg) no-repeat fixed;
 	background-size: cover;
 	background-origin: border-box;
 }
@@ -188,14 +189,23 @@ body, html{
 // title Center + font
 .register_title{
 	text-align: center;
-	font: 34px/98px bolder sans-serif;
+	font: 50px/98px bolder sans-serif;
+	font-style: italic;
+	color: whitesmoke;
+	margin-top: 25px;
+	margin-bottom: 15px;
 }
 // Processing of each single column table
 .register_form .el-form-item{
 	height: 53px;
-	margin-left: 30px;
-	margin-top: 10px;
+	margin-left: 40px;
 }
+.register_form .el-form-item__label{
+	color: whitesmoke;
+	font-size: 15px;
+	margin-right: 25px;
+}
+
 // Modify the length of the input field
 .register_form .el-input{
 	width: 300px;
@@ -203,5 +213,7 @@ body, html{
 .other{
 	text-align: center;
 	font: bolder;
+	color: white;
+	font-size: 18px;
 }
 </style>
