@@ -20,6 +20,15 @@ your data should look like this:
 }
 ```
 
+return:
+```
+{   
+    "id": 3,
+    "username": "Pink",
+    "Token": #######################
+}
+```
+
 ## Register
 ```
 url: /api/register/
@@ -41,6 +50,15 @@ your data is a form, it should like this
 }
 ```
 
+return:
+```
+{   
+    "id": 3,
+    "username": "Pink",
+    "Token": #######################
+}
+```
+
 ## Account detail
 ```
 url: /api/account/
@@ -48,7 +66,6 @@ url: /api/account/
 
 >GET
 
-获取当前用户的基本信息，包括collections，以及colelction下面的book
 
 this request does not need any extra info, i can get account token by header. Or you can sens ti with json data.
 
@@ -56,8 +73,7 @@ it will return a json data, which contain the whole info of user except password
 
 >POST
 
-目前支持修改用户的性别和生日，都以“字符串”类型发送过来！！
-发送的json中必须都要包含性别和生日，不修改也要放进去：
+user can update gender and birth-day
 ```json
 {
     "id":3,
@@ -66,8 +82,6 @@ it will return a json data, which contain the whole info of user except password
 }
 ```
 
-性别这里我后端没有做任何的字符串筛选！
-生日日期最好为字符串！
 
 ## Collection operations
 ```
@@ -76,7 +90,7 @@ url: /api/collection/
 
 >GET
 
-返回数据如下
+return data:
 
 ```
 [
@@ -136,7 +150,7 @@ the response data contain all collections and books be stored in collections.
 
 >POST
 
-就是建立新的collection，包含colelction的名字，原则上最好别重复，但是也可以，最好前端判断一下，如果有重名就需要修改。
+create new collection.
 
 you can add a collection with name to user
 
@@ -151,9 +165,9 @@ your data shoud be:
 
 >DELETE
 
-删除colleciton，发送colelction的id就行了
+delete collection, send collection id.
 
-你的axios数据参数：
+your ajax shoud looks like:
 ```js
 axios.delete(url, {data:{collection_id:1}})
 ```
@@ -168,7 +182,7 @@ you can delete a collection with name
 
 >PUT 
 
-修改collection名字
+rename collection
 
 ```js
 axios.put(url, {collection_id:1, new_name: #####})
@@ -190,9 +204,7 @@ url: /api/add_book_to_db/
 
 >POST
 
-这个是单独开放的接口，往数据库里面插入书籍。
-插入要求如下：
-其中id和isbn都是唯一的
+
 
 only one opeartion post
 your data structure should like this:
@@ -221,7 +233,6 @@ url: /api/add_to_collection
 
 >POST add the book to the collection
 
-把书加入colleciton中，需要发送collection id和书的id
 
 ```
 {
@@ -234,10 +245,9 @@ if you can do this, you have already acquire collection_id and book infomation w
 
 >DELETE
 
-把某本书从collection中删掉。
-目前不支持批量删除。
 
-你的axios数据参数应当如下：
+
+：
 ```js
 axios.delete(url, {data: {collection_id:1, book_id:h56ansk4Sabc}})
 ```
@@ -258,16 +268,14 @@ you want to add this book to this collection or remove this book from this colle
 url: /api/searchbook/
 ```
 
-这个接口没有任何验证要求！！
+no auth!
 
-！！！！！ 我get和post都做了接口，爱用哪个用哪个，get用params参数，post用body参数 ！！！！！
+
 
 >GET search some book with title or authors.
 
-搜索书籍，通过post方法。
-请求数据包含搜索类型和搜索关键词
-有结果会返回书籍的object的list。
-如果没有就返回400.（有待商榷）
+if get, return data list,
+else return status=400
 
 ```
 {
@@ -295,18 +303,16 @@ url: /api/filter/
 
 >GET
 
-同上没有任何验证要求！！
+no auth!
 
-get请求，参数在params里面
+get:
 {
     "search_type": "Title"/"Authors",
     "key_word": "python"，
     "filter_rating": 3
 }
 
-前面两个跟搜索一样，再额外添加一个筛选分数条件。
-最好是整数！！！
-会返回大于等于当前筛选分数的结果！！
+similar as search 
 
 
 
@@ -314,14 +320,10 @@ get请求，参数在params里面
 ```
 url: /api/set_goal/
 ```
-!!!!!做了修改了！！！！！！
 
-！！！！！post和get都改了 ！！！！！！！！
-!!!!添加年份限定！！！
-！！！！ 如果之前没设定过目标，除了返回400.也会返回 0，0！！！！！！
 
->GET params参数传递
-这个就是简单的获取目标的值。
+>GET params
+
 
 you can acquire goal data, which contain target and already done count num
 you can send data:
@@ -341,17 +343,6 @@ the response:
 ```
 >POST set the goal value and edit goal value
 
-使用post方法
-进行设置目标，或者修改目标。
-发送规定格式的数据：
-    month是当前月份，最好通过vue函数获取。
-    year,当前年份
-    target就是目标数字。
-    不能为负数！
-    
-返回数据包括返回信息，是否成功，
-还有多少已经完成的数量。
-（就是当前月份被加入user任意的collection的书的数量。）
 
 create new goal or edit goal.
 request data:
@@ -379,13 +370,6 @@ url: /api/rating/
 
 >POST user give book a rating
 
-使用post方法
-
-用户对当前书进行打分
-发送规定样式的请求数据，request数据包含：
-    书籍id，以及分数，分数为【1，5】的整数，两边闭包！
-
-返回数据为返回状态。
 
 request data:
 ```
@@ -406,32 +390,23 @@ url: /api/review/
 
 >POST user post a review to one book
 
-使用post，用户对当前图书进行评论。
-
-request需要包含：书的id以及规定格式的评论内容。
-
-返回数据无所谓，判断status就行。
-
-目前支持评论的修改.
-
-~目前每个用户对于一本图书只能有一条评论!~
-现在用户可以进行多次评论了，每条评论都会有用户的评分信息。
-
+user ca have multi revire of one book!
 
 can not support edit and delet!
 request data:
 
 ```json
-发送评论：
+：
+create new review:
 {
     "book_id":"h56ansk4Sabc",
     "review":{
         "content":"2 years later, this still tech me so much! I recommand this book significantly!"
     }
 }
-空评论现在不可以了！！！我在后端已经加了长度限制了。
-如果想修改某一条已经发表过的评论：
-额外单独添加review id
+
+update review content:
+review id
 {
     "book_id":"zz1ahsqUgXwC",
     "review_id":6,
@@ -439,7 +414,8 @@ request data:
         "content":"5 years later, this book is very interesting! wow!"
     }
 }
-返回信息为update success！
+
+return msg update success！
 
 ```
 
@@ -452,12 +428,7 @@ url: /api/likeit/
 
 >POST user like one review
 
-使用post 记录用户对哪个评论点赞。
-request数据需要包含评论的id，书的id，以及以及规定格式的是否点赞状态。
 
-用户取消点赞，也是一样，只不过status=-1就行。
-
-返回数据不重要，判断返回数据的status就行。
 
 request data:
 ```
@@ -478,32 +449,27 @@ status:
 ```
 url: /api/bookdetail/
 ```
->GET params参数传递
+>GET params
 
-用get，向地址发送
-request信息需要有book_id
-返回数据为这个书的基本信息：
-包括书的id，书名，评分（包括分数和评分人数）
+
 
 user_rating_review:
-    当前这个用户，也就是登录用户对于当前浏览的书的评分，以及评论内容。
+    local user's rating and review.
 
 rating_analyse：
-    当前浏览的这本书的评分信息。包括平均分，多少人打过分。
-    剩下的是每个分数占总评分人数的比例小数，前端需要乘100%并显示。
+    rating sbout this book.
 
 * review_book:
-  * 主要优化目标！
-  * 这是一个list，每一条评论的信息就是一个object.
-  * 对于每个评论的object:
-    * id:评论的id.
-    * content:评论内容.
+  * list contain book objects
+  * for each object:
+    * id:review'sid.
+    * content: review content
     * user:username.
-    * book:book id与当前book一致.
-    * like_count_num：点赞总数.
-    * create_time：创建时间.
-    * rating:当前评论所属于的用户对于当前图书的评分.
-    * like_status：！！！！ 当前浏览网页的登录用户（不是当前这条评论所属于的用户）对于这条评论是否点过赞！如果是这里就是1，不是或者取消了赞，那么就是0！！！ ！！！！！.
+    * book:book id
+    * like_count_num：total number of like
+    * create_time：creation time
+    * rating: this review's owner's rating
+    * like_status： local user like this review or not!
 
 your request data:
 ```
@@ -545,27 +511,28 @@ response:
 }
 ```
 
-#主页简单推荐
+# mainpage recommend
 ```
 api/mainpagerec/
 ```
 >GET
-返回五本书的信息，
 
-# 推荐页面
+return give book objects
+
+# recommend
 ```
 api/recommend/
 ```
 >GET
-这个要发送用户id参数
+need user id
 ```
 {
     "id":3
 }
 ```
 
-返回值是三个或者两个集合，每个里面都有书
-如果是新用户或者用书读过的书太少，不会有用户推荐的书，
+if user's book is not enough, it cannot return custtom rec.
+
 ```
 {
     "rating_rec": [
