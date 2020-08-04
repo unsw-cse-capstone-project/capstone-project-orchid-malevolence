@@ -1,5 +1,5 @@
 <template>
-<div class="wrap">
+<div class="login_wrap">
 	<div class="header">
 		<Header></Header>
 	</div>
@@ -7,10 +7,10 @@
 	<div class="wrap_login">
 		<el-form ref="loginFormRef" :model="loginForm" :label-position="labelPosition" label-width="80px" class="register_form">
 			<!-- Header font -->
-			<div class="register_title_wrap">
-				<div class="register_title">Login</div>
+			<div class="login_title_wrap">
+				<div class="login_title">Login</div>
 			</div>
-			<div class="register_form">
+			<div class="login_form">
 			<!-- Username -->
 			<el-form-item label="Username" prop="username">
 				<el-input v-model="loginForm.username" placeholder="username" prefix-icon="iconfont icon-user"></el-input>
@@ -24,7 +24,7 @@
 				<el-button type="primary" @click="login">Login</el-button>
 			</el-form-item>
 			</div>
-			<div class="other">
+			<div class="login_other">
 				No account number? <router-link to='/register'>register</router-link>
 			</div>
 		</el-form>
@@ -83,7 +83,7 @@ body, html{
 	height: 100%;
 	overflow: hidden;
 }
-.wrap{
+.login_wrap{
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -114,31 +114,31 @@ body, html{
 }
 
 // title Center + font
-.register_title{
+.login_title{
 	text-align: center;
 	font: 50px/168px bolder sans-serif;
 	font-style: italic;
 	color: white;
 }
 // Processing of each single column table
-.el-form-item{
+.login_form .el-form-item{
 	height: 62.5px;
 	margin-left: 80px;
 }
-.el-form-item__label{
+.login_form .el-form-item__label{
 	color: white;
 	font-size: 17px;
 	margin-right: 10px;
 }
 
 // Modify the length of the input field
-
-.el-input{
+.login_form .el-input{
 	width: 300px;
 }
-.other{
+.login_other{
 	text-align: center;
 	font: bolder;
 	color: white;
+	font-size: 18px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div class="wrap">
+<div class="register_wrap">
 	<div class="header">
 		<Header></Header>
 	</div>
@@ -9,6 +9,7 @@
 			<div class="register_title_wrap">
 				<div class="register_title">Register</div>
 			</div>
+			<div class="register_form">
 			<!-- The user name -->
 			<el-form-item label="Username" prop="username">
 				<el-input v-model="RegisterForm.username" placeholder="username" prefix-icon="iconfont icon-user"></el-input>
@@ -30,6 +31,7 @@
 				<el-button type="primary" @click="register('RegisterForm')">Register</el-button>
 				<el-button type="info" @click="formreset">Reset</el-button>
 			</el-form-item>
+			</div>
 			<div class="other">
 				An existing account? <router-link to='/login'>login</router-link>
 			</div>
@@ -159,7 +161,7 @@ body, html{
 	height: 100%;
 	overflow: hidden;
 }
-.wrap{
+.register_wrap{
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -198,20 +200,17 @@ body, html{
 	font: 34px/98px bolder sans-serif;
 }
 // Processing of each single column table
-.el-form-item{
+.register_form .el-form-item{
 	height: 53px;
 	margin-left: 30px;
 	margin-top: 10px;
 }
 // Modify the length of the input field
-.el-input{
+.register_form .el-input{
 	width: 300px;
 }
 .other{
 	text-align: center;
 	font: bolder;
-}
-label{
-	font: 16px bolder;
 }
 </style>
