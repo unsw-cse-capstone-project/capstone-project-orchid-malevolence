@@ -1,5 +1,5 @@
 <template>
-<div class="wrap">
+<div class="login_wrap">
 	<div class="header">
 		<Header></Header>
 	</div>
@@ -7,9 +7,10 @@
 	<div class="wrap_login">
 		<el-form ref="loginFormRef" :model="loginForm" :label-position="labelPosition" label-width="80px" class="register_form">
 			<!-- Header font -->
-			<div class="register_title_wrap">
-				<div class="register_title">Login</div>
+			<div class="login_title_wrap">
+				<div class="login_title">Login</div>
 			</div>
+			<div class="login_form">
 			<!-- Username -->
 			<el-form-item label="Username" prop="username">
 				<el-input v-model="loginForm.username" placeholder="username" prefix-icon="iconfont icon-user"></el-input>
@@ -22,7 +23,8 @@
 			<el-form-item class="btns">
 				<el-button type="primary" @click="login">Login</el-button>
 			</el-form-item>
-			<div class="other">
+			</div>
+			<div class="login_other">
 				No account number? <router-link to='/register'>register</router-link>
 			</div>
 		</el-form>
@@ -59,16 +61,16 @@ methods: {
 			url: 'http://127.0.0.1:8000/api/login/',
 			data: this.loginForm
 		}).then(res => {
-			if(res.status === 400){
-				this.$message.error('fail to login')
-			}else if(res.status === 200){
-				// console.log(this.loginForm.username);
 				window.localStorage.setItem('username',this.loginForm.username)
 				window.localStorage.setItem('token', res.data.token)
-				this.$message.success('login successfully')
+				this.$message.success(this.loginForm.username+' login successfully')
 				this.$router.push('/')
-			}
-		})
+			}).catch(err=>{
+				console.log(err);
+				this.$message.error('Incorrect username or password')
+			})
+
+		//})
 		}
 		})
 	}
@@ -76,16 +78,16 @@ methods: {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 body, html{
 	height: 100%;
 	overflow: hidden;
 }
-.wrap{
+.login_wrap{
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background: url(../assets/background_login.jpg) no-repeat fixed;
+	background: url(../assets/login_img.jpg) no-repeat fixed;
 	background-size: cover;
 	background-origin: border-box;
 }
@@ -107,26 +109,36 @@ body, html{
 	right: 100px;
 	width: 590px;
 	height: 586px;
-	background-image: repeating-linear-gradient(135deg,rgba(0,0,0,0.05),rgba(225,169,131,.5));
+	background-image: repeating-linear-gradient(135deg,rgba(0,0,0,.05),rgba(43,44,46,.5));
 	border-radius: 30px;
 }
 
 // title Center + font
-.register_title{
+.login_title{
 	text-align: center;
-	font: 34px/168px bolder sans-serif;
+	font: 50px/168px bolder sans-serif;
+	font-style: italic;
+	color: white;
 }
 // Processing of each single column table
-.el-form-item{
+.login_form .el-form-item{
 	height: 62.5px;
-	margin-left: 30px;
+	margin-left: 80px;
 }
+.login_form .el-form-item__label{
+	color: white;
+	font-size: 17px;
+	margin-right: 10px;
+}
+
 // Modify the length of the input field
-.el-input{
+.login_form .el-input{
 	width: 300px;
 }
-.other{
+.login_other{
 	text-align: center;
 	font: bolder;
+	color: white;
+	font-size: 18px;
 }
 </style>

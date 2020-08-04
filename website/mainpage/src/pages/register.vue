@@ -1,10 +1,15 @@
 <template>
-	<div class="wrap">
+<div class="register_wrap">
+	<div class="header">
+		<Header></Header>
+	</div>
+	<div class="wrap_register">
 		<el-form ref="RegisterFormRef" :model="RegisterForm" :rules="RegisterFormRules" :label-position="labelPosition" label-width="80px" class="register_form">
 			<!-- Header font -->
 			<div class="register_title_wrap">
 				<div class="register_title">Register</div>
 			</div>
+			<div class="register_form">
 			<!-- The user name -->
 			<el-form-item label="Username" prop="username">
 				<el-input v-model="RegisterForm.username" placeholder="username" prefix-icon="iconfont icon-user"></el-input>
@@ -26,16 +31,22 @@
 				<el-button type="primary" @click="register('RegisterForm')">Register</el-button>
 				<el-button type="info" @click="formreset">Reset</el-button>
 			</el-form-item>
+			</div>
 			<div class="other">
 				An existing account? <router-link to='/login'>login</router-link>
 			</div>
 		</el-form>
 	</div>
+</div>
 </template>
 
 
 <script>
+	import Header from '../components/homepage_components/header.vue'
 	export default {
+		components:{
+			Header
+		},
 		data () {
 		// Verify that the mailbox format is correct
 		var checkEmail = (rule, value, callback) => {
@@ -116,40 +127,28 @@
 				data: this.RegisterForm
 			}).then(res => {
 				console.log(res);
-				if(res.status !== 200){
-					console.log(res.data.msg);
-					this.$message.error('Registered failure');
-				}else if(res.status == 200){
-					console.log(res.data.msg);
-					this.$message.success('Registered successfully');
-					this.$refs.RegisterFormRef.validate(async valid => {
-					if(!valid){
-						return
-					}
-					if (this.RegisterForm.username === '' || this.RegisterForm.password === '') {
-						this.$message.warning('The account or password cannot be empty')
-					} else {
-					this.$axios({
-						method: 'post',
-						url: 'http://127.0.0.1:8000/api/login/',
-						data: this.RegisterForm
-					}).then(res => {
-						if(res.status === 400){
-							this.$message.error('fail to login')
-						}else if(res.status === 200){
-							// console.log(this.loginForm.username);
-							window.localStorage.setItem('username',this.RegisterForm.username)
-							window.localStorage.setItem('token', res.data.token)
-							this.$message.success('login successfully')
-							this.$router.push('/')
-						}
-					})
-					}
-					})
-					//this.$router.push('/person');
-				}
+				this.$refs.RegisterFormRef.validate(async valid => {
+				if(!valid){return}
+				this.$axios({
+					method: 'post',
+					url: 'http://127.0.0.1:8000/api/login/',
+					data: this.RegisterForm
+				}).then(res => {
+					window.localStorage.setItem('username',this.RegisterForm.username)
+					window.localStorage.setItem('token', res.data.token)
+					this.$message.success(this.RegisterForm.username+' login successfully')
+					this.$router.push('/')
+				}).catch(err=>{
+				console.log(err);
+				this.$message.error('Username is exist');
+				})
 			})
+			}).catch(err=>{
+				console.log(err);
+				this.$message.error('Username is exist');
+				})
 			})
+			
 		}
 	}
 	}
@@ -162,12 +161,25 @@ body, html{
 	height: 100%;
 	overflow: hidden;
 }
-.wrap{
+.register_wrap{
 	position: absolute;
-	// background-color: deeppink;
+	height: 100%;
+	width: 100%;
 	background: url(../assets/background_register.jpg) no-repeat fixed;
 	background-size: cover;
-	height: 100%;
+	background-origin: border-box;
+}
+// .wrap{
+// 	position: absolute;
+// 	// background-color: deeppink;
+// 	background: url(../assets/background_register.jpg) no-repeat fixed;
+// 	background-size: cover;
+// 	height: 100%;
+// 	width: 100%;
+// }
+.wrap_register{
+	position: absolute;
+	height: 90%;
 	width: 100%;
 }
 // The layout of the registration list
@@ -188,20 +200,17 @@ body, html{
 	font: 34px/98px bolder sans-serif;
 }
 // Processing of each single column table
-.el-form-item{
+.register_form .el-form-item{
 	height: 53px;
 	margin-left: 30px;
 	margin-top: 10px;
 }
 // Modify the length of the input field
-.el-input{
+.register_form .el-input{
 	width: 300px;
 }
 .other{
 	text-align: center;
 	font: bolder;
-}
-label{
-	font: 16px bolder;
 }
 </style>

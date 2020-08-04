@@ -48,7 +48,7 @@ const router = new Router({
 			name: 'person',
 			component: person,
 			meta:{
-				title:'personal information'
+				title:'My Profile'
 			}
 		},
         {
