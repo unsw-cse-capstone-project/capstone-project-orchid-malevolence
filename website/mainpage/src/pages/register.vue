@@ -154,8 +154,7 @@
 	}
 </script>
 
-<!-- Add "scoped" attribu
-te to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 body, html{
 	height: 100%;
@@ -169,14 +168,6 @@ body, html{
 	background-size: cover;
 	background-origin: border-box;
 }
-// .wrap{
-// 	position: absolute;
-// 	// background-color: deeppink;
-// 	background: url(../assets/background_register.jpg) no-repeat fixed;
-// 	background-size: cover;
-// 	height: 100%;
-// 	width: 100%;
-// }
 .wrap_register{
 	position: absolute;
 	height: 90%;

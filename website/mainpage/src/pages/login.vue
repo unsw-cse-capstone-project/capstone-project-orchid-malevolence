@@ -19,7 +19,7 @@
 			<el-form-item label="Password" prop="password">
 				<el-input type="password" v-model="loginForm.password" placeholder="password" prefix-icon="iconfont icon-lock"></el-input>
 			</el-form-item>
-				<!-- button -->
+			<!-- button -->
 			<el-form-item class="btns">
 				<el-button type="primary" @click="login">Login</el-button>
 			</el-form-item>
@@ -70,7 +70,6 @@ methods: {
 				this.$message.error('Incorrect username or password')
 			})
 
-		//})
 		}
 		})
 	}
