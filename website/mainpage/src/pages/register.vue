@@ -202,8 +202,7 @@ body, html{
 }
 .register_form .el-form-item__label{
 	color: whitesmoke;
-	font-size: 15px;
-	margin-right: 25px;
+	margin-right: 30px;
 }
 
 // Modify the length of the input field
