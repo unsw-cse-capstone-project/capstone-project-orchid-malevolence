@@ -52,6 +52,12 @@ export default {
 		bookID: String, //the arguments bookID received from father page one_book page
 		book_name:String
 	},
+	mounted () {
+		if(localStorage.getItem('rating')){
+			this.value=localStorage.getItem('rating')
+
+		}
+	},
 
 	// this.dialogVisible = false
 	methods: {
@@ -66,7 +72,9 @@ export default {
 
 		},
 		submit_rating(value){
+			window.localStorage.setItem('rating',value)
 			if (this.token_log){
+
 
 				this.isShow=false
 
