@@ -18,7 +18,6 @@
 									v-for="item in options"
 									:key="item.label"
 									:value="item.value"
-									
 							>
 							</el-option>
 						</el-select>
@@ -405,7 +404,6 @@ export default {
 			this.$router.push({
 				name: 'one_book',
 				query: {
-					// item:value
 					book_id: value.id,
 					authors: value.authors,
 					title: value.title,
@@ -429,9 +427,7 @@ export default {
 		
 		// get current goal
 		getGoal() {
-			//this.activities = []
 			let now = new Date()
-			//let nowMonth = now.getMonth() + 1
 			let nowYear = now.getFullYear()
 			for(let month = 1; month < 13; month++){
 				let curMonth = {year:nowYear, month:month}
@@ -456,11 +452,6 @@ export default {
 		}
 	},
 	mounted: function () {
-		// let now = new Date()
-		// //let nowMonth = now.getMonth() + 1
-		// let nowtime = now.toLocaleDateString()
-		// // Get personal information in advance
-		// console.log(nowtime)
 		this.$refs.PerinfoFormRef.validate(async valid => {
 			if (!valid) { return }
 			getperinfodata().then(result =>{
@@ -481,7 +472,7 @@ export default {
 			//console.log(res)
 			this.collections = res
 			this.value = this.collections[0].name
-			this.getCollectionNames(res)   // 把api返回的collection名字整理出来
+			this.getCollectionNames(res)   // Sort out the collection names returned by the API
 			this.getCollectionBooks(this.collections[0].id) // default select first collection
 			this.recollectionForm.new_name = this.collections[0].name
 			this.recollectionForm.collection_id = this.collections[0].id

@@ -1,5 +1,9 @@
 <template>
-	<div class="wrap">
+<div class="wrap">
+	<div class="header">
+		<Header></Header>
+	</div>
+	<div class="wrap_register">
 		<el-form ref="RegisterFormRef" :model="RegisterForm" :rules="RegisterFormRules" :label-position="labelPosition" label-width="80px" class="register_form">
 			<!-- Header font -->
 			<div class="register_title_wrap">
@@ -31,11 +35,16 @@
 			</div>
 		</el-form>
 	</div>
+</div>
 </template>
 
 
 <script>
+	import Header from '../components/homepage_components/header.vue'
 	export default {
+		components:{
+			Header
+		},
 		data () {
 		// Verify that the mailbox format is correct
 		var checkEmail = (rule, value, callback) => {
@@ -152,10 +161,23 @@ body, html{
 }
 .wrap{
 	position: absolute;
-	// background-color: deeppink;
+	height: 100%;
+	width: 100%;
 	background: url(../assets/background_register.jpg) no-repeat fixed;
 	background-size: cover;
-	height: 100%;
+	background-origin: border-box;
+}
+// .wrap{
+// 	position: absolute;
+// 	// background-color: deeppink;
+// 	background: url(../assets/background_register.jpg) no-repeat fixed;
+// 	background-size: cover;
+// 	height: 100%;
+// 	width: 100%;
+// }
+.wrap_register{
+	position: absolute;
+	height: 90%;
 	width: 100%;
 }
 // The layout of the registration list
