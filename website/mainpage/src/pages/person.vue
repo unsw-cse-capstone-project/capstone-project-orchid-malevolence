@@ -26,10 +26,10 @@
 			
 					<!-- create an new collection -->
 					<div class="collection_add">
-						<el-button @click="dialogFormVisible = true" class="collection_add_button">Create an new collection</el-button>
-						<el-dialog title="create an new collection" :visible.sync="dialogFormVisible">
+						<el-button @click="dialogFormVisible = true" class="collection_add_button">Create a new collection</el-button>
+						<el-dialog title="Create a new collection" :visible.sync="dialogFormVisible">
 							<el-form ref="collectionformRef" :model="collectionform" :rules="collectionformRules">
-								<el-form-item label="collection name" :label-width="formLabelWidth" prop="name">
+								<el-form-item label="Collection Name" :label-width="formLabelWidth" prop="name">
 									<el-input v-model="collectionform.name" autocomplete="off"></el-input>
 								</el-form-item>
 							</el-form>
@@ -361,6 +361,7 @@ export default {
 			this.recollectionForm.new_name = obj.value
 			this.recollectionForm.collection_id = obj.key
 		},
+		
 		getCollectionNames(res) {
 			const len = res.length
 			let option
@@ -372,6 +373,7 @@ export default {
 				this.options.push(option)
 			}
 		},
+		
 		// get books from specific collection through collection id
 		getCollectionBooks(col_id) {
 			this.books = []  // refresh books' list
@@ -399,6 +401,7 @@ export default {
 				this.books.push(book)
 			}
 		},
+		
 		// jump to book detail
 		jump_one_book(value) {
 			// console.log(value)
@@ -417,6 +420,7 @@ export default {
 				}
 			})
 		},
+		
 		// sorted by month
 		sortBykey(ary, key) {
 			return ary.sort(function (a, b) {
@@ -521,12 +525,15 @@ export default {
 		height: 100%;
 		overflow: hidden;
 	}
+	
 	// header: The navigation bar
 	.header{
 		margin-bottom: 10px;
 	}
+	
 	// The outermost div
 	.wrap{
+		text-align: center;
 		position: absolute;
 		height: 100%;
 		width: 100%;
@@ -537,85 +544,108 @@ export default {
 		//opacity:0.75;
 		overflow-y: auto;
 	}
+	
 	// The outermost tab
 	.content{
 		width: 90%;		
 		margin: auto;
 	}
+	
 	// Personal information
 	.person_information{
 		margin-left: 60px;
 	}
+	
 	.Per_info_title{
 		margin-top: 30px;
 		font: 34px bolder;
 	}
+	
 	.el-input{
 		width: 300px;
 	}
+	
 	.Per_info{
 		margin-top: 50px;
 	}
+	
 	// collection	
 	// Remove the floating
 	.clearfix{
 		*zoom: 1;    
 	}
+	
 	.clearfix:after{
 		content: "";
 		display: block;
 		clear: both;
 	}
+	
 	.collection_head{
 		margin-left: 10px;
 		margin-top: 20px;
 		float: left;
 	}
+	
 	.collection_add,.collection_reset, .collection_dele {
 		margin-top: 10px;
 		float: left;
 	}
+	
 	// create an new collection
 	.collection_add_button{
 		margin-top: 10px;
 		margin-left: 80px;
 	}
+	
 	.collection_add{
 		margin-top: 10px;
 	}
+	
+	.el-divider {
+		margin-top: 50px;
+	}
+	
 	.el-divider__text {
 		font-size: 30px;
 		background-color: aliceblue;
 	}
+	
 	// reset collection name
 	.collection_change_button{
 		margin-top: 10px;
 		margin-left: 90px;
 	}
+	
 	// delete collection
 	.collection_dele_button{
 		margin-top: 10px;
 		margin-left: 100px;
 	}
+	
 	// Collection body, display diagram & Title
 	.coll_wrap {
 		margin-top: 30px;
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
 	}
+	
 	.coll_content {
 		margin: 10px 30px 30px 15px;
-		}
+	}
+	
 	.img {
 		width: 180px;
-		height: 300px;
+		height: 250px;
 	}
+	
 	// goal detail in current year
 	.history_goal_title{
 		margin-left: 30px;
 		font: 34px bolder;
 		margin-top: 20px;
 	}
+	
 	.history_goal{
 		margin-top: 20px;
 	}

@@ -28,7 +28,7 @@
 		background-color: ivory;
         margin: auto;
 		border-style: solid;
-        height: 250px;
+        height: 200px;
         width: 270px;
         border-radius: 2px;
         //background: aqua;

@@ -1,7 +1,7 @@
 <!-- Written by Yangyu GAO -->
 <template>
     <div id="app1">
-        <el-divider content-position="center" class="divider">Everyday Recommendation</el-divider>
+        <el-divider content-position="center" class="divider">Today's Popular</el-divider>
         <el-row :gutter="30" type="flex" justify="center">
             <el-col :span="4" v-for="item in books" :key="item.imageLink">
                 <el-card :body-style="{ padding: '0px' }">

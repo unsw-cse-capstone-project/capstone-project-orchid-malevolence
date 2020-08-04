@@ -8,13 +8,13 @@
 
         <div class="content">
             <!-- before login -->
-            <Carousel v-show="token_log == null"></Carousel>
-            <CardBook v-show="token_log == null"></CardBook>
+            <Carousel v-if="token_log == null"></Carousel>
+            <CardBook v-if="token_log == null"></CardBook>
 
 			<!-- after login -->
             <div class="after-login">
                 <el-row>
-                    <el-col :span="6" v-show="token_log != null">
+                    <el-col :span="6" v-if="token_log != null">
                         <div class="grid-content bg-purple">
                             <!-- left hand side: current goal -->
                             <Goal></Goal>
@@ -22,7 +22,7 @@
                         </div>
                     </el-col>
 
-                    <el-col :span="18" v-show="token_log != null">
+                    <el-col :span="18" v-if="token_log != null">
                         <div class="grid-content bg-purple">
                             <!-- right hand side: collections -->
                             <BriefCollections></BriefCollections>
@@ -54,7 +54,12 @@
               token_log: localStorage.getItem('token')
           }
         },
-
+		
+		created() {
+			document.title = 'Homepage'
+		},
+	
+		/* components used in homepage */
         components:{
             Header, Carousel, CardBook, Footer, Goal, Rec, BriefCollections,
         },
@@ -89,7 +94,7 @@
 
     .content {
         flex: 1;
-		min-height: calc(100vh - 60px);
+		min-height: calc(100vh - 120px);
     }
 
     .footer {

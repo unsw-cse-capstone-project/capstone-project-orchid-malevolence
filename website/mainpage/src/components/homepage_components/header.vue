@@ -2,8 +2,12 @@
 <template>
     <el-menu :default-active="activeIndex2" class="el-menu-main" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <!-- click to jump to homepage -->
-        <el-menu-item index="1" @click="jump_homepage">
-            Home
+		<el-menu-item @click="jump_homepage" title="homepage">
+			<img src="../../../logo.png" height="38" width="65"/>
+		</el-menu-item>
+		
+		<el-menu-item index="1" @click="jump_homepage">
+			Home
         </el-menu-item>
 
 		<!-- jump to my books page -->
@@ -48,8 +52,9 @@
         </el-menu-item>
 	
 		<!-- show only after login, click to see personal profile -->
-        <el-menu-item index="5" style="float:right" @click="jump_Profile" v-if="token_log != null">
-            My Profile
+        <el-menu-item index="5" style="float:right" @click="jump_Profile" v-if="token_log != null"
+        title="My Profile">
+			Hi, {{ username }}
         </el-menu-item>
     </el-menu>
 </template>
@@ -66,10 +71,11 @@ export default {
             input3: '',
             select: '',
             score: '',
+			username: localStorage.getItem('username')
         };
     },
-
-    methods: {
+	
+	methods: {
         isShow(){
             if (this.select==='user'){
                 return true
@@ -81,27 +87,22 @@ export default {
         },
 
         jump_homepage() {
-			this.activeIndex2 = 1
             this.$router.push('/')
         },
 
         jump_reg() {
-			this.activeIndex2 = 2
             this.$router.push('register')
         },
 
         jump_login() {
-			this.activeIndex2 = 3
             this.$router.push('login')
         },
 
         jump_Profile() {
-			this.activeIndex2 = 4
             this.$router.push('person')
         },
 
         jump_logout() {
-			this.activeIndex2 = 5
 			this.$forceUpdate()
             window.localStorage.clear()
             this.$router.go(0)

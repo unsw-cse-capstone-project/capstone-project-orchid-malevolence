@@ -138,7 +138,7 @@
 <style lang="less" scoped>
     .goal {
         margin: auto;
-        height: 280px;
+        height: 240px;
         width: 270px;
         border-style: solid;
         border-radius: 2px;
