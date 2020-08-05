@@ -62,3 +62,11 @@ This week, all the homepage has been finished. I optimize the layout of the home
 
 Some bugs in set goal part has been fixed. In the next week, I will complete the recommendation part.
 And finish all the layout and css.
+
+
+-- Week9 2020/08/02  Sunday --
+This week, I finish all my parts including homepage and recommend system page, all the functionalities 
+are completed. The recommend part returns two different type of results which depend on two main factors.
+
+Next week, I will continue to improve the user experience of the website, and fix the css layout.
+
