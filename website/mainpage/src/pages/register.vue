@@ -42,7 +42,7 @@
 
 
 <script>
-	import Header from '../components/homepage_components/header.vue'
+	import Header from '../components/homepage_components/homepage_header.vue'
 	export default {
 		components:{
 			Header
@@ -156,7 +156,7 @@
 
 <!-- Add "scoped" attribu
 te to limit CSS to this component only -->
-<style lang="less">
+<style lang="less" scoped>
 body, html{
 	height: 100%;
 	overflow: hidden;

@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import Header from '../components/homepage_components/header.vue'
+import Header from '../components/homepage_components/homepage_header.vue'
 import {getperinfodata} from '../network/requests'
 import {postperinfo} from '../network/requests'
 import {getCollectionmultdata} from '../network/requests'

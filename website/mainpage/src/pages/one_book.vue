@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import Header from '../components/homepage_components/header'
+import Header from '../components/homepage_components/homepage_header'
 import {getSingleBookmultdata1} from '../network/requestsWithoutLogin'
 import {getSingleBookmultdata} from '../network/requests'
 

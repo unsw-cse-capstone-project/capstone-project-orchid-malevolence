@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Header from '../components/homepage_components/header.vue'
+import Header from '../components/homepage_components/homepage_header.vue'
 export default {
 components:{
 	Header
@@ -77,7 +77,7 @@ methods: {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 body, html{
 	height: 100%;
 	overflow: hidden;

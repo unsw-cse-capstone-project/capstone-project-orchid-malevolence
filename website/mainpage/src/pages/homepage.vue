@@ -40,10 +40,10 @@
 </template>
 
 <script>
-    import Header from '../components/homepage_components/header.vue'
-    import Carousel from '../components/homepage_components/carousel.vue'
+    import Header from '../components/homepage_components/homepage_header.vue'
+    import Carousel from '../components/homepage_components/homepage_carousel.vue'
     import CardBook from '../components/homepage_components/mainpagebooks.vue'
-    import Footer from '../components/homepage_components/footer.vue'
+    import Footer from '../components/homepage_components/homepage_footer.vue'
     import Goal from '../components/homepage_components/homepage_goal.vue'
     import Rec from '../components/homepage_components/homepage_rec.vue'
     import BriefCollections from '../components/homepage_components/homepage_collections.vue'
@@ -68,7 +68,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
     html, body {
         height: 100%;
 		width: 100%;

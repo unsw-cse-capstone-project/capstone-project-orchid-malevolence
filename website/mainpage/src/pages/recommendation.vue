@@ -58,7 +58,7 @@
 
 <script>
 import {getAccount, getRecommend} from "@/network/requests";
-import Header from "@/components/homepage_components/header";
+import Header from "@/components/homepage_components/homepage_header";
 
 export default {
 	name: "recommendation",

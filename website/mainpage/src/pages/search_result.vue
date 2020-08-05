@@ -57,7 +57,7 @@
 <script>
 import book_list from '../components/search_result_components/book_list'
 import {getSearchResult1, filtersearchbook1,getSearchUserResult1} from '../network/requestsWithoutLogin'
-import Header from '../components/homepage_components/header'
+import Header from '../components/homepage_components/homepage_header'
 
 export default {
 	name: 'search_result',
