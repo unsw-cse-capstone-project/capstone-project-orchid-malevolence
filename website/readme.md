@@ -2,8 +2,13 @@
 
 ## 1、 Install Node.js
 
-```
+```bash
+# windows install
 https://nodejs.org/en/download/
+
+# ubuntu & macOS install
+sudo apt-get install nodejs
+sudo apt-get install npm
 ```
 
 ## 2、 Install vue-cli
@@ -15,15 +20,9 @@ npm install vue-cli -g
 ## 3、 Go to the project form
 
 ```bash
-cd my-project
+cd mainpage
 ```
-## 4、 Install jquery bootstrap popper.js
-
-```bash
-npm install jquery bootstrap popper.js --save -dev
-```
-
-## 5、 Run serve
+## 4、 Run serve
 
 ```bash
 npm run serve

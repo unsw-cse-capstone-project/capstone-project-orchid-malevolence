@@ -28,7 +28,7 @@
 </template>
 
 <script>
-
+import {getCollectionmultdata} from '../../network/requests'
 export default {
 	name: 'read_score',
 	data () {
@@ -38,19 +38,20 @@ export default {
 			number: Number(0),
 			book_id: String,
 			value: 0,
-			receive_from_rating:0,
+			books: [],
+			collections: [],
+			receive_from_rating: 0,
 			TotalCount: '',
 			isShow: true,
-			rating_list:{
-				five:0,
-				four:0,
-				three:0,
-				two:0,
-				one:0,
+			rating_list: {
+				five: 0,
+				four: 0,
+				three: 0,
+				two: 0,
+				one: 0,
 
 			},
-			count:100,
-
+			count: 100,
 
 
 		}
@@ -61,21 +62,31 @@ export default {
 	},
 
 
-
 	// request method page initial and get average score of this book
 	updated () {
 		this.average = this.res.averageScore
 		this.book_id = this.res.book_id
 		this.TotalCount = this.res.TotalCount
-		this.rating_list.five=parseFloat((this.res.rating_analyse.five*100).toFixed(1))
-		this.rating_list.four=parseFloat((this.res.rating_analyse.four*100).toFixed(1))
-		this.rating_list.three=parseFloat((this.res.rating_analyse.three*100).toFixed(1))
-		this.rating_list.two=parseFloat((this.res.rating_analyse.two*100).toFixed(1))
-		this.rating_list.one=parseFloat((this.res.rating_analyse.one*100).toFixed(1))
+		this.rating_list.five = parseFloat((this.res.rating_analyse.five * 100).toFixed(1))
+		this.rating_list.four = parseFloat((this.res.rating_analyse.four * 100).toFixed(1))
+		this.rating_list.three = parseFloat((this.res.rating_analyse.three * 100).toFixed(1))
+		this.rating_list.two = parseFloat((this.res.rating_analyse.two * 100).toFixed(1))
+		this.rating_list.one = parseFloat((this.res.rating_analyse.one * 100).toFixed(1))
+		getCollectionmultdata().then(res => {
 
-	},
+			this.books = res
+			// this.getAllBooks(res)
+
+			// all collections
+			this.collections = res
+			// this.getCollectionNames(res)   // get all collection name from the api
+
+		}).catch(res => {
+			console.log(res)
+		})
 
 
+	}
 }
 
 
