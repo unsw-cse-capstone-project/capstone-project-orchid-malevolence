@@ -39,6 +39,7 @@ export default {
 		return {
 			token_log: localStorage.getItem('token'),
 			username: localStorage.getItem('username'),
+			count_readers:localStorage.getItem('count_readers'),
 			dialogVisible: false,
 			// wrapperClosable:true,
 			textarea1: "",
@@ -54,7 +55,12 @@ export default {
 	},
 	mounted () {
 		if(localStorage.getItem('rating')){
-			this.value=localStorage.getItem('rating')
+			console.log( this.count_readers)
+			if (this.count_readers!=='0'){
+				this.value=parseFloat(localStorage.getItem('rating'))
+			}
+
+
 
 		}
 	},

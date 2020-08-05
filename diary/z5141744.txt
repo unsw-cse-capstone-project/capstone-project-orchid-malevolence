@@ -21,4 +21,7 @@ Week7
 In this week, Yang Li and I have discussed what model we will use in our recommendation system. The model will base on all of the users' data. By next week I will finish this part.
 
 Week8
-Discussed recommendation model. I uploaded and packed a collaborate filtering based model.
+Discussed recommendation model. I uploaded and packed a collaborate filtering based model. Submitted the retrospective B.
+
+Week9
+In this week, preparing the final presentation. Also, writing the final report and correct some errors.

@@ -183,6 +183,8 @@ export default {
 					this.result.rate = result.rating_analyse.rating
 					this.result.TotalCount = result.rating_analyse.how_many_user_scored
 					this.result.averageScore = result.rating_analyse.average_rating
+					window.localStorage.setItem('count_readers', this.result.averageScore)
+
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
 					console.log(this.result.review_book)
