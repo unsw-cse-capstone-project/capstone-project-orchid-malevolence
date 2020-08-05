@@ -80,7 +80,7 @@ export default {
 	methods: {
 		/* each para have a English words result */
 		show_types(type) {
-			const rec_type = {"rating_rec": "By Rating", "added_rec":"By Added Books"}
+			const rec_type = {"rating_rec": "By Rating", "added_rec":"By Added Books", "rec":"Custom Recommend"}
 			return rec_type[type]
 		},
 

@@ -575,10 +575,13 @@ class MainPageRecAPIView(APIView):
 # if user's book satisfy the conditions, it will generate custom recommend
 # else, just recommend high rating 
 class UserBaseRecAPIView(APIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
-        info = request.query_params
-        user_id=info['id']
+        token=request.META.get('HTTP_AUTHORIZATION')
+        token=token.split()
+        token_obj=Token.objects.get(key=token[1])
+        user_obj = token_obj.user
+        user_id=user_obj.id
         if(con.exists('rec_'+str(user_id))):
             print('get from cache')
             temp=con.lrange('rec_'+str(user_id),0,-1)
@@ -623,10 +626,10 @@ class HistoryAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
-        user_id=request.query_params['id']
-        like_set=LikeIt.objects.filter(user=user_id)
-        serializer=LikeItSerializer(instance=like_set[0])
-        return Response(serializer.data)
+        res=0
+        if(con.exists('rec_'+str(3))):
+            res=1
+        return Response(data=res)
 
 
 
