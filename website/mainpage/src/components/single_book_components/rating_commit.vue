@@ -54,7 +54,7 @@ export default {
 	},
 	mounted () {
 		if(localStorage.getItem('rating')){
-			this.value=localStorage.getItem('rating')
+			this.value=parseFloat(localStorage.getItem('rating'))
 
 		}
 	},
