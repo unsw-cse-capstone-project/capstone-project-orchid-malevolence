@@ -118,6 +118,10 @@
 							</div>
 						</div>
 						<div class="operate book_item">
+							<el-tag type="success"> {{item.read}}</el-tag>
+
+
+
 							<el-popconfirm
 											confirmButtonText='confirm'
 											cancelButtonText='cancel'
@@ -127,7 +131,7 @@
 											@onConfirm="del(value,item)"
 
 							>
-								<el-button slot="reference">Remove this book</el-button>
+								<el-button style="display: block" slot="reference">Remove this book</el-button>
 							</el-popconfirm>
 						</div>
 					</div>
@@ -139,7 +143,7 @@
 
 <script>
 
-import {getCollectionmultdata,delBookfromCollection} from '../network/requests'
+import {getCollectionmultdata,delBookfromCollection,getSingleBookmultdata} from '../network/requests'
 import Header from '../components/homepage_components/homepage_header'
 export default {
 	name: 'my_bookspage',
@@ -171,6 +175,7 @@ export default {
 	},
 	mounted () {
 		getCollectionmultdata().then(res=>{
+
 
 			this.books=res
 			this.getAllBooks(res)
@@ -204,6 +209,7 @@ export default {
 
 		getAllBooks(val){
 			let len=val.length
+			console.log(val)
 			let books_name=[]
 			for (let i=0;i<len;i++){
 				let new_len=val[i].books.length
@@ -212,15 +218,31 @@ export default {
 
 				for(let j=0;j<new_len;j++){
 
+
 					// console.log(books_name)
 					if (books_name.indexOf(books[j].title)===-1){
+						// console.log(books[j].id)
+
 						books_name.push(books[j].title)
+						let post_value = {book_id: books[j].id}
+
+						getSingleBookmultdata(post_value).then(res=>{
+							if(res.read_or_not){
+								books[j].read='have read'
+
+							}else{
+								books[j].read='not read'
+
+							}
+							// book['read']=obj.books[i].read_or_not
+						})
 						books[j].avg_rating=parseFloat(books[j].avg_rating)
 						this.all_books.push(books[j])
 
 					}
 				}
 			}
+			console.log(this.all_books)
 		},
 		jump_this_book(){
 			this.search_book=[]
@@ -278,6 +300,7 @@ export default {
 			for(let i = 0; i < len; i++) {
 				book = {}
 				book["id"] = obj.books[i].id
+				console.log(obj.books[i].id)
 				book["authors"] = obj.books[i].authors
 				book["title"] = obj.books[i].title
 				book["imageLink"] = obj.books[i].imageLink
@@ -286,9 +309,15 @@ export default {
 				book["publish_date"] = obj.books[i].publish_date
 				book["categories"] = obj.books[i].categories
 				book["avg_rating"] = parseFloat(obj.books[i].avg_rating)
+				book["read"]=obj.books[i].read
+
+
+
+
 
 				this.books2.push(book)
 			}
+			console.log(this.books2)
 		},
 		reload_page(){
 			location.reload()
@@ -385,5 +414,8 @@ export default {
  
 	/deep/ .el-divider__text{
 		font-size: 20px;
+	}
+	.el-tag{
+		margin-bottom: 10px;
 	}
 </style>
