@@ -54,10 +54,6 @@
               token_log: localStorage.getItem('token')
           }
         },
-		
-		created() {
-			document.title = 'Homepage'
-		},
 	
 		/* components used in homepage */
         components:{

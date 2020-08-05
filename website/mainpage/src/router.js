@@ -16,7 +16,7 @@ const router = new Router({
             path: '/',
             redirect: '/homepage',
             meta:{
-                title:'homepage'
+                title:'Homepage'
             }
         },
         {
@@ -24,7 +24,7 @@ const router = new Router({
             name: 'homepage',
             component: homepage,
             meta:{
-                title:'homepage'
+                title:'Homepage'
             }
         },
         {
@@ -32,7 +32,7 @@ const router = new Router({
             name: 'register',
             component: register,
             meta:{
-                title:'register'
+                title:'Register'
             }
         },
         {
@@ -40,7 +40,7 @@ const router = new Router({
             name: 'login',
             component: login,
             meta:{
-                title:'login'
+                title:'Login'
             }
         },
 		{
@@ -56,15 +56,15 @@ const router = new Router({
             name: 'one_book',
             component: one_book,
             meta:{
-                title:'one_book'
-		}
+                title:'Book Detail'
+            }
         },
         {
             path: '/search_result',
             name: 'search_result',
             component: search_result,
             meta:{
-                title:'search_result'
+                title:'Search Result'
             }
         },
         {
@@ -72,7 +72,7 @@ const router = new Router({
             name: 'my_bookspage',
             component: my_bookspage,
             meta:{
-                title:'my_bookspage'
+                title:'My Books'
             }
         },
         {
@@ -80,7 +80,7 @@ const router = new Router({
             name: 'recommendation',
             component: recommendation,
             meta:{
-                title:'recommendation'
+                title:'Recommendation'
             }
         },
 

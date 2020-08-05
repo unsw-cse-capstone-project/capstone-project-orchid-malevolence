@@ -37,10 +37,9 @@
 				<div v-show="isShow" >
 					<el-divider content-position="center" class="divider">All books</el-divider>
 
-
 					<div  v-for="item in all_books" :key="item.ISBN">
 						<div class="book_item img-box" >
-							<img  :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)" >
+							<img :src="item.imageLink" style="width:90%;height: 100% " alt="" @click="jump_one_book(item)"/>
 						</div>
 
 						<div class="text-block">
@@ -64,14 +63,13 @@
 
 					</div>
 				</div>
-
-
+    
 				<!-- show all books when search in your collections-->
 				<div v-show="show">
 					<el-divider content-position="center" class="divider">search result in your collections</el-divider>
-					<div   v-for="(item,index) in search_book" :key="index">
+					<div v-for="(item,index) in search_book" :key="index">
 						<div class="book_item img-box" >
-							<img  :src="item.imageLink" style="width:90%;height: 100% " alt=""  @click="jump_one_book(item)">
+							<img :src="item.imageLink" style="width:90%;height: 100% " alt=""  @click="jump_one_book(item)">
 						</div>
 						<div class="text-block">
 							<div><h5 style="word-break: break-all">{{item.title}}</h5></div>
@@ -87,9 +85,7 @@
 								<div><p>Publisher: {{item.publisher}}</p></div>
 								<div><p>publish_date: {{item.publish_date}}</p></div>
 								<div><p>category: {{item.categories}}</p></div>
-
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -100,8 +96,7 @@
 				<div v-show="show2">
 					<el-divider content-position="center" class="divider">{{value}}</el-divider>
 
-					<div  v-for="item in books2" :key="item.imageLink" >
-
+					<div v-for="item in books2" :key="item.imageLink">
 						<div class="book_item img-box">
 							<img :src="item.imageLink" class="img" style="width:90%;height: 100% " @click="jump_one_book(item)" />
 						</div>
@@ -232,8 +227,7 @@ export default {
 			this.isShow=false
 			this.show2=false
 			this.show=true
-
-
+   
 			let len=this.all_books.length
 			for(let i=0;i<len;i++){
 				let title=this.all_books[i].title.toLowerCase()
@@ -278,9 +272,7 @@ export default {
 			obj = this.collections.find((item) => {
 				return item.id === col_id;
 			});
-
-
-
+   
 			let book
 			let len = obj.books.length
 			for(let i = 0; i < len; i++) {
@@ -317,7 +309,6 @@ export default {
 					publisher_data:value.publish_date,
 					category:value.categories
 				}
-
 			})
 		},
 	}
@@ -351,12 +342,12 @@ export default {
 	.book_item{
 		display: inline-block;
 		margin: 20px 20px 20px 5px;
-
 	}
 
 	.img-box{
 		width: 150px;
 		height: 200px;
+        cursor:pointer;
 	}
 
 	.text-block{
@@ -391,8 +382,8 @@ export default {
 	.right_border{
 		border-right: 1px solid gray;
 	}
+ 
 	/deep/ .el-divider__text{
 		font-size: 20px;
 	}
-
 </style>
