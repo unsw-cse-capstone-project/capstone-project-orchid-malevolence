@@ -4,8 +4,8 @@
 		<Header></Header>
 	</div>
 	
-	<div class="wrap_login">
-		<el-form ref="loginFormRef" :model="loginForm" :label-position="labelPosition" label-width="80px" class="register_form">
+	<div class="wrap_login login_form">
+		<el-form ref="loginFormRef" :model="loginForm" :label-position="labelPosition" label-width="80px">
 			<!-- Header font -->
 			<div class="login_title_wrap">
 				<div class="login_title">Login</div>
@@ -77,11 +77,50 @@ methods: {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 body, html{
 	height: 100%;
-	overflow: hidden;
+	//overflow: hidden;
 }
+
+.login_form {
+  // The layout of the login list
+  .el-form{
+    position: absolute;
+    top: 50%;
+    margin-top: -293px;
+    right: 100px;
+    width: 590px;
+    height: 586px;
+    background-image: repeating-linear-gradient(135deg,rgba(0,0,0,.05),rgba(43,44,46,.5));
+    border-radius: 30px;
+  }
+  
+  // Processing of each single column table
+  .login_form .el-form-item{
+    height: 62.5px;
+    margin-left: 80px;
+  }
+
+  .login_form .el-form-item__label{
+    color: white;
+    font-size: 17px;
+    margin-right: 10px;
+  }
+
+  // Modify the length of the input field
+  .login_form .el-input{
+    width: 300px;
+  }
+
+  .login_other{
+    text-align: center;
+    //font: bolder;
+    color: white;
+    font-size: 18px;
+  }
+}
+
 .login_wrap{
 	position: absolute;
 	height: 100%;
@@ -90,26 +129,12 @@ body, html{
 	background-size: cover;
 	background-origin: border-box;
 }
-.header{
-	margin-bottom: 10px;
-}
+
 .wrap_login{
 	position: absolute;
 	// background-color: deeppink;
-	
 	height: 90%;
 	width: 100%;
-}
-// The layout of the login list
-.el-form{
-	position: absolute;
-	top: 50%;
-	margin-top: -293px;
-	right: 100px;
-	width: 590px;
-	height: 586px;
-	background-image: repeating-linear-gradient(135deg,rgba(0,0,0,.05),rgba(43,44,46,.5));
-	border-radius: 30px;
 }
 
 // title Center + font
@@ -118,26 +143,5 @@ body, html{
 	font: 50px/168px bolder sans-serif;
 	font-style: italic;
 	color: white;
-}
-// Processing of each single column table
-.login_form .el-form-item{
-	height: 62.5px;
-	margin-left: 80px;
-}
-.login_form .el-form-item__label{
-	color: white;
-	font-size: 17px;
-	margin-right: 10px;
-}
-
-// Modify the length of the input field
-.login_form .el-input{
-	width: 300px;
-}
-.login_other{
-	text-align: center;
-	font: bolder;
-	color: white;
-	font-size: 18px;
 }
 </style>

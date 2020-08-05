@@ -3,8 +3,8 @@
 	<div class="header">
 		<Header></Header>
 	</div>
-	<div class="wrap_register">
-		<el-form ref="RegisterFormRef" :model="RegisterForm" :rules="RegisterFormRules" :label-position="labelPosition" label-width="80px" class="register_form">
+	<div class="wrap_register register_form">
+		<el-form ref="RegisterFormRef" :model="RegisterForm" :rules="RegisterFormRules" :label-position="labelPosition" label-width="80px">
 			<!-- Header font -->
 			<div class="register_title_wrap">
 				<div class="register_title">Register</div>
@@ -156,11 +156,12 @@
 
 <!-- Add "scoped" attribu
 te to limit CSS to this component only -->
-<style lang="less" scoped>
+<style lang="less">
 body, html{
 	height: 100%;
-	overflow: hidden;
+	//overflow: hidden;
 }
+
 .register_wrap{
 	position: absolute;
 	height: 100%;
@@ -169,50 +170,57 @@ body, html{
 	background-size: cover;
 	background-origin: border-box;
 }
+
 .wrap_register{
 	position: absolute;
 	height: 90%;
 	width: 100%;
 }
-// The layout of the registration list
-.el-form{
-	position: absolute;
-	top: 50%;
-	margin-top: -293px;
-	right: 100px;
-	width: 590px;
-	height: 586px;
-	background-image: repeating-linear-gradient(135deg,rgba(0,0,0,0.1),rgba(167,178,222,.5));
-	border-radius: 30px;
-}
 
-// title Center + font
-.register_title{
-	text-align: center;
-	font: 50px/98px bolder sans-serif;
-	font-style: italic;
-	color: whitesmoke;
-	margin-top: 25px;
-	margin-bottom: 15px;
-}
-// Processing of each single column table
-.register_form .el-form-item{
-	height: 53px;
-	margin-left: 40px;
-}
-.register_form .el-form-item__label{
-	color: whitesmoke;
-	margin-right: 30px;
-}
+.register_form {
+  // The layout of the registration list
+  .el-form{
+    position: absolute;
+    top: 50%;
+    margin-top: -293px;
+    right: 100px;
+    width: 590px;
+    height: 586px;
+    background-image: repeating-linear-gradient(135deg,rgba(0,0,0,0.1),rgba(167,178,222,.5));
+    border-radius: 30px;
+  }
 
-// Modify the length of the input field
-.register_form .el-input{
-	width: 300px;
-}
-.other{
-	text-align: center;
-	font: bolder;
-	color: white;
-	font-size: 18px;
+  // title Center + font
+  .register_title{
+    text-align: center;
+    font: 50px/98px bolder sans-serif;
+    font-style: italic;
+    color: whitesmoke;
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
+
+  // Processing of each single column table
+  .register_form .el-form-item{
+    height: 53px;
+    margin-left: 40px;
+  }
+
+  .register_form .el-form-item__label{
+    color: whitesmoke;
+    margin-right: 30px;
+  }
+
+  // Modify the length of the input field
+  .register_form .el-input{
+    width: 300px;
+  }
+
+  .other{
+    text-align: center;
+    //font: bolder;
+    color: white;
+    font-size: 18px;
+  }
 }
 </style>
