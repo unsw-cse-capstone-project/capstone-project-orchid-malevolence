@@ -171,10 +171,22 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
     user_rating_review=serializers.SerializerMethodField('user_rating_review_edit',required=False)
     rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
     review_book =serializers.SerializerMethodField('review_edit',required=False)
+    read_or_not=serializers.SerializerMethodField('read_or_edit',required=False)
     class Meta:
         model = Book
-        fields = ['id','title','user_rating_review','rating_analyse','review_book']
+        fields = ['id','title','read_or_not','user_rating_review','rating_analyse','review_book']
     
+    def read_or_edit(self,obj):
+        user_id = self.context['user_id']
+        res=0
+        read_set=ReadedBook.objects.filter(user=user_id,book_id=obj.id)
+        if(read_set.exists()):
+            print("exist")
+            res=1
+        print("not exists")
+        return res
+
+
     def user_rating_review_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
@@ -210,6 +222,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         three_percentage=0
         two_percentage=0
         one_percentage=0
+        readed_set=ReadedBook.objects.filter(book_id=obj.id)
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 if(i.rating==5):
@@ -227,7 +240,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
             three_percentage=round(three_nums/count_num,3)
             two_percentage=round(two_nums/count_num,3)
             one_percentage=round(one_nums/count_num,3)
-        return {"how_many_user_scored":count_num,'average_rating':obj.avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
+        return {"how_many_user_scored":count_num,"how_many_user_read":readed_set.count(),'average_rating':obj.avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
 
 
     def review_edit(self,obj):
@@ -314,6 +327,7 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         three_percentage=0
         two_percentage=0
         one_percentage=0
+        readed_set=ReadedBook.objects.filter(book_id=obj.id)
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 if(i.rating==5):
@@ -331,7 +345,7 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
             three_percentage=round(three_nums/count_num,3)
             two_percentage=round(two_nums/count_num,3)
             one_percentage=round(one_nums/count_num,3)
-        return {"how_many_user_scored":count_num,'average_rating':obj.avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
+        return {"how_many_user_scored":count_num,"how_many_user_read":readed_set.count(),'average_rating':obj.avg_rating,"five":five_percentage,"four":four_percentage,"three":three_percentage,"two":two_percentage,"one":one_percentage}
     
     def review_edit(self,obj):
         book_id = obj.id
@@ -381,6 +395,10 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         else:
             return [] 
 
+class ReadedBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadedBook
+        fields = ('__all__')
 
 #
 class RecUserBookSerializer(serializers.ModelSerializer):

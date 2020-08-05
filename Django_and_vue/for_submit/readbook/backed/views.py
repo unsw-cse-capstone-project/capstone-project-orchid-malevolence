@@ -297,6 +297,15 @@ class AddBookToCollectionAPIView(APIView):
         book_collection_relation.save()
         book_obj.added_times+=1
         book_obj.save()
+        readed_set=ReadedBook.objects.filter(user=user_obj.id,book_id=book_id)
+        if(readed_set.exists()==False):
+            print('readed add')
+            temp={}
+            temp['user']=user_obj.id
+            temp['book_id']=book_id
+            read_ser=ReadedBookSerializer(data=temp)
+            if read_ser.is_valid():
+                read_ser.save()
         # goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"add it success!"},status=HTTP_200_OK)
     

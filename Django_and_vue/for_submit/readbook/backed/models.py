@@ -71,6 +71,12 @@ class MonthRecord(models.Model):
     class Meta:
         unique_together=('user','year','month')
 
+class ReadedBook(models.Model):
+    user = models.PositiveIntegerField()
+    book_id=models.CharField(max_length=128)
+
+    class Meta:
+        unique_together=('user','book_id')
 
 # 
 class Review(models.Model):
