@@ -16,7 +16,7 @@
         <!-- get collections base on selection -->
         <div class="collection-body">
             <!-- divider, show collection's name -->
-            <el-divider content-position="center">{{value}}</el-divider>
+            <el-divider content-position="center">10 books recent added in {{value}}</el-divider>
 
             <!-- main part of collection: with image, title, rating, brief description and jump button -->
             <div class="wrap">
