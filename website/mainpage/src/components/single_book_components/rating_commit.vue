@@ -3,8 +3,8 @@
 	<div>
 		<span style="display: inline-block; margin-right: 10px">Rating</span>
 		<el-rate
-						@change="submit_rating(value)"
-						v-model="value"
+						@change="submit_rating(user_rating)"
+						v-model="user_rating"
 						show-score
 						score-template="{value}"
 						:colors="colors">
@@ -32,58 +32,54 @@
 </template>
 
 <script>
-import {postrating, postReview} from '../../network/requests'
+import { getSingleBookmultdata,postrating, postReview} from '../../network/requests'
 export default {
 	name: 'rating_commit',
 	data () {
 		return {
 			token_log: localStorage.getItem('token'),
 			username: localStorage.getItem('username'),
-			count_readers:localStorage.getItem('count_readers'),
+			user_rating: parseInt(localStorage.getItem('user_rating')),
+
 			dialogVisible: false,
 			// wrapperClosable:true,
 			textarea1: "",
 			isShow:true,
-			value: 0,
-			value1:0,
+
 			colors: ['#99A9BF', '#F7BA2A', '#FF9900']
 		}
 	},
 	props: {
 		bookID: String, //the arguments bookID received from father page one_book page
-		book_name:String
-	},
-	mounted () {
-		if(localStorage.getItem('rating')){
-			console.log( this.count_readers)
-			if (this.count_readers!=='0'){
-				this.value=parseFloat(localStorage.getItem('rating'))
-			}
-
-
-
+		book_name:String,
+		currentuser_rating: {
+			type:Number,
+			default:0
 		}
 	},
+	mounted () {
+		this.user_rating=parseInt(this.user_rating)
+	},
+
 
 	// this.dialogVisible = false
 	methods: {
+		init(val){
+			this.user_rating=val
+
+		},
 		isShowDialog(){
 			if (this.token_log){
 				this.dialogVisible=true
 
 			}else{
 				this.$message({message: 'please login: ', type: 'warning',showClose: true,})
-
 			}
 
 		},
 		submit_rating(value){
-			window.localStorage.setItem('rating',value)
 			if (this.token_log){
-
-
 				this.isShow=false
-
 				let postvalue = {
 					'rating_info': {
 						'book': this.bookID,
@@ -96,19 +92,22 @@ export default {
 				})
 				this.$emit('val',value)
 				this.value1=value
+				let post2={
+					'book_id': this.bookID,
+				}
+				getSingleBookmultdata(post2).then(res=>{
+					// this.value=res.user_rating_review.user_rating
+					window.localStorage.setItem('user_rating', res.user_rating_review.user_rating)
+				})
 
 			}else{
 				this.$message({message: 'please login: ', type: 'warning',showClose: true,})
-
 			}
-
-
 
 		},
 		submite_ratingandreview () {
 
 			if (this.token_log) {
-				// console.log(this.textarea1.split(" ").length)
 				if (this.textarea1.split(" ").length<3){
 					this.$message({message: 'please write a comment more than 3 words: ', type: 'warning',showClose: true,})
 					return

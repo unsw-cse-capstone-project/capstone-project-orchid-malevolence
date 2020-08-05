@@ -31,7 +31,8 @@
 
 			<div class="rating">
 				<!--component rating and commit-->
-				<rating_commit @val="receive_from_rating" :bookID="result.book_id" ></rating_commit>
+<!--				<child ref="child"></child>-->
+				<rating_commit ref="child" @val="receive_from_rating" :currentuser_rating="result.user_rating" :bookID="result.book_id" ></rating_commit>
 			</div>
 			<!--show all reviews-->
 			<h3 style="margin:10px 0">Reviews:</h3>
@@ -92,6 +93,7 @@ export default {
 				TotalCount: Number,
 				averageScore: Number,
 				book_id: "",
+				user_rating:0,
 
 				review_book: []
 
@@ -107,7 +109,7 @@ export default {
 		add_collection,
 	},
 
-	mounted () {
+	created () {
 		this.getData();
 
 	},
@@ -118,8 +120,6 @@ export default {
 			let post_value = {book_id: this.book.book_id}
 			getSingleBookmultdata(post_value).then(res => {
 				// let that=this
-
-				console.log(res)
 				let rating_list=res.rating_analyse
 				let count=rating_list.how_many_user_scored
 				let five=rating_list.five*count*5
@@ -128,7 +128,6 @@ export default {
 				let two=rating_list.two*count*2
 				let one=rating_list.one*count*1
 				let averagescore=(five+four+three+two+one)/count
-				console.log(averagescore)
 				// this.result.TotalCount=count
 
 				this.result = res
@@ -137,7 +136,6 @@ export default {
 				this.result.averageScore = res.rating_analyse.average_rating
 				this.result.book_id = res.id
 				this.result.review_book = res.review_book
-				console.log(typeof averagescore)
 
 				this.result.averageScore=parseFloat(averagescore.toFixed(1))
 
@@ -156,7 +154,6 @@ export default {
 			let len=newValue[0].review_book.length
 			let temp={}
 			let maxIndex=0
-			console.log(newValue[0].review_book)
 			for(let i in newValue[0].review_book){
 				maxIndex=parseInt(i)
 				for (let j =parseInt(i)+1;j<len;j++){
@@ -176,22 +173,21 @@ export default {
 			this.book = this.$route.query
 			let post_value = {book_id: this.book.book_id}
 
+
 			// if user has login
 			if (this.token_log) {
 				getSingleBookmultdata(post_value).then(result => {
 					this.result = result
+					this.result.user_rating=result.user_rating_review.user_rating
 					this.result.rate = result.rating_analyse.rating
 					this.result.TotalCount = result.rating_analyse.how_many_user_scored
 					this.result.averageScore = result.rating_analyse.average_rating
-					window.localStorage.setItem('count_readers', this.result.averageScore)
-
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					console.log(this.result.review_book)
+					window.localStorage.setItem('user_rating', this.result.user_rating)
+					this.$refs.child.init(this.result.user_rating)
 
 					this.sort_commit(this.result)
-					console.log(result)
-
 
 				}).catch(res => {
 					console.log(res)
@@ -206,8 +202,6 @@ export default {
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
 					this.sort_commit(this.result)
-					console.log(result)
-
 
 				}).catch(res => {
 					console.log(res)
@@ -218,7 +212,6 @@ export default {
 		},
 		//agree the the review or not
 		changeNumber (val, index) {
-			console.log(val.like_status)
 			if(this.token_log){
 				this.currentIndex = index //change the image or not based on like or not
 				this.postvlaue.book_id = this.result.book_id //post book_id of this review
