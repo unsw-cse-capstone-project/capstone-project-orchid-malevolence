@@ -155,8 +155,8 @@ export default {
 		getResult: function (val) {
 			if(val.key_word==="" && val.search_type==='' && val.score===""){
 				this.$message({message: 'try to search a book based on  author/title/user', showClose: true,})
+				this.$router.push('/')
 
-				return
 			}
 
 			this.key_word = val.key_word
