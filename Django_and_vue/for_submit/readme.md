@@ -36,8 +36,14 @@ redis-server
 ```
 
 cd to the root dir which contains manage.py file.<br>
+you can run it on django default debugging server:
+
 ```
 python manage.py runserver
+```
+and you can run it on uwsgi server:
+```
+uwsgi --http :8000 --module readbook.wsgi
 ```
 if your default python command is python2, you need use python3 to replace python!<br>
 you can use this to know python version:

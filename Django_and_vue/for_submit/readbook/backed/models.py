@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+
+# collection model
 class Collection(models.Model):
     name = models.CharField(max_length=128)
     user = models.ForeignKey(Account,related_name='collections',on_delete=models.CASCADE)
@@ -18,6 +20,7 @@ class Collection(models.Model):
     def __str__(self):
         return '%d: %s' % (self.id,self.name)
 
+# book model
 class Book(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     title = models.CharField(max_length=128)
@@ -37,6 +40,7 @@ class Book(models.Model):
       return '%s: %s' % (self.id,self.title)
 
 # intermediate model
+# to descrip the "add" action
 class Collection_Book(models.Model):
     collection = models.ForeignKey(Collection,on_delete=models.CASCADE)
     book = models.ForeignKey(Book,on_delete=models.CASCADE)
@@ -76,15 +80,15 @@ class Review(models.Model):
     book = models.ForeignKey(Book,related_name='review_book',on_delete=models.CASCADE)
     like_count_num = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        unique_together=('user','book')
+    # class Meta:
+    #     unique_together=('user','book')
 
 
 class LikeIt(models.Model):
     review = models.ForeignKey(Review,related_name='likeit_review',on_delete=models.CASCADE)
     user = models.ForeignKey(Account,related_name='likeit_user',on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
-    # book_id
+    # need book id, bu i don't want foreignkey strick
     belongto_book = models.CharField(max_length=128)
 
     class Meta:
@@ -107,4 +111,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
+#goal_accomplish_add_when_book_added_to_collection
 
+
+#goal_accomplish_less_when_book_delete_from_collection

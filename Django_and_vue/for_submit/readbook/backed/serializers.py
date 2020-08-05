@@ -5,7 +5,7 @@ from account.models import *
 from .models import *
 from django.utils import timezone
 
-# register
+# register serializer
 class RegSerializer(serializers.ModelSerializer):
     checkpass = serializers.CharField(max_length=256, write_only=True)
     # gender = serializers.CharField(max_length=256)
@@ -20,13 +20,13 @@ class RegSerializer(serializers.ModelSerializer):
         del attrs['checkpass']
         return attrs
 
-# login auth
+# login 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ('username', 'password')
 
-# book all info
+# book detail
 class BookSerializer(serializers.ModelSerializer):
     # collections = CollectionSerializer(many=True,require = False)
     # avg_rating = serializers.SerializerMethodField('avg_rating_edit',required=False)
@@ -37,7 +37,7 @@ class BookSerializer(serializers.ModelSerializer):
     
 
 
-# collection all info
+# collection detail, 
 class CollectionSerializer(serializers.ModelSerializer):
     # books = BookSerializer(many=True, required = False, read_only=True)
     books=serializers.SerializerMethodField('book_list_edit',required=False)
@@ -62,7 +62,7 @@ class CollectionSerializer(serializers.ModelSerializer):
          
 
 
-# account detail
+# gust 
 class AccountDetailSerializer(serializers.ModelSerializer):
     collections = CollectionSerializer(many=True, required = False)
     class Meta:
@@ -99,7 +99,6 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 # month goal
-
 class MonthlyGoalBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
@@ -112,7 +111,7 @@ class MonthRecordSerializer(serializers.ModelSerializer):
         model = MonthRecord
         fields = ('__all__')
 
-# count
+# hostory
 class HistorySerializer(serializers.ModelSerializer):
     this_year_rec=serializers.SerializerMethodField('this_year_rec_edit',required=False)
     other_year_rec=serializers.SerializerMethodField('other_year_rec_edit',required=False)
@@ -165,12 +164,9 @@ class HistorySerializer(serializers.ModelSerializer):
         return {"other_year":records}
 
 
-
-        
-
-
+####################################################### 
 # serializer = DeviceByTypeSerializer(device_type, many=True, context={'request': request})
-# book info（rating，review，like，like count，review order by create time）
+# book detail page serializer, header has valid token
 class BookDetailPageSerializer(serializers.ModelSerializer):
     user_rating_review=serializers.SerializerMethodField('user_rating_review_edit',required=False)
     rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
@@ -198,7 +194,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
             return {"user_rating":user_rating, "user_review":user_review}
         else:
             return {"user_rating":user_rating, "user_review":user_review}
-
+    # rating 
     def rating_analyse_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
@@ -237,35 +233,54 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
     def review_edit(self,obj):
         user_id = self.context['user_id']
         book_id = obj.id
-
+        # 
+        # exclude(user=user_id)
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
+            # 
             rev_ser = ReviewSerializer(instance=review_set,many=True)
             res=[]
             for i in rev_ser.data:
+                res.append(i)
+            # 
+            review_user_info=[]
+            for i in res:
+                if(i['user'] not in review_user_info):
+                    review_user_info.append(i)
+            # initial =0
+            for i in res:
+                i['rating']=0
+
+            user_rating_dict={}
+            for i in review_user_info:
                 rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
                 if(rating_temp_set.exists()):
-                    rating_temp=rating_temp_set[0]
-                    i['rating']=rating_temp.rating
-                    res.append(i)
-                else:
-                    i['rating']=0
-                    res.append(i)
+                    for j in rating_temp_set:
+                        user_rating_dict[i['user']]=j.rating
+            
+            if(user_rating_dict!={}):
+                for i in res:
+                    # 
+                    if(i['user'] in user_rating_dict.keys()):
+                        i['rating']=user_rating_dict[i['user']]
+
             like_status_set = LikeIt.objects.filter(user=user_id,belongto_book=book_id)
             like_status_list=[]
-
+            # 
             if(like_status_set.exists()):
                 for i in like_status_set:
-                    if(i['status']==1):
-                        like_status_list.append(i['review'])
+                    if(i.status==True):
+                        like_status_list.append(i.review.id)
             
-            # like status
+            print(like_status_list)
+            # 
+            # initial status=0, check list , if status=1, update
             for i in res:
                 i['like_status']=0
                 if(i['id'] in like_status_list):
                     i['like_status']=1
             
-            # 按照时间顺序排列，最新的在上面
+            # order by creation time
             res.sort(key=lambda i:i['create_time'],reverse=True)
 
             for i in res:
@@ -277,7 +292,7 @@ class BookDetailPageSerializer(serializers.ModelSerializer):
         else:
             return [] 
 
-#
+# gust majority of this similar as last function
 class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
     rating_analyse = serializers.SerializerMethodField('rating_analyse_edit',required=False)
     review_book =serializers.SerializerMethodField('review_edit',required=False)
@@ -299,7 +314,6 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         three_percentage=0
         two_percentage=0
         one_percentage=0
-
         if(rating_count_set.exists()):
             for i in rating_count_set:
                 if(i.rating==5):
@@ -323,22 +337,39 @@ class BookDetailPageNoUserSerializer(serializers.ModelSerializer):
         book_id = obj.id
         review_set = Review.objects.filter(book=book_id)
         if(review_set.exists()):
+            # 
             rev_ser = ReviewSerializer(instance=review_set,many=True)
             res=[]
             for i in rev_ser.data:
+                res.append(i)
+            # 
+            review_user_info=[]
+            for i in res:
+                if(i['user'] not in review_user_info):
+                    review_user_info.append(i)
+            
+                       
+            for i in res:
+                i['rating']=0
+
+            user_rating_dict={}
+            for i in review_user_info:
                 rating_temp_set=Rating.objects.filter(user=i['user'],book=i['book'])
                 if(rating_temp_set.exists()):
-                    rating_temp=rating_temp_set[0]
-                    i['rating']=rating_temp.rating
-                    res.append(i)
-                else:
-                    i['rating']=0
-                    res.append(i)
+                    for j in rating_temp_set:
+                        user_rating_dict[i['user']]=j.rating
             
+            if(user_rating_dict!={}):
+                for i in res:
+                    # 
+                    if(i['user'] in user_rating_dict.keys()):
+                        i['rating']=user_rating_dict[i['user']]
+            
+  
             for i in res:
                 i['like_status']=0
             
-
+            # 
             res.sort(key=lambda i:i['create_time'],reverse=True)
 
             for i in res:

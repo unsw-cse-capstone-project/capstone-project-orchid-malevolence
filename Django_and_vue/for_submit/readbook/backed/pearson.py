@@ -5,7 +5,8 @@ import json
 from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
-# pearson_correlation similarity
+# pearson similarity
+# 
 def pearson_correlation(target, others):
     sum_xy = 0
     sum_x = 0
@@ -32,7 +33,7 @@ def pearson_correlation(target, others):
     else:
         numerator = sum_xy - (sum_x * sum_y) / n
         return numerator / denominator
-
+# calculate neightbour similarity
 def neighbor_similarity(target,datas):
     distance_list=[]
     for key in datas:
@@ -68,11 +69,17 @@ def calculate_correlation(target,datas):
     
     rec_list=list(recommend.items())
     rec_list.sort(key=lambda i:i[1],reverse=True)
-    return rec_list[:5]
+    # get element which mark >= 0.
+    res_list=[]
+    for i in rec_list:
+        if(i[1]>0):
+            res_list.append(i)
+    # return top 10.
+    return res_list[:10]
 
 def user_recommend(user_id):
     temp_set = Rating.objects.filter(user=str(user_id))
-    if(temp_set.count()<=2):
+    if(temp_set.count()<=3):
         print("not enough!")
         return 0
     else:

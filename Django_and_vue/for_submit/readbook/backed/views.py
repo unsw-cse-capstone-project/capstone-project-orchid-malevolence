@@ -24,9 +24,10 @@ from backed.simple_rec import *
 from django_redis import get_redis_connection
 con=get_redis_connection("default")
 
+# when server run, clean the redis.
 con.flushdb()
 
-# recommend
+# run simple recommendation and put them into redis.
 operation()
 
 ##### signals
@@ -36,32 +37,33 @@ operation()
 
 ######################## main #######################
 
-# get token
+# get token, return token,username and user id
 class CustomAuthToken(ObtainAuthToken):
-
+    #
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             ob=serializer.validated_data
             user = serializer.validated_data['user']
-            # 
+            # trigger recommend
             temp=user_recommend(int(user.id))
             print(temp)
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'username': user.username,'user_id':user.id},status=HTTP_200_OK)
         print(serializer.errors)
         username = request.data['username']
-        # 
+        # username is unique, so just check username
         counts = Account.objects.filter(username=username).count()
         if counts:
             return Response(data={'msg':"Please Check Your Password!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
         return Response(data={'msg':"User doesn't exist!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
 
-# register if success, return token
+# register new user, return token , username, user id.
 class RegisterAPIView(APIView):
     
-
+    # 
     def post(self, request, format=None):
+        print(request.data)
         res = RegSerializer(data = request.data, context={'request': request})
         username = request.data['username']
         if res.is_valid():
@@ -79,7 +81,9 @@ class RegisterAPIView(APIView):
         print(res.errors)
         return Response(data={'msg':"Username is exist!"} ,status=HTTP_400_BAD_REQUEST,content_type='application/json')
 
-# get user info, colleciton, book in collection
+# get account detail, username, email, birth-day
+# collections: collection name,id,books
+# books detail
 class AccountDetailAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -103,10 +107,11 @@ class AccountDetailAPIView(APIView):
         user_obj.save()
         return Response(data={"msg":"edit success!"},status=HTTP_200_OK)
 
-# colloection add, delete, change name
+# collection operation, get,delete,create,rename
 class CreateCollectionAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    # get exactly collection, return detail
     def get(self,request, format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -120,6 +125,9 @@ class CreateCollectionAPIView(APIView):
         else:
             return Response(data={"msg":"No Colletions!"},status=HTTP_400_BAD_REQUEST)
         
+
+    # 
+    # create new collection
     def post(self, request, format=None):
         print(request.data)
         token=request.META.get('HTTP_AUTHORIZATION')
@@ -127,7 +135,6 @@ class CreateCollectionAPIView(APIView):
         token_obj=Token.objects.get(key=token[1])
         user_obj = token_obj.user
         temp=request.data
-        print(type(temp))
         temp['user']=user_obj.id
         collect = CollectionSerializer(data=temp)
         if collect.is_valid():
@@ -137,6 +144,7 @@ class CreateCollectionAPIView(APIView):
         return Response(status=HTTP_400_BAD_REQUEST)
 
     
+    # delete collection
     def delete(self, request, format=None):
         print('delete')
         token=request.META.get('HTTP_AUTHORIZATION')
@@ -148,7 +156,7 @@ class CreateCollectionAPIView(APIView):
         Collection.objects.filter(id=collection_id,user=user_obj.id).delete()
         return Response(data={'msg':'already delete!'},status=HTTP_200_OK)
     
-    # collection change name
+    # collection rename
     def put(self,request,format=None):
         print(request.data)
         collect_id = request.data['collection_id']
@@ -180,6 +188,7 @@ class AddBookAPIView(APIView):
             print(serializer.errors)
             return Response(data={"mag":"error"},status=HTTP_400_BAD_REQUEST)
 
+# filter search
 class FilterSearchBookAPIView(APIView):
     def get(self,request,format=None):
         info=request.query_params
@@ -211,7 +220,7 @@ class FilterSearchBookAPIView(APIView):
             return Response(data={"msg":"search type error!"},status=HTTP_400_BAD_REQUEST)
 
 
-# search book
+# search book by title,author, account
 class SearchBookAPIView(APIView):
     def post(self, request, format=None):
         print(request.data)
@@ -269,8 +278,9 @@ class SearchBookAPIView(APIView):
 class AddBookToCollectionAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    # 
     def post(self,request,format=None):
-        print("11111111")
+        print(request.data)
         time_now=timezone.now()
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -290,7 +300,7 @@ class AddBookToCollectionAPIView(APIView):
         # goal_add.send(AddBookToCollectionAPIView,user_id=user_obj.id,year=time_now.year,month=time_now.month)
         return Response(data={"msg":"add it success!"},status=HTTP_200_OK)
     
-    # 
+    # remove book from collection 
     def delete(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -304,10 +314,11 @@ class AddBookToCollectionAPIView(APIView):
         return Response(data={"msg":"delete it success"},status=HTTP_200_OK)
 
 
-# add review
+# rating
 class ReviewAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    # create new review and update review
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -315,25 +326,32 @@ class ReviewAPIView(APIView):
         user_obj = token_obj.user
         book_id = request.data['book_id']
         review_info = request.data['review']
-        review_info['user']=user_obj.id
-        review_info['book']=book_id
-        review_set = Review.objects.filter(user=user_obj.id,book=book_id)
-        # 
-        if(review_set.exists()):
-            review_temp=review_set[0]
-            review_temp.content = review_info['content']
-            review_temp.save()
-            return Response(data={'msg':'update review success'},status=HTTP_200_OK)
+        # it will check content length, avoid empty review.
+        if(len(review_info['content'])<=5):
+            return Response(data={"msg":"review is too short"},status=HTTP_400_BAD_REQUEST)
         else:
-            serializer = ReviewSerializer(data=review_info)
-            if serializer.is_valid():
-                serializer.save()
-                print('ready to save')
-                return Response(data={'msg':'add review success'},status=HTTP_200_OK)
-            print(serializer.errors)
-            return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
+            try:
+                # try acquire review_id, if get ,it means update review
+                review_id=request.data["review_id"]
+                review_temp=Review.objects.get(id=review_id)
+                review_temp.content=review_info['content']
+                review_temp.save()
+                return Response(data={"msg":"update success!"},status=HTTP_200_OK)
+            except:
+                # if not get review id, create new review
+                # new review will return review objects, include review id
+                review_info['user']=user_obj.id
+                review_info['book']=book_id
+                serializer = ReviewSerializer(data=review_info)
+                if serializer.is_valid():
+                    serializer.save()
+                    print('ready to save')
+                    return Response(data={'msg':serializer.data},status=HTTP_200_OK)
+                print(serializer.errors)
+                return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
 
-# rating
+
+# mark some book
 class RatingAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -345,7 +363,7 @@ class RatingAPIView(APIView):
         rating_info = request.data['rating_info']
         rating_set=Rating.objects.filter(user=user_obj.id,book=rating_info['book'])
         if(rating_set.exists()):
-            # 
+            # check data, if exists, update rating
             rating_temp=rating_set[0]
             rating_temp.rating = rating_info['rating']
             rating_temp.save()
@@ -361,7 +379,7 @@ class RatingAPIView(APIView):
             return Response(data={"msg":'update success!'},status=HTTP_200_OK)
 
         else:
-            # 
+            # doesn't exists, create new rating relation
             rating_info['user']=user_obj.id
             serializer = RatingSerializer(data=rating_info)
             if serializer.is_valid():
@@ -379,11 +397,11 @@ class RatingAPIView(APIView):
             print(serializer.errors)
             return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
 
-# 
+# like function
 class LikeItAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    # 
+    # create like function
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -395,29 +413,30 @@ class LikeItAPIView(APIView):
         like_set=LikeIt.objects.filter(review=review_id,user=user_obj.id)
         if(like_set.exists()):
             if(like_info["status"]==-1):
-                # 
+                # if status = -1, it means doesn't like!
                 like_new_info = like_set[0]
                 if(like_new_info.status==0):
-                    return Response(data={"msg":"ooooo"},status=HTTP_400_BAD_REQUEST)
+                    return Response(data={"msg":"op!"},status=HTTP_400_BAD_REQUEST)
                 like_new_info.status=0
                 like_new_info.save()
                 review_new_temp=Review.objects.get(id = review_id)
                 review_new_temp.like_count_num-=1
                 review_new_temp.save()
-                return Response(data={'msg':'cancel'},status=HTTP_200_OK)
+                return Response(data={'msg':'wow!'},status=HTTP_200_OK)
             else:
-                # 
+                # if like some review before, then un-like
                 like_new_info = like_set[0]
                 if(like_new_info.status==1):
-                    return Response(data={"msg":"ooooo"},status=HTTP_400_BAD_REQUEST)
+                    return Response(data={"msg":"别折腾了"},status=HTTP_400_BAD_REQUEST)
                 like_new_info.status=1
                 like_new_info.save()
                 review_new_temp=Review.objects.get(id = review_id)
                 review_new_temp.like_count_num+=1
                 review_new_temp.save()
-                return Response(data={"msg":"hhhhh！"},status=HTTP_200_OK)
+                return Response(data={"msg":"我又点赞了！"},status=HTTP_200_OK)
             return Response(data={"msg":"already like it!"},status=HTTP_200_OK)
         else:
+            # create new like relation in database.
             likeit_info = request.data['likeit']
             likeit_info['user']=user_obj.id
             likeit_info['review']=review_id
@@ -426,6 +445,7 @@ class LikeItAPIView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 if serializer.data['status']==1:
+                    print("likeit")
                     review_temp=Review.objects.get(id=review_id)
                     review_temp.like_count_num+=1
                     review_temp.save()
@@ -433,13 +453,17 @@ class LikeItAPIView(APIView):
             print(serializer.errors)
             return Response(data={'msg':'error'},status=HTTP_400_BAD_REQUEST)
     
-# click book , show extra info
+# click one book request data is book_id
+# check book infomation
+# if will check header token:
+# if header has token and token is valid:
+# the return data will include user's action 
+# else:
+# return data with out user action
 # 
-# data include：
-# 1.rating
-# 2.rating detail
-# 3.review and other user's review
-# 4.like, like counr, like status
+# rating nanlyse: include all rating about this book
+# reviews: include all review related to this book.
+# 
 class BookDetailPageAPIView(APIView):
 
     def get(self,request,format=None):
@@ -463,9 +487,11 @@ class BookDetailPageAPIView(APIView):
             return Response(data={"msg":"No Book!"},status=HTTP_400_BAD_REQUEST)
 
 
-#  
+#  set monthly goal
 class MonthlyGoalAPIView(APIView):
     permission_classes = (IsAuthenticated,)
+
+    # get goal info, if user never set any goal, it will return 0,0.
     def get(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -486,7 +512,8 @@ class MonthlyGoalAPIView(APIView):
         else:
             return Response(data={"target":0,"already_done":0},status=HTTP_200_OK)   
 
-
+    # create goal relation
+    # it will check data and return how many book add into collection in this month.
     def post(self,request,format=None):
         token=request.META.get('HTTP_AUTHORIZATION')
         token=token.split()
@@ -520,7 +547,7 @@ class MonthlyGoalAPIView(APIView):
 
 
 ######################main page recommend ############# 
-
+# main page recommend api, it will check redis database first.
 class MainPageRecAPIView(APIView):
 
     def get(self,request,format=None):
@@ -535,8 +562,9 @@ class MainPageRecAPIView(APIView):
             serializer = BookSerializer(instance=main_page_rec_set,many=True)
             return Response(serializer.data)
 
-# user_base recommend
-
+# recommend api
+# if user's book satisfy the conditions, it will generate custom recommend
+# else, just recommend high rating 
 class UserBaseRecAPIView(APIView):
     # permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
@@ -570,7 +598,7 @@ class UserBaseRecAPIView(APIView):
             return Response(data={"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
 
 
-#
+# abort……
 class HistoryAPIView(APIView):
     # permission_classes = (IsAuthenticated,)
     def get(self,request,format=None):
@@ -586,10 +614,10 @@ class HistoryAPIView(APIView):
 
 class TestAPIView(APIView):
     def get(self,request,format=None):
-        print("1111111")
-        data=Rating.objects.all()
-        serializer = RecUserBookSerializer(instance=data,many=True)
-        return Response(data={"msg":"11111"})
+        user_id=request.query_params['id']
+        like_set=LikeIt.objects.filter(user=user_id)
+        serializer=LikeItSerializer(instance=like_set[0])
+        return Response(serializer.data)
 
 
 
@@ -599,7 +627,7 @@ class TestAPIView(APIView):
 # def goal_add_callback(sender, **kwargs):
 #     rec_set=MonthRecord.objects.filter(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month'])
 #     if(rec_set.exists()):
-#         rec_temp=goal_set[0] 
+#         rec_temp=rec_set[0] 
 #         rec_temp.total_nums+=1
 #         rec_temp.save()
 #     else:
@@ -608,13 +636,38 @@ class TestAPIView(APIView):
 #         rec_obj['year']=kwargs['year']
 #         rec_obj['month']=kwargs['month']
 #         rec_obj['total_nums']=1
-#         print(rec_obj)
-#         serializer = MonthRecord(user=rec_obj['user'],year=rec_obj['year'],month=rec_obj['month'],total_nums=rec_obj['total_nums'])
+#         serializer = MonthRecordSerializer(data=rec_obj)
 #         if(serializer.is_valid()):
 #             serializer.save()
-# #
+#
 # @receiver(goal_del,sender=AddBookToCollectionAPIView)
 # def goal_del_callback(sender, **kwargs):
 #     rec_set=MonthRecord.objects.get(user=kwargs['user_id'],year=kwargs['year'],month=kwargs['month']) 
+#     rec_temp=rec_set[0]
 #     rec_temp.total_nums-=1
 #     rec_temp.save()
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+        
+
+            
+
+
