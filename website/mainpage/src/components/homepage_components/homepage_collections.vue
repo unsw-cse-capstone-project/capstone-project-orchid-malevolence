@@ -16,7 +16,7 @@
         <!-- get collections base on selection -->
         <div class="collection-body">
             <!-- divider, show collection's name -->
-            <el-divider content-position="center">{{value}}</el-divider>
+            <el-divider content-position="center">10 books recent added in {{value}}</el-divider>
 
             <!-- main part of collection: with image, title, rating, brief description and jump button -->
             <div class="wrap">
@@ -77,7 +77,7 @@
                 const len = res.length
                 let option
                 for(let i = 0; i < len; i++) {
-                    // 提取collections' name
+                    // get collections' name
                     option = {}
                     option["key"] = res[i].id
                     option["value"] = res[i].name
@@ -88,7 +88,6 @@
             // get books from specific collection through collection id
             getCollectionBooks(col_id) {
                 this.books = []  // refresh books' list
-                // console.log("now select: " + col_id)
 
                 let obj = {}
                 obj = this.collections.find((item) => {
@@ -98,7 +97,6 @@
                 let book
                 let len = obj.books.length
                 for(let i = 0; i < len; i++) {
-                    // console.log(obj.books[i])
                     book = {}
                     book["id"] = obj.books[i].id
                     book["authors"] = obj.books[i].authors
@@ -120,11 +118,9 @@
             },
 
             jump_one_book(value) {
-                // console.log(value)
                 this.$router.push({
                     name: 'one_book',
                     query: {
-                        // item:value
                         book_id: value.id,
                         authors: value.authors,
                         title: value.title,
@@ -141,10 +137,9 @@
 
         mounted() {
             getCollectionmultdata().then(res=>{
-                console.log(res)
                 this.collections = res
                 this.value = this.collections[0].name
-                this.getCollectionNames(res)   // 把api返回的collection名字整理出来
+                this.getCollectionNames(res)   // return collection get from api
                 this.getCollectionBooks(this.collections[0].id) // default select first collection
             })
             .catch(error => {
@@ -159,7 +154,6 @@
 <style lang="less" scoped>
     .collection {
         background-color: aliceblue;
-        //border-left-style: solid;
         border-radius: 2px;
         border-color: bisque;
         margin: 0 auto;
@@ -171,10 +165,6 @@
         padding-top: 60px;
         margin-right: 50px;
         text-align: right;
-    }
-
-    .collection-body {
-        /*padding-left: 10px;*/
     }
 
     .wrap {

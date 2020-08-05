@@ -1,8 +1,6 @@
-
-
 <template>
-	<div>
-		<div>
+	<div id="app2">
+		<div class="header">
 			<Header></Header>
 		</div>
 		<!-- three part in this page
@@ -327,6 +325,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    .header {
+        text-align: center;
+    }
+    
 	.body{
 		width: 80%;
 		margin: auto;

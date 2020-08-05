@@ -17,8 +17,7 @@
                 img_list: [
                     { url: require("../../img/carousel_imgs/pic0.jpg") },
                     { url: require("../../img/carousel_imgs/pic1.jpg") },
-                    { url: require("../../img/carousel_imgs/pic2.jpg") },
-                    { url: require("../../img/carousel_imgs/pic3.jpg") }
+                    { url: require("../../img/carousel_imgs/pic2.jpg") }
                 ]
             }
         }

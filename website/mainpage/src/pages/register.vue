@@ -49,16 +49,16 @@
 		},
 		data () {
 		// Verify that the mailbox format is correct
-		var checkEmail = (rule, value, callback) => {
+		let checkEmail = (rule, value, callback) => {
 			const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
 			if (!value) {
-			return callback(new Error('Please enter email address'))
+                return callback(new Error('Please enter email address'))
 			}
 			setTimeout(() => {
 				if (mailReg.test(value)) {
-				callback()
+                    callback()
 				} else {
-				callback(new Error('Incorrect email format'))
+                    callback(new Error('Incorrect email format'))
 				}
 			}, 100)
 		}
@@ -68,7 +68,7 @@
 				callback(new Error('Please enter your password.'))
 			} else {
 				if (this.RegisterForm.checkpass !== '') {
-				this.$refs.RegisterFormRef.validateField('checkpass')
+                    this.$refs.RegisterFormRef.validateField('checkpass')
 				}
 				callback()
 			}
