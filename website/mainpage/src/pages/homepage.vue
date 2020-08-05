@@ -94,7 +94,7 @@
 
     .content {
         flex: 1;
-		min-height: calc(100vh - 120px);
+		min-height: calc(100vh - 135px);
     }
 
     .footer {

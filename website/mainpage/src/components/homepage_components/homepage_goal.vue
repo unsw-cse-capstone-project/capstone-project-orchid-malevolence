@@ -41,7 +41,22 @@
             </el-progress>
 
             <!-- Click to reset goal -->
-            <el-button type="text" @click="open" style="color: lightskyblue">Click to reset goal</el-button>
+<!--            <el-button @click="open" style="color: lightskyblue">Click to reset goal</el-button>-->
+
+            <el-button @click="dialogFormVisible = true">Reset Goal</el-button>
+
+            <el-dialog title="Reset Monthly Goal" :visible.sync="dialogFormVisible">
+                <el-form :model="form">
+                    <el-form-item label="Set a new goal" :label-width="formLabelWidth">
+                        <el-input v-model="form.name" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                </div>
+            </el-dialog>
+            
         </div>
     </div>
 </template>
@@ -65,13 +80,25 @@
                 already_done: null,
                 goalStatus: 0,  // 0: false, 1: true
                 textGoal: '',
+                dialogFormVisible: false,
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                formLabelWidth: '120px'
             }
         },
 
         methods: {
 			/* enforce user input format, number in range of [0, 1000) */
             open() {
-                this.$prompt('Set a new goal', 'hint', {
+                this.$prompt('Set a new goal', 'Reset Goal', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     inputPattern: /^\d{0,3}$/,
@@ -179,6 +206,10 @@
     .el-progress {
         width: 230px;
         margin: 0 auto;
+    }
+    
+    .el-button {
+		margin-top: 20px;
     }
 </style>
 
