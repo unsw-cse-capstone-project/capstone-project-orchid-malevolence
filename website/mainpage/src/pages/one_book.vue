@@ -18,11 +18,14 @@
 				<div><p>Publish date: {{book.publisher_data}}</p></div>
 				<div><p>ISBN: {{book.ISBN}}</p></div>
 				<div><p>Categories: {{book.category}}</p></div>
+				<el-tag v-show="token_log" type="success"> {{this.result.have_read}}</el-tag>
+
+
 
 			</div>
 
 			<div class="read_score">
-				<read_score :res="result"></read_score>
+				<read_score ref="child2" :res="result"></read_score>
 			</div>
 			<div class="btn_add">
 				<!--component add to collection-->
@@ -31,7 +34,6 @@
 
 			<div class="rating">
 				<!--component rating and commit-->
-<!--				<child ref="child"></child>-->
 				<rating_commit ref="child" @val="receive_from_rating" :currentuser_rating="result.user_rating" :bookID="result.book_id" ></rating_commit>
 			</div>
 			<!--show all reviews-->
@@ -48,7 +50,6 @@
 				<div v-show="isShow" class="inner_content">
 					<span style="overflow-wrap:break-word;">{{item.content}}</span>
 					<span class="number">{{item.like_count_num}}</span>
-<!--					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="index===currentIndex? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">-->
 					<img :class="{active:currentIndex===index}" class="agree_img" @click="changeNumber(item,index)" :src="item.like_status===1? require('../img/single_book_child/agree_true.png'): require('../img/single_book_child/agree.png')" alt="">
 
 				</div>
@@ -94,6 +95,7 @@ export default {
 				averageScore: Number,
 				book_id: "",
 				user_rating:0,
+				read:0,
 
 				review_book: []
 
@@ -182,12 +184,22 @@ export default {
 					this.result = result
 					this.result.user_rating=result.user_rating_review.user_rating
 					this.result.rate = result.rating_analyse.rating
+					this.result.read=result.rating_analyse.how_many_user_read
 					this.result.TotalCount = result.rating_analyse.how_many_user_scored
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
+					console.log(result.read_or_not)
+					if(result.read_or_not){
+						this.result.have_read='have read'
+
+					}else{
+						this.result.have_read='not read'
+
+					}
 					window.localStorage.setItem('user_rating', this.result.user_rating)
 					this.$refs.child.init(this.result.user_rating)
+					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
 					console.log(this.result)
 
 					// this.sort_commit(this.result)
@@ -204,6 +216,10 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
+					this.result.read=result.rating_analyse.how_many_user_read
+
+					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
+
 					// this.sort_commit(this.result)
 
 				}).catch(res => {
