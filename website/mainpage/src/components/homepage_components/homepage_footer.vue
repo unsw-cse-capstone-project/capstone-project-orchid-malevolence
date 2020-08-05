@@ -7,6 +7,7 @@
             <span>©2020-2021</span>
 		</div>
         <div class="icon">
+            <!-- click jump to github page -->
             <img src="../../../github.png" title="click to view github page" height="32" width="32" @click="goGit" alt/>
         </div>
         <div class="text">
@@ -31,7 +32,6 @@
 <style lang="less" scoped>
     .footer {
         padding-top: 15px;
-        //padding-bottom: 10px;
         background: #99a9bf;
 		justify-content: center;
         display: flex;

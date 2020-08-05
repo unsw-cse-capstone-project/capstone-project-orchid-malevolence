@@ -9,11 +9,12 @@
                 <p class="sub-title">Set a monthly goal</p>
             </div>
             <div class="input-group">
+                <!-- input format: number in range [0, 99] -->
                 <el-input
                         placeholder="input a number"
                         v-model="textGoal"
-                        oninput="value=value.replace(/[^\d]/g,'')"
-                        maxLength='3'
+                        oninput="value=value.replace(/\D|^0/g,'')"
+                        maxLength='2'
                         clearable>
                 </el-input>
                 <el-button type="warning" plain @click="setGoal()" class="set-goal">Set Goal</el-button>
@@ -24,8 +25,8 @@
         <div v-else>
 			<!-- if read book less than monthly goal -->
             <div class="text_part" v-if="Number(bookData[0].totalBook - bookData[0].read) > 0">
-                <p>{{ bookData[0].read }} books complete</p>
-                <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books in the schedule</p>
+                <p>{{ bookData[0].read }} books completed</p>
+                <p>{{ Number(bookData[0].totalBook - bookData[0].read) }} books need to be read</p>
             </div>
 
 			<!-- if read book larger than monthly goal -->
@@ -36,27 +37,27 @@
 			<!-- show goal progress by a progress bar -->
             <el-progress :text-inside="true" :show-text="false"
                          :stroke-width="26"
-                         :percentage="bookData[0].read/bookData[0].totalBook * 100"
+                         :percentage="bookData[0].totalBook===0 ? 100 :bookData[0].read/bookData[0].totalBook * 100"
                          class="process-bar">
             </el-progress>
 
-            <!-- Click to reset goal -->
-<!--            <el-button @click="open" style="color: lightskyblue">Click to reset goal</el-button>-->
-
-            <el-button @click="dialogFormVisible = true">Reset Goal</el-button>
-
+            <!-- Click to reset goal, open a dialog window -->
+            <el-button type="primary" plain @click="openResetGoal" class="reset-button">Reset Goal</el-button>
+            
+            <!-- dialog window, with format judge -->
             <el-dialog title="Reset Monthly Goal" :visible.sync="dialogFormVisible">
-                <el-form :model="form">
-                    <el-form-item label="Set a new goal" :label-width="formLabelWidth">
-                        <el-input v-model="form.name" autocomplete="off"></el-input>
+                <el-form :model="form" :rules="resetGoalRule" :ref="form" status-icon>
+                    <el-form-item label="Set a new goal: " :label-width="formLabelWidth" prop="value">
+                        <el-input v-model.number="form.value" autocomplete="off" minlength="1" maxlength="2"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                    <!-- click to send reset goal data -->
+                    <el-button @click="cancelGoal">Cancel</el-button>
+                    <!-- click to  -->
+                    <el-button type="primary" @click="resetGoal(form)">Confirm</el-button>
                 </div>
             </el-dialog>
-            
         </div>
     </div>
 </template>
@@ -72,6 +73,23 @@
     export default {
         name: 'homepage-goal',
         data() {
+            let checkGoal = (rule, value, callback) => {
+                const goalReg = /^\+?[1-9][0-9]*$/
+                if (!value) {
+                    this.$forceUpdate()
+                    return callback(new Error('please input a number'))
+                } else {
+                    setTimeout(() => {
+                        if (goalReg.test(value)) {
+                            callback()
+                        } else {
+                            callback(new Error('please input a number in range [1,99]'))
+                        }
+                    }, 100)
+                }
+                
+            }
+            
             return {
                 bookData: [{read: '', totalBook: ''}],
                 goal_title: nowYear + "-" + nowMonth + " Reading Challenge",
@@ -82,48 +100,51 @@
                 textGoal: '',
                 dialogFormVisible: false,
                 form: {
-                    name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    value: '',
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                resetGoalRule: {
+                    value: [
+                        {required: true, validator: checkGoal, trigger: 'blur'}
+                    ]
+                }
             }
         },
 
         methods: {
-			/* enforce user input format, number in range of [0, 1000) */
-            open() {
-                this.$prompt('Set a new goal', 'Reset Goal', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    inputPattern: /^\d{0,3}$/,
-                    inputErrorMessage: 'Please input a digit (<1000)'
-                }).then(({value}) => {
-                    this.$message({
-                        type: 'success',
-                        message: 'Reset successfully: ' + value
-                    });
-                    this.setGoal(value)
-                    this.$forceUpdate()
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Stop reset'
-                    });
-                });
+            openResetGoal() {
+                this.dialogFormVisible = true
+                this.$forceUpdate()
+            },
+            
+            resetGoal(formName) {
+                /* judge format */
+                this.$refs[formName].validate(valid => {
+                    if(valid) {
+                        /* send input data to backend */
+                        this.setGoal(this.form.value)
+
+                        /* close window, reset input */
+                        this.dialogFormVisible = false
+                        this.form.value = ''
+                    } else {
+                        return false;
+                    }
+                })
+            },
+            
+            /* close window, reset input */
+            cancelGoal() {
+                this.dialogFormVisible = false
+                this.form.value = ''
+                this.$forceUpdate()
             },
 
 			/* get current user's monthly goal, if not yet set, change goalStatus to 0, else to 1 */
             getGoal() {
 				let params = {year:nowYear,month:nowMonth}
                 getCurGoal(params).then(res=>{
-                    console.log("get: ",res)
-                    if(res.already_done === 0 & res.target === 0) {
+                    if(res.already_done === 0 && res.target === 0) {
                         this.goalStatus = 0
                     } else {
 						this.goalStatus = 1
@@ -178,10 +199,6 @@
         margin-top: 60px;
     }
 
-    .title {
-
-    }
-
     .sub-title {
         margin-top: 10px;
     }
@@ -208,7 +225,7 @@
         margin: 0 auto;
     }
     
-    .el-button {
+    .reset-button {
 		margin-top: 20px;
     }
 </style>

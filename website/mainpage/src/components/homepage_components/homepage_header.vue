@@ -1,6 +1,6 @@
 <!-- Written by Yangyu GAO -->
 <template>
-    <el-menu :default-active="activeIndex2" class="el-menu-main" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+    <el-menu :default-active="activeIndex2" class="el-menu-main" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <!-- click to jump to homepage -->
 		<el-menu-item @click="jump_homepage" title="homepage">
 			<img src="../../../logo.png" height="38" width="65"/>
@@ -63,7 +63,7 @@
 export default {
     data() {
         return {
-            token_log: localStorage.getItem('token'),
+            token_log: localStorage.getItem('token'),       // get token
             // activeIndex: '1',
             activeIndex2: '1',
             input1: '',
@@ -71,19 +71,16 @@ export default {
             input3: '',
             select: '',
             score: '',
-			username: localStorage.getItem('username')
+			username: localStorage.getItem('username'),     // get username
         };
     },
 	
 	methods: {
+        // judge whether show or not
         isShow(){
             if (this.select==='user'){
                 return true
             }
-        },
-
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
         },
 
         jump_homepage() {
