@@ -21,14 +21,14 @@
 
 
 
-		<span class="span3"> {{res.TotalCount}} people have read this book</span>
+		<span class="span3"> {{this.read}} people have read this book</span>
 
 	</div>
 
 </template>
 
 <script>
-import {getCollectionmultdata} from '../../network/requests'
+// import { getSingleBookmultdata} from '../../network/requests'
 export default {
 	name: 'read_score',
 	data () {
@@ -43,12 +43,14 @@ export default {
 			receive_from_rating: 0,
 			TotalCount: '',
 			isShow: true,
+			read:0,
 			rating_list: {
 				five: 0,
 				four: 0,
 				three: 0,
 				two: 0,
 				one: 0,
+				read:0
 
 			},
 			count: 100,
@@ -60,30 +62,24 @@ export default {
 		res: Object,
 		default: {}
 	},
-
+	methods:{
+		init(val){
+			this.read=val
+		},
+	},
 
 	// request method page initial and get average score of this book
 	updated () {
+
 		this.average = this.res.averageScore
 		this.book_id = this.res.book_id
 		this.TotalCount = this.res.TotalCount
+		this.read=this.res.rating_analyse.how_many_user_read
 		this.rating_list.five = parseFloat((this.res.rating_analyse.five * 100).toFixed(1))
 		this.rating_list.four = parseFloat((this.res.rating_analyse.four * 100).toFixed(1))
 		this.rating_list.three = parseFloat((this.res.rating_analyse.three * 100).toFixed(1))
 		this.rating_list.two = parseFloat((this.res.rating_analyse.two * 100).toFixed(1))
 		this.rating_list.one = parseFloat((this.res.rating_analyse.one * 100).toFixed(1))
-		getCollectionmultdata().then(res => {
-
-			this.books = res
-			// this.getAllBooks(res)
-
-			// all collections
-			this.collections = res
-			// this.getCollectionNames(res)   // get all collection name from the api
-
-		}).catch(res => {
-			console.log(res)
-		})
 
 
 	}
