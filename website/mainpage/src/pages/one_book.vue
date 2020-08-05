@@ -188,8 +188,9 @@ export default {
 					this.result.review_book = result.review_book
 					window.localStorage.setItem('user_rating', this.result.user_rating)
 					this.$refs.child.init(this.result.user_rating)
+					console.log(this.result)
 
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
@@ -203,7 +204,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					this.sort_commit(this.result)
+					// this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
