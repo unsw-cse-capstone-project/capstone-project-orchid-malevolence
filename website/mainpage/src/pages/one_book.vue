@@ -141,7 +141,13 @@ export default {
 				this.result.review_book = res.review_book
 
 				this.result.averageScore=parseFloat(averagescore.toFixed(1))
+				if(res.read_or_not){
+					this.result.have_read='have read'
 
+				}else{
+					this.result.have_read='not read'
+
+				}
 				// that.sort_commit(that.result)
 			}).catch(res => {
 				console.log(res)
@@ -189,7 +195,7 @@ export default {
 					this.result.averageScore = result.rating_analyse.average_rating
 					this.result.book_id = result.id
 					this.result.review_book = result.review_book
-					console.log(result.read_or_not)
+					// console.log(result.read_or_not)
 					if(result.read_or_not){
 						this.result.have_read='have read'
 
@@ -200,7 +206,7 @@ export default {
 					window.localStorage.setItem('user_rating', this.result.user_rating)
 					this.$refs.child.init(this.result.user_rating)
 					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
-					console.log(this.result)
+					// console.log(this.result)
 
 					// this.sort_commit(this.result)
 

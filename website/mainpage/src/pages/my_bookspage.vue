@@ -209,7 +209,7 @@ export default {
 
 		getAllBooks(val){
 			let len=val.length
-			console.log(val)
+			// console.log(val)
 			let books_name=[]
 			for (let i=0;i<len;i++){
 				let new_len=val[i].books.length
@@ -264,7 +264,7 @@ export default {
 		// get  books from current collection
 		currentSel(selVal) {
 			this.value = selVal;
-			console.log(typeof this.value)
+			// console.log(typeof this.value)
 			let obj = {}
 			obj = this.options.find((item)=>{
 				return item.value === selVal;
@@ -300,7 +300,7 @@ export default {
 			for(let i = 0; i < len; i++) {
 				book = {}
 				book["id"] = obj.books[i].id
-				console.log(obj.books[i].id)
+				// console.log(obj.books[i].id)
 				book["authors"] = obj.books[i].authors
 				book["title"] = obj.books[i].title
 				book["imageLink"] = obj.books[i].imageLink
