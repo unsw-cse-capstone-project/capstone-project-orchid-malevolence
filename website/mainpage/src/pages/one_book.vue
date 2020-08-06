@@ -148,7 +148,7 @@ export default {
 					this.result.have_read='not read'
 
 				}
-				// that.sort_commit(that.result)
+				this.sort_commit(this.result)
 			}).catch(res => {
 				console.log(res)
 			})
@@ -208,7 +208,7 @@ export default {
 					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
 					// console.log(this.result)
 
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
@@ -226,7 +226,7 @@ export default {
 
 					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
 
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
