@@ -64,13 +64,22 @@ export default {
 	},
 	methods:{
 		init(val){
-			this.read=val
+			console.log(val)
+			this.read=val.rating_analyse.how_many_user_read
+			this.average = val.averageScore
+			this.book_id = val.book_id
+			this.TotalCount = val.TotalCount
+			this.rating_list.five = parseFloat((val.rating_analyse.five * 100).toFixed(1))
+			this.rating_list.four = parseFloat((val.rating_analyse.four * 100).toFixed(1))
+			this.rating_list.three = parseFloat((val.rating_analyse.three * 100).toFixed(1))
+			this.rating_list.two = parseFloat((val.rating_analyse.two * 100).toFixed(1))
+			this.rating_list.one = parseFloat((val.rating_analyse.one * 100).toFixed(1))
 		},
 	},
 
 	// request method page initial and get average score of this book
 	updated () {
-
+		console.log(this.res.rating_analyse)
 		this.average = this.res.averageScore
 		this.book_id = this.res.book_id
 		this.TotalCount = this.res.TotalCount
@@ -80,6 +89,7 @@ export default {
 		this.rating_list.three = parseFloat((this.res.rating_analyse.three * 100).toFixed(1))
 		this.rating_list.two = parseFloat((this.res.rating_analyse.two * 100).toFixed(1))
 		this.rating_list.one = parseFloat((this.res.rating_analyse.one * 100).toFixed(1))
+		console.log(this.rating_list)
 
 
 	}

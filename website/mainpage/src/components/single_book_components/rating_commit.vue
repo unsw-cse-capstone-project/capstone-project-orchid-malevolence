@@ -90,12 +90,13 @@ export default {
 				postrating(postvalue).then(res => {
 					console.log(res)
 				})
+				// console.log(value)
 				this.$emit('val',value)
-				this.value1=value
 				let post2={
 					'book_id': this.bookID,
 				}
 				getSingleBookmultdata(post2).then(res=>{
+					console.log(res.user_rating_review.user_rating)
 					// this.value=res.user_rating_review.user_rating
 					window.localStorage.setItem('user_rating', res.user_rating_review.user_rating)
 				})

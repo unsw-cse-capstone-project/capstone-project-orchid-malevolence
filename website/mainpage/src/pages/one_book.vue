@@ -121,7 +121,7 @@ export default {
 		receive_from_rating(){
 			let post_value = {book_id: this.book.book_id}
 			getSingleBookmultdata(post_value).then(res => {
-				// console.log(res)
+				console.log(res)
 				// let that=this
 				let rating_list=res.rating_analyse
 				let count=rating_list.how_many_user_scored
@@ -132,13 +132,20 @@ export default {
 				let one=rating_list.one*count*1
 				let averagescore=(five+four+three+two+one)/count
 				// this.result.TotalCount=count
-
 				this.result = res
+				this.result.user_rating=res.user_rating_review.user_rating
 				this.result.rate = res.rating_analyse.rating
+				this.result.read=res.rating_analyse.how_many_user_read
 				this.result.TotalCount = res.rating_analyse.how_many_user_scored
 				this.result.averageScore = res.rating_analyse.average_rating
 				this.result.book_id = res.id
 				this.result.review_book = res.review_book
+				// this.result = res
+				// this.result.rate = res.rating_analyse.rating
+				// this.result.TotalCount = res.rating_analyse.how_many_user_scored
+				// this.result.averageScore = res.rating_analyse.average_rating
+				// this.result.book_id = res.id
+				// this.result.review_book = res.review_book
 
 				this.result.averageScore=parseFloat(averagescore.toFixed(1))
 				if(res.read_or_not){
@@ -148,7 +155,9 @@ export default {
 					this.result.have_read='not read'
 
 				}
-				// that.sort_commit(that.result)
+				this.$refs.child2.init(this.result)
+
+				this.sort_commit(this.result)
 			}).catch(res => {
 				console.log(res)
 			})
@@ -203,12 +212,13 @@ export default {
 						this.result.have_read='not read'
 
 					}
-					window.localStorage.setItem('user_rating', this.result.user_rating)
 					this.$refs.child.init(this.result.user_rating)
-					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
+					// this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
+					this.$refs.child2.init(this.result)
+
 					// console.log(this.result)
 
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
@@ -224,9 +234,9 @@ export default {
 					this.result.review_book = result.review_book
 					this.result.read=result.rating_analyse.how_many_user_read
 
-					this.$refs.child2.init(this.result.rating_analyse.how_many_user_read)
+					this.$refs.child2.init(this.result)
 
-					// this.sort_commit(this.result)
+					this.sort_commit(this.result)
 
 				}).catch(res => {
 					console.log(res)
