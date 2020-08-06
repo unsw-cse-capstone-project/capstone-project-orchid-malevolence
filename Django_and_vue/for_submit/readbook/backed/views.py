@@ -607,7 +607,15 @@ class UserBaseRecAPIView(APIView):
             for i in temp_2:
                 res_add.append(json.loads(i))
             # data={"rating_rec":res_rating,"added_rec":res_add}
-            return Response(data={"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
+            flag=user_recommend(user_id)
+            if(flag):
+                temp=con.lrange('rec_'+str(user_id),0,-1)
+                rec=[]
+                for i in temp:
+                    rec.append(json.loads(i))
+                return Response(data={"rec":rec,"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
+            else:
+                return Response(data={"rating_rec":res_rating,"added_rec":res_add},status=HTTP_200_OK)
 
 
 # abort……
