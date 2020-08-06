@@ -75,6 +75,7 @@ def calculate_correlation(target,datas):
         if(i[1]>0):
             res_list.append(i)
     # return top 10.
+    print(res_list[:10])
     return res_list[:10]
 
 def user_recommend(user_id):
@@ -94,6 +95,7 @@ def user_recommend(user_id):
             user[i['user']][i['book']]=float(i['rating'])
         
         res=calculate_correlation(user_id,user)
+        con.delete('rec_'+str(user_id))
         for i in res:
             book_temp=Book.objects.get(id=i[0])
             serializer=BookSerializer(instance=book_temp)
