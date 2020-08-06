@@ -200,6 +200,10 @@ html, body {
 	position:absolute;
 }
 
+.collection-body {
+    background: aliceblue;
+}
+
 .choose_collection{
 	margin-top: 50px;
 }
@@ -226,6 +230,11 @@ html, body {
 
 .grid-content {
 	min-height: 36px;
+    background: aliceblue;
+}
+
+.el-row {
+    background: aliceblue;
 }
 
 .el-button {
