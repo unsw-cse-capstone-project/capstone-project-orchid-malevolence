@@ -70,3 +70,7 @@ are completed. The recommend part returns two different type of results which de
 
 Next week, I will continue to improve the user experience of the website, and fix the css layout.
 
+-- Week10 2020/08/07  Friday --
+This week, all of the functions are completed. Then I write the final report and prepare to do the presentation in Friday morning.
+
+I was reponsed to do the showing screen job, and presentation the homepage and register part.
