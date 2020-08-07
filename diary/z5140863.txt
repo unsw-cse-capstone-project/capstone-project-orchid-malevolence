@@ -39,3 +39,6 @@ The ability to display history completion goals will be completed next week
 week9
 Complete the basic functions. Complete the layout and some details. 
 
+week10
+Complete all the tasks, as well as the presentation.
+week10
