@@ -24,3 +24,7 @@ In this week, we have show the demo B to tutor. In this week I finsihed the the 
 
 week9 
 In this week, we have submitted the retrospective B, we will continous optimizing the css structure. For me I have changed some function for have a better css layout like rating and add book to collection.
+
+week10
+In this week, we have finished the report, presentation. For me, I have add more function in the review part, people can like one of reviews and the review sorting by like number.
+
